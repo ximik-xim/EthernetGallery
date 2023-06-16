@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ public class GetImageURL : MonoBehaviour
         _image.texture = await GetStaticAsinkTexrure("http://data.ikppbb.com/test-task-unity-data/pics/1.jpg");
     }
     
-    IEnumerator GetTexture(string url) {
+   private IEnumerator GetTexture(string url) {
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
         yield return www.SendWebRequest();
 
@@ -42,8 +43,23 @@ public class GetImageURL : MonoBehaviour
         }
     }
 
+   public IEnumerator GetTexture(string url, int number, Action<int, Texture2D> complite) {
+     
+       UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+       yield return www.SendWebRequest();
 
-    private async Task <Texture2D> GetAsinkTexrure(string url)
+       if (www.result != UnityWebRequest.Result.Success) 
+       {
+           Debug.Log(www.error);
+       }
+       else 
+       {
+           complite.Invoke(number,DownloadHandlerTexture.GetContent(www));
+       }
+   }
+   
+
+    public async Task <Texture2D> GetAsinkTexrure(string url)
     {
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
             
@@ -64,7 +80,6 @@ public class GetImageURL : MonoBehaviour
         {
             //return ((DownloadHandlerTexture) www.downloadHandler).texture;
             return DownloadHandlerTexture.GetContent(www);
-            
         }
     }
     
@@ -93,5 +108,29 @@ public class GetImageURL : MonoBehaviour
             }
         }
     }
+    
+    
+    public void GetAsinkTexrure(string url,int id, Action<int,UnityWebRequest.Result,Texture2D> action)
+    {
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+            
+        var asyncOp = www.SendWebRequest();
 
+        asyncOp.completed += test;
+        
+        void test(AsyncOperation obj)
+        {
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Id = " + id + " " + www.error);
+
+                action?.Invoke(id,www.result,null);
+                return;
+            }
+            
+            action?.Invoke(id,www.result,DownloadHandlerTexture.GetContent(www));
+        }
+    }
+
+    
 }

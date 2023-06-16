@@ -342,6 +342,7 @@ MonoBehaviour:
   _parent: {fileID: 122243599}
   _prefab: {fileID: 3894131422770918147, guid: fd65ab366a7304248a030f9a5bc59c4d, type: 3}
   _getInfoFileURL: {fileID: 8327414}
+  _test: {fileID: 8327412}
 --- !u!1 &233010933
 GameObject:
   m_ObjectHideFlags: 0
