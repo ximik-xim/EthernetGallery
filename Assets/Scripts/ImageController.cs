@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,6 +20,8 @@ public class ImageController : MonoBehaviour
 
     private List<ImageSet> _image=new List<ImageSet>();
 
+[SerializeField]
+private GetImageURL _test; 
 
     private void Awake()
     {
@@ -54,12 +56,32 @@ public class ImageController : MonoBehaviour
     {
         for (int i = 0; i < _getInfoFileURL.UrlImage.Count; i++)
         {
-            Texture2D texture2D = await GetImageURL.GetStaticAsinkTexrure(_getInfoFileURL.UrlImage[i]);
-            _image[i].SetImage(texture2D);
-            Debug.Log(i);
+            //Ожидания поочередно прогузки информации
+            //Texture2D texture2D = await GetImageURL.GetStaticAsinkTexrure(_getInfoFileURL.UrlImage[i]);
+            //Texture2D texture2D = await _test.GetAsinkTexrure(_getInfoFileURL.UrlImage[i]);
+           
+            //Оповешение об завершении загрузки информации по мере того как загрузка любого обьекта закончиться
+            //StartCoroutine( _test.GetTexture(_getInfoFileURL.UrlImage[i],i,TestCoroutine));
+            _test.GetAsinkTexrure(_getInfoFileURL.UrlImage[i], i, TestAsink);
+
         }
         OnImageLoadFinish?.Invoke();
     }
+
+    private void TestCoroutine(int i, Texture2D texture2D)
+    {
+        _image[i].SetImage(texture2D);
+        Debug.Log(i);
+    }
+    
+    private void TestAsink(int i, UnityWebRequest.Result result, Texture2D texture2D)
+    {
+        if (result == UnityWebRequest.Result.Success)
+        {
+            _image[i].SetImage(texture2D);
+            Debug.Log(i);    
+        }
+    } 
 
 
     private void Test()
