@@ -1,58 +1,147 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
+//Отвечает за обновления UI у загрузчика данных
+//нужно что бы всегда был включен
 public class UIScneteLoad : MonoBehaviour
 {
     [SerializeField]
-    private LoaderElemUI prefab;
+    private LoaderElemUI _prefab;
     [SerializeField] 
-    private Transform _parent;
-    private Dictionary<int, LoaderElemUI> lElems = new Dictionary<int, LoaderElemUI>();
+    private Transform _parentInfoElement;
+    [SerializeField] 
+    private Image _loaderImage;
+    [SerializeField] 
+    private Text _loaderText;
+    [SerializeField] 
+    private GameObject _panelUI;
+    
+    private Dictionary<int, LoaderElemUI> _infoElement = new Dictionary<int, LoaderElemUI>();
     private List<LoaderElemUI> _buffer = new List<LoaderElemUI>();
-
-
     private LoaderPacketInfo _infoLoad;
 
-    private void Start()
-    {
-        _infoLoad = LoaderPacketInfo.PacketInfo;
-
-        //для теста
-        SceneManager.LoadScene(1);
-    }
-    
+    /// <summary>
+    /// Очистит UI и создаст нужное кол-во сообщений 
+    /// </summary>
     public void UpdateInform(List<int> listHash)
     {
-        _infoLoad.OnUpdateElementStatuse += UpdateUiStatuse;
+        CheckCountElement(listHash.Count);
 
-        if (_infoLoad.CountElement > lElems.Count)
-        {
-            int difference = _infoLoad.CountElement - lElems.Count;
-            for (int i = 0; i < difference; i++)
-            {
-                var UIelement=   Instantiate(prefab,_parent);
-                _buffer.Add(UIelement);
-            }
-        }
-
-        lElems = new Dictionary<int, LoaderElemUI>();
+        _infoElement = new Dictionary<int, LoaderElemUI>();
         for (int i = 0; i < _infoLoad.CountElement; i++)
         {
-            lElems.Add(listHash[i], _buffer[i]);
+            _infoElement.Add(listHash[i], _buffer[i]);
         }
         
-        for (int i = lElems.Count; i < _infoLoad.CountElement; i++)
+        for (int i = _infoElement.Count; i < _infoLoad.CountElement; i++)
         {
             _buffer[i].gameObject.SetActive(false);
         }
     }
-
-    private void UpdateUiStatuse(LoaderStatuse arg1)
+    
+    /// Выключит UI 
+    public void DisactivateUILoader(bool clear)
     {
-        lElems[arg1.Hash].updateUI(arg1);
+        if (clear == false)
+        {
+            _panelUI.gameObject.SetActive(false);
+            return;
+        }
+
+        ClearUI();
+
+        _panelUI.gameObject.SetActive(false);
+    }
+    /// Включит UI 
+    public void ActiveUILoader(bool clear,List<LoaderStatuse> statuses )
+    {
+        _panelUI.gameObject.SetActive(true);
+        
+        if (clear == true) 
+        {
+            ClearUI();
+        }
+
+        if (statuses != null)
+        {
+            for (int i = 0; i < statuses.Count; i++)
+            {
+                if (_infoElement.ContainsKey(statuses[i].Hash) == false)
+                {
+                    continue;
+                }
+                
+                _infoElement[statuses[i].Hash].gameObject.SetActive(true);
+                _infoElement[statuses[i].Hash].UpdateUI(statuses[i]);
+                statuses.Remove(statuses[i]);
+            }
+
+            if (statuses.Count > 0)
+            {
+                CreateElement(statuses.Count);
+
+                for (int i = 0; i < statuses.Count; i++)
+                {
+                    _infoElement.Add(statuses[i].Hash, _buffer[_buffer.Count - statuses.Count + i]);
+                    _infoElement[statuses[i].Hash].gameObject.SetActive(true);
+                    _infoElement[statuses[i].Hash].UpdateUI(statuses[i]);
+                }
+                
+            }
+            
+        }
+
     }
     
+    private void Start()
+    {
+        _infoLoad = LoaderPacketInfo.PacketInfo;
+        _infoLoad.OnUpdateElementStatuse += UpdateUiStatusElement;
+        _infoLoad.OnUpdateGeneralStatuse += UpdateUiStatusGeneral;
+    }
+    
+    private void UpdateUiStatusElement(LoaderStatuse arg1)
+    {
+        _infoElement[arg1.Hash].gameObject.SetActive(true);
+        _infoElement[arg1.Hash].UpdateUI(arg1);
+    }
+    
+    private void UpdateUiStatusGeneral(LoaderStatuse arg1)
+    {
+        _loaderImage.fillAmount = arg1.Comlite;
+        _loaderText.text = (arg1.Comlite * 100).ToString() + "%";
+    }
+    
+
+    
+    private void CheckCountElement(int targetCount)
+    {
+        if (targetCount > _infoElement.Count)
+        {
+            int difference = targetCount - _infoElement.Count;
+            CreateElement(difference);
+        }
+    }
+    
+    
+    private void CreateElement(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            var UIelement=   Instantiate(_prefab,_parentInfoElement);
+            _buffer.Add(UIelement);
+        }
+    }
+    
+    private void ClearUI()
+    {
+        foreach (var VARIABLE in _buffer)
+        {
+            VARIABLE.gameObject.SetActive(false);
+        }
+
+        _loaderImage.fillAmount = 0;
+
+        _loaderText.text = "0%";
+    }
 }

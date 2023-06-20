@@ -4,113 +4,183 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//Отвечает за загрузку задач
 [System.Serializable]
 public class LoaderPacketInfo:MonoBehaviour
 {
+    //Сингалтон 
     public static LoaderPacketInfo PacketInfo;
-
-    private Dictionary<int, ILoaderDataScene> _loadData = new Dictionary<int, ILoaderDataScene>();
+    //Вернет кол-во задач в списке
     public int CountElement => _loadData.Count;
-
-    //Статус конкретного элемента
+    //Статус конкретной задачи
     public Action<LoaderStatuse> OnUpdateElementStatuse;
-    //это общий статус загрузки
-    public Action<LoaderStatuse> OnUpdateGeneralStatuse; 
+    //это общий статус загрузки задач
+    public Action<LoaderStatuse> OnUpdateGeneralStatuse;
 
     [SerializeField]
+    private bool _disactiveStartUI;
+    [SerializeField]
     private UIScneteLoad _UIload; 
+    private Dictionary<int, ILoaderDataScene> _loadData = new Dictionary<int, ILoaderDataScene>();
+    
+    private int _countTasks=default;
+    private Dictionary<int, float> _percentageTaskCompletion = new Dictionary<int, float>();
+    
+    /// <summary>
+    /// Запустит загрузку у всех задач из списка
+    ///  и включит UI очистив его
+    /// </summary>
+    public void StartLoadResourse()
+    {
+        UpdateInfoUI();
+        Startload();
+    }
+
+    /// <summary>
+    /// Загружает сцену и выполняет списко задач до или после загрузки сцены
+    ///  если после загрузки сцены тогда true
+    ///  если до перехода на сцену тогда false
+    /// </summary>
+    public void StartLoadScene(int idScene,bool executeAfterLoading)
+    {
+
+        if (executeAfterLoading == true)
+        {
+            UpdateInfoUI();
+            Startload();
+            SceneManager.LoadScene(idScene);
+          
+            return;
+        }
+
+        UpdateInfoUI();
+        SceneManager.LoadScene(idScene);
+        Startload();
+      
+    }
+    /// <summary>
+    /// Добавит задачу в список
+    /// </summary>
+    public void AddLoadData(ILoaderDataScene loaderDataScene)
+    {
+        _loadData.Add(loaderDataScene.LoaderHash,loaderDataScene);
+
+        SubscribeEventElement(loaderDataScene);
+    }
+    
+    /// <summary>
+    /// Уберет задачу из список
+    /// </summary>
+    public void RemoveLoadData(ILoaderDataScene loaderDataScene)
+    {
+        _loadData.Remove(loaderDataScene.LoaderHash);
+        
+        UnsubscribeEventElement(loaderDataScene);
+    }
+    
+    /// <summary>
+    /// Включит UI загрузчика
+    /// </summary>
+    public void ActiveUILoader(bool clear = false ,List<LoaderStatuse> statuses = null)
+    {
+        _UIload.ActiveUILoader(clear,statuses);
+    }
+    
+    /// <summary>
+    /// Выключит UI загрузчика
+    /// </summary>
+    public void DisactiveUiLoader(bool clear = false)
+    {
+        _UIload.DisactivateUILoader(clear);
+    }
 
     private void Awake()
     {
+        Debug.Log("AWAKE");
         if (PacketInfo == null)
         {
             PacketInfo = this;
         }
         DontDestroyOnLoad(gameObject);
-    }
-    
 
-    public void AddLoadData(ILoaderDataScene loaderDataScene)
-    {
-        _loadData.Add(loaderDataScene.LoaderHash,loaderDataScene);
+        OnUpdateGeneralStatuse += OnDisactiveLoaderComplite;
 
-        loaderDataScene.OnStatus += RemoveLoadDataComlite;
-        loaderDataScene.OnStatus += RemoveLoadDataError;
-
-        loaderDataScene.OnStatus += ElementUpdateStatus;
-    }
-
-    private void RemoveLoadDataComlite(LoaderStatuse arg1)
-    {
-        if (arg1.Statuse == LoaderStatuse.Type.Complite)
+        if (_disactiveStartUI == true)
         {
-            _loadData[arg1.Hash].OnStatus -= RemoveLoadDataComlite;
-            _loadData[arg1.Hash].OnStatus -= RemoveLoadDataError;
-            
-            _loadData[arg1.Hash].OnStatus -= ElementUpdateStatus;
-            
-            _loadData.Remove(arg1.Hash);
+            DisactiveUiLoader(true);
         }
     }
     
-    
-    private void RemoveLoadDataError(LoaderStatuse arg1)
-    {
-        if (arg1.Statuse == LoaderStatuse.Type.Error)
-        {
-            _loadData[arg1.Hash].OnStatus -= RemoveLoadDataComlite;
-            _loadData[arg1.Hash].OnStatus -= RemoveLoadDataError;
-            
-            _loadData[arg1.Hash].OnStatus -= ElementUpdateStatus;
-            
-            _loadData.Remove(arg1.Hash);
-        }
-    }
-
-    public void RemoveLoadData(ILoaderDataScene loaderDataScene)
-    {
-        _loadData.Remove(loaderDataScene.LoaderHash);
-        
-        loaderDataScene.OnStatus -= RemoveLoadDataComlite;
-        loaderDataScene.OnStatus -= RemoveLoadDataError;
-        
-        loaderDataScene.OnStatus -= ElementUpdateStatus;
-    }
-
-
     private void Startload()
     {
+        ActiveUILoader(true);
+        _countTasks = _loadData.Count;
+        _percentageTaskCompletion = new Dictionary<int, float>();
+        
         foreach (var VARIABLE in _loadData.Values)
         {
             VARIABLE.StartLoad();
         }
     }
 
-    private void ElementUpdateStatus(LoaderStatuse arg1)
+    private void OnRemoveLoadDataComlite(LoaderStatuse arg1)
+    {
+        if (arg1.Statuse == LoaderStatuse.StatusLoad.Complite)
+        {
+            UnsubscribeEventElement(_loadData[arg1.Hash]);
+            
+            _loadData.Remove(arg1.Hash);
+        }
+    }
+    
+    
+    private void OnRemoveLoadDataError(LoaderStatuse arg1)
+    {
+        if (arg1.Statuse == LoaderStatuse.StatusLoad.Error)
+        {
+            UnsubscribeEventElement(_loadData[arg1.Hash]);
+            
+            _loadData.Remove(arg1.Hash);
+        }
+    }
+    
+    private void OnElementUpdateStatus(LoaderStatuse arg1)
     {
         OnUpdateElementStatuse.Invoke(arg1);
     }
 
-
-//переходим на сцену и вибираем выпалнять действия будет до перехода на сцену или после
-    // если после загрузки сцены тогда true
-    // если до перехода на сцену тогда false
-    public void StartLoadScene(int idScene,bool executeAfterLoading)
+    private void OnUpdateGeneralStatus(LoaderStatuse arg1)
     {
+        if (_percentageTaskCompletion.ContainsKey(arg1.Hash) == false)
+        {
+            _percentageTaskCompletion.Add(arg1.Hash,arg1.Comlite);
+        }
+        _percentageTaskCompletion[arg1.Hash] = arg1.Comlite;
+        
+        float d = 1f / _countTasks;
 
-      if (executeAfterLoading == true)
-      {
-          UpdateInfoUI();
-          Startload();
-          SceneManager.LoadScene(idScene);
-          
-          return;
-      }
+        float comlite = 0;
+        foreach (var VARIABLE in _percentageTaskCompletion.Values)
+        {
+            comlite += d * VARIABLE;
+        }
 
-      UpdateInfoUI();
-      SceneManager.LoadScene(idScene);
-      Startload();
-      
+        if (comlite != 1f)
+        {
+            OnUpdateGeneralStatuse?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Load, arg1.Hash, "Общая загрузка", comlite));
+            return;
+        }
+        
+        OnUpdateGeneralStatuse?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Complite, arg1.Hash, "Общая загрузка", comlite));
+        
+    }
+
+    private void OnDisactiveLoaderComplite(LoaderStatuse arg1)
+    {
+        if (arg1.Statuse == LoaderStatuse.StatusLoad.Complite)
+        {
+            DisactiveUiLoader();
+        }
     }
     
     private void UpdateInfoUI()
@@ -122,10 +192,23 @@ public class LoaderPacketInfo:MonoBehaviour
         }
         _UIload.UpdateInform(hashList);
     }
-    
-    public void StartLoadResourse()
+
+    private void SubscribeEventElement(ILoaderDataScene loaderDataScene)
     {
-        UpdateInfoUI();
-        Startload();
+        loaderDataScene.OnStatus += OnRemoveLoadDataComlite;
+        loaderDataScene.OnStatus += OnRemoveLoadDataError;
+            
+        loaderDataScene.OnStatus += OnElementUpdateStatus;
+        loaderDataScene.OnStatus += OnUpdateGeneralStatus;
+    }
+    
+    private void UnsubscribeEventElement(ILoaderDataScene loaderDataScene)
+    {
+        loaderDataScene.OnStatus -= OnRemoveLoadDataComlite;
+        loaderDataScene.OnStatus -= OnRemoveLoadDataError;
+            
+        loaderDataScene.OnStatus -= OnElementUpdateStatus;
+        loaderDataScene.OnStatus -= OnUpdateGeneralStatus;
+        
     }
 }
