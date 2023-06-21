@@ -15,6 +15,8 @@ public class UIScneteLoad : MonoBehaviour
     private Text _loaderText;
     [SerializeField] 
     private GameObject _panelUI;
+    [SerializeField] 
+    private LoaderPanelInfoStatuseUI _panelInfoStatuseUI;
     
     private Dictionary<int, LoaderElemUI> _infoElement = new Dictionary<int, LoaderElemUI>();
     private List<LoaderElemUI> _buffer = new List<LoaderElemUI>();
@@ -129,6 +131,7 @@ public class UIScneteLoad : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             var UIelement=   Instantiate(_prefab,_parentInfoElement);
+            UIelement.SetPanelUI(_panelInfoStatuseUI);
             _buffer.Add(UIelement);
         }
     }

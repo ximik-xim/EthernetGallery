@@ -96,7 +96,6 @@ public class LoaderPacketInfo:MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("AWAKE");
         if (PacketInfo == null)
         {
             PacketInfo = this;

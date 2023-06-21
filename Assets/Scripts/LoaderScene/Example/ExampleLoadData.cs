@@ -33,25 +33,29 @@ public class ExampleLoadData : MonoBehaviour, ILoaderDataScene
     {
         int time = 300;
         
-        for (int i = 0; i < 9; i++)
+        await Task.Delay(time);
+        OnStatus?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Start, _hash, _name, 1f / 10,new LoaderStatuse.Start("Старт задержки")));
+ 
+        for (int i = 0; i < 8; i++)
         {
             await Task.Delay(time);
-            OnStatus?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Load, _hash, _name, 1f / 10 * (i + 1)));
+            OnStatus?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Load, _hash, _name, 1f / 10 * (i + 2),null,new LoaderStatuse.Load("Ожидание задержки")));
         }
         
         await Task.Delay(time);
-        OnStatus?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Complite, _hash, _name, 1f));
+        OnStatus?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Complite, _hash, _name, 1f,null,null,null,new LoaderStatuse.Complite("Ожидание задержки завершено") ));
     }
 
     private IEnumerator StatTimer()
     {
-        for (int i = 0; i < 9; i++)
+        OnStatus?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Start, _hash, _name, 1f / 10,new LoaderStatuse.Start("Старт задержки")));
+        for (int i = 0; i < 8; i++)
         {
             yield return new WaitForSeconds(1000 / 300);
-            OnStatus?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Load, _hash, _name, 1f / 10 * (i + 1)));
+            OnStatus?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Load, _hash, _name, 1f / 10 * (i + 2),null,new LoaderStatuse.Load("Ожидание задержки")));
         }
         
         yield return new WaitForSeconds(1000 / 300);
-        OnStatus?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Complite, _hash, _name, 1f));
+        OnStatus?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Complite, _hash, _name, 1f,null,null,null,new LoaderStatuse.Complite("Ожидание задержки завершено") ));
     }
 }
