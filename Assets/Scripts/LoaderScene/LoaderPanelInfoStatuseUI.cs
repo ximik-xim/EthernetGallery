@@ -11,7 +11,10 @@ public class LoaderPanelInfoStatuseUI : MonoBehaviour
 {
     public event Action ClosePanel;
     
-    public bool IsOpen { get=>_isOpen; }
+    public bool IsOpen
+    {
+        get => _isOpen;
+    }
     
     [SerializeField]
     private List<TypeStatusAndElementStatus> _listElement;
@@ -21,26 +24,71 @@ public class LoaderPanelInfoStatuseUI : MonoBehaviour
     private LoadStatusElement.TypeElement currentType = LoadStatusElement.TypeElement.None;
     
     private bool _isOpen = false;
-    private List<LoaderStatuse> _list;
-    
+    private IReadOnlyList<LoaderStatuse> _list;
+
+
     /// <summary>
     /// Открывает панель с логоми статусов
     /// </summary>
-    public void SetLogStatus(List<LoaderStatuse> list)
+    public void OpenPanel(IReadOnlyList<LoaderStatuse> list, bool clearLastData)
     {
         _panel.gameObject.SetActive(true);
         _isOpen = true;
-        
+
         _list = list;
+        
+        if (clearLastData == true) 
+        {
+            ClearData();
+        }
+
         SetText(list);
     }
     
+
     /// <summary>
     /// По типу логов выбранных логов, добавляет текст лога статуса к уже загруженным логам статусов
     /// </summary>
     public void AddData(LoaderStatuse data)
     {
-        _elements[currentType].AddData(data);
+        switch (currentType)
+        {
+            case LoadStatusElement.TypeElement.Error:
+            {
+                if (data.Statuse == LoaderStatuse.StatusLoad.Error)
+                {
+                    if (data.ErrorInfo.Type == LoaderStatuse.Error.TypeError.Error)
+                    {
+                        _elements[currentType].AddData(data);
+                    }
+                }
+            } break;
+            
+            case LoadStatusElement.TypeElement.Load:
+            {
+                if (data.Statuse == LoaderStatuse.StatusLoad.Load)
+                {
+                    _elements[currentType].AddData(data);
+                }
+            } break;
+            
+            case LoadStatusElement.TypeElement.FatalError:
+            {
+                if (data.Statuse == LoaderStatuse.StatusLoad.Error)
+                {
+                    if (data.ErrorInfo.Type == LoaderStatuse.Error.TypeError.FatalError)
+                    {
+                        _elements[currentType].AddData(data);
+                    }
+                }
+                
+            } break;
+            
+            case LoadStatusElement.TypeElement.GeneralStatus:
+            {
+                _elements[currentType].AddData(data);
+            } break;
+        }
     }
 
     /// <summary>
@@ -79,14 +127,14 @@ public class LoaderPanelInfoStatuseUI : MonoBehaviour
 
         if (_list != null)
         {
+            ClearData();
             SetText(_list);    
         }
     }
     
-    private void SetText(List<LoaderStatuse> list)
+    private void SetText(IReadOnlyList<LoaderStatuse> list)
     {
-        ClearData();
-        
+
         switch (currentType)
         {
             case LoadStatusElement.TypeElement.Error:
@@ -131,6 +179,7 @@ public class LoaderPanelInfoStatuseUI : MonoBehaviour
             case LoadStatusElement.TypeElement.GeneralStatus:
             {
                 _elements[currentType].SetData(list);
+                
             } break;
         }
     }

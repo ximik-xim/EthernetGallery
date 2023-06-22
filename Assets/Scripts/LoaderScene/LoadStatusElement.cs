@@ -56,7 +56,7 @@ public class LoadStatusElement : MonoBehaviour
     /// <summary>
     /// Добавляет текст логов статуса к уже загруженным логам статусов, если таковые были 
     /// </summary>
-    public void SetData(List<LoaderStatuse> listData)
+    public void SetData(IReadOnlyList<LoaderStatuse> listData)
     {
         foreach (var VARIABLE in listData)
         {

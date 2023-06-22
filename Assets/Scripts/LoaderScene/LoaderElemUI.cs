@@ -8,6 +8,11 @@ using UnityEngine.UI;
 /// </summary>
 public class LoaderElemUI : MonoBehaviour
 {
+    public IReadOnlyList<LoaderStatuse> Statuses => _listStatuse; 
+    
+    [SerializeField] 
+    private Transform _background;
+    
     [SerializeField] 
     private Text _nameTask;
     [SerializeField] 
@@ -52,7 +57,7 @@ public class LoaderElemUI : MonoBehaviour
     /// </summary>
     public void UpdateUI(LoaderStatuse arg1)
     {
-        _nameTask.text = arg1.Name + " = " ;
+        _nameTask.text = arg1.Name;
         _loaderComplite.text = (arg1.Comlite * 100).ToString() + "%";
         _SliserImage.fillAmount = arg1.Comlite;
 
@@ -64,11 +69,13 @@ public class LoaderElemUI : MonoBehaviour
     /// <summary>
     /// Включает панель с логами от статусов и передает все статусы задачи
     /// </summary>
-    public void OpenPanel()
+    public void OpenLogPanel()
     {
         _select = true;
-        _panelInfoStatuseUI.SetLogStatus(_listStatuse);
-        _panelInfoStatuseUI.ClosePanel += ClosePanel;
+        
+        
+        _panelInfoStatuseUI.OpenPanel(Statuses,true);
+        _panelInfoStatuseUI.ClosePanel += CloseLogPanel;
     }
     
     /// <summary>
@@ -76,9 +83,28 @@ public class LoaderElemUI : MonoBehaviour
     /// </summary>
     public void ClearData()
     {
+        _errorImage.gameObject.SetActive(false);
+        _nameTask.text = "";
+        _loaderComplite.text = "0%";
+        _SliserImage.fillAmount = 0;
+        _loaderImage.sprite = null;
+
         _listStatuse = new List<LoaderStatuse>();
+        _panelInfoStatuseUI.ClearData();
     }
-    
+
+    public void DisactiveElement(bool clearData)
+    {
+
+        if (clearData == true)
+        {
+            ClearData();
+        }
+        
+        _background.gameObject.SetActive(false);
+        
+        
+    }
     private void UIUpdateIsStatus(LoaderStatuse arg1)
     {
 
@@ -132,10 +158,10 @@ public class LoaderElemUI : MonoBehaviour
         }
     }
     
-    private void ClosePanel()
+    private void CloseLogPanel()
     {
         _select = false;
-        _panelInfoStatuseUI.ClosePanel -= ClosePanel;
+        _panelInfoStatuseUI.ClosePanel -= CloseLogPanel;
     }
 
 

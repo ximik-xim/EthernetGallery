@@ -37,7 +37,9 @@ public class UIScneteLoad : MonoBehaviour
         
         for (int i = _infoElement.Count; i < _infoLoad.CountElement; i++)
         {
-            _buffer[i].gameObject.SetActive(false);
+         
+            _buffer[i].DisactiveElement(false);
+           // _buffer[i].gameObject.SetActive(false);
         }
     }
     
@@ -47,12 +49,14 @@ public class UIScneteLoad : MonoBehaviour
         if (clear == false)
         {
             _panelUI.gameObject.SetActive(false);
+            _panelInfoStatuseUI.ClosPanel();
             return;
         }
 
         ClearUI();
 
         _panelUI.gameObject.SetActive(false);
+        _panelInfoStatuseUI.ClosPanel();
     }
     /// Включит UI 
     public void ActiveUILoader(bool clear,List<LoaderStatuse> statuses )
@@ -140,7 +144,8 @@ public class UIScneteLoad : MonoBehaviour
     {
         foreach (var VARIABLE in _buffer)
         {
-            VARIABLE.gameObject.SetActive(false);
+            //VARIABLE.gameObject.SetActive(false);
+            VARIABLE.ClearData();
         }
 
         _loaderImage.fillAmount = 0;
