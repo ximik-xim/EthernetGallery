@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,6 +6,9 @@ using UnityEngine.UI;
 //нужно что бы всегда был включен
 public class UIScneteLoad : MonoBehaviour
 {
+    public event Action<LoaderStatuse> testStat;
+    
+    
     [SerializeField]
     private LoaderElemUI _prefab;
     [SerializeField] 
@@ -15,6 +19,9 @@ public class UIScneteLoad : MonoBehaviour
     private Text _loaderText;
     [SerializeField] 
     private GameObject _panelUI;
+  
+  
+  
     [SerializeField] 
     private LoaderPanelInfoStatuseUI _panelInfoStatuseUI;
     
