@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class TestStateMachine : MonoBehaviour
 {
+
     [SerializeField] 
     private TListType _listType;
+    [SerializeField] 
+    private TGetLIstType _startState;
     [SerializeField]
     private TGetLIstType CurrentState;
     [SerializeField]
@@ -13,11 +16,34 @@ public class TestStateMachine : MonoBehaviour
     private Dictionary<TElelementType, TestAbsState> _states = new Dictionary<TElelementType, TestAbsState>();
 
     
-    private void Start()
+    private void Awake()
     {
-        throw new NotImplementedException();
+
+        foreach (var VARIABLE in _list)
+        {
+            _listType.GetElementName(VARIABLE.Type);
+        }
+        
+        foreach (var VARIABLE in _list)
+        {
+            _states.Add(VARIABLE.Type.GetElement(),VARIABLE.State);
+        }
+        
+        StartSetState();
+
     }
 
+    private void StartSetState()
+    {
+        _listType.GetElementName(_startState);
+
+        if (_states.ContainsKey(_startState.GetElement()) == true)
+        {
+            CurrentState = _startState;
+            Debug.Log(CurrentState.Name);
+            _states[CurrentState.GetElement()].SelectState();
+        }
+    }
 
     public void SetState(TGetLIstType type)
     {
@@ -36,9 +62,11 @@ public class TestStateMachine : MonoBehaviour
 [System.Serializable]
 public class TestElementStateMachine
 {
+    public TGetLIstType Type => _type;
     [SerializeField]
     private TGetLIstType _type;
-    
+
+    public TestAbsState State => _state;
     [SerializeField]
     private TestAbsState _state;
 }

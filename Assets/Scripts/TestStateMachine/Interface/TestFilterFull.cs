@@ -57,7 +57,7 @@ public class TestFilterFull : MonoBehaviour,IFilterLogicDebug
             {
                 if (statuse.CompliteInfo.Text != String.Empty)
                 {
-                    string text = "<color=blue>" + statuse.CompliteInfo.Text + "</color>";
+                    string text = "<color=green>" + statuse.CompliteInfo.Text + "</color>";
                     return text;    
                 }
             } 

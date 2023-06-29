@@ -23,7 +23,7 @@ public class UIScneteLoad : MonoBehaviour
   
   
     [SerializeField] 
-    private LoaderPanelInfoStatuseUI _panelInfoStatuseUI;
+    private NewLogicPanel _panelInfoStatuseUI;
     
     private Dictionary<int, LoaderElemUI> _infoElement = new Dictionary<int, LoaderElemUI>();
     private List<LoaderElemUI> _buffer = new List<LoaderElemUI>();

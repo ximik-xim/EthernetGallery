@@ -12,13 +12,26 @@ public class TestSetStatusStateMachine : MonoBehaviour
     [SerializeField]
     private TGetLIstType CurrentState;
 
-    private void Start()
+
+    private bool _init=false;
+    private void Awake()
     {
-        
+        Init();
+
     }
 
+
+    private void Init()
+    {
+        if (_init == false)
+        {
+            _listType.GetElementName(CurrentState);
+            _init = true;
+        }
+    }
     public void SetStatuseStateMachine()
     {
+        Init();
         _stateMachine.SetState(CurrentState);
     }
 }

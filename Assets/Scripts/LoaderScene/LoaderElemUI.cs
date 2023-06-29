@@ -34,7 +34,7 @@ public class LoaderElemUI : MonoBehaviour
     [SerializeField] 
     private Sprite _CompliteImageSet;
 
-    private LoaderPanelInfoStatuseUI _panelInfoStatuseUI;
+    private NewLogicPanel _panelInfoStatuseUI;
     private List<LoaderStatuse> _listStatuse = new List<LoaderStatuse>();
     private bool _select;
     
@@ -47,7 +47,7 @@ public class LoaderElemUI : MonoBehaviour
     /// <summary>
     /// Указывает экземпляр панели, для передачи в нее всех статусов 
     /// </summary>
-    public void SetPanelUI(LoaderPanelInfoStatuseUI panelInfoStatuseUI)
+    public void SetPanelUI(NewLogicPanel panelInfoStatuseUI)
     {
         _panelInfoStatuseUI = panelInfoStatuseUI;
     }
@@ -72,8 +72,6 @@ public class LoaderElemUI : MonoBehaviour
     public void OpenLogPanel()
     {
         _select = true;
-        
-        
         _panelInfoStatuseUI.OpenPanel(Statuses,true);
         _panelInfoStatuseUI.ClosePanel += CloseLogPanel;
     }
@@ -90,7 +88,7 @@ public class LoaderElemUI : MonoBehaviour
         _loaderImage.sprite = null;
 
         _listStatuse = new List<LoaderStatuse>();
-        _panelInfoStatuseUI.ClearData();
+        _panelInfoStatuseUI.ClearText();
     }
 
     public void DisactiveElement(bool clearData)
@@ -153,7 +151,7 @@ public class LoaderElemUI : MonoBehaviour
         {
             if (_panelInfoStatuseUI.IsOpen)
             {
-                _panelInfoStatuseUI.AddData(arg1);
+                _panelInfoStatuseUI.AddInfo(arg1);
             }    
         }
     }

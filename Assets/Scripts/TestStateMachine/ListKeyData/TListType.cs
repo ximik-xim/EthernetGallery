@@ -17,7 +17,6 @@ public class TListType:ScriptableObject
     {
         
         //По хорошему немного переделать, сделать заполнение как при Awake У Monobeh, но т.к элементы списка сериализованы, пока и так сойдет
-        Debug.Log("AWAKE TESt");
         _types = new Dictionary<string, TElelementType>();
         foreach (var VARIABLE in _list)
         {
@@ -53,9 +52,9 @@ public class TListType:ScriptableObject
         return true;
     }
     
-    public TElelementType GetElementName(TGetLIstType type)
+    public void GetElementName(TGetLIstType type)
     {
-        return _types[type.Name];
+        type.SetData(_types[type.Name]);
     }
 
 

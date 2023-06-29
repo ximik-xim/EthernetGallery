@@ -10,18 +10,31 @@ public class TestStatePanelSetData : TestAbsState
     
     private IFilterLogicDebug _filter;
 
+    private bool _init = false;
+    
     private void Awake()
     {
-        _filter = GetComponent<IFilterLogicDebug>();
+        Init();
+        
     }
 
     public override void SelectState()
     {
+        Init();
         _panel.SetStatuseLogPanel(_filter);
     }
 
     public override void DiselectState()
     {
-        throw new System.NotImplementedException();
+        
+    }
+
+    private void Init()
+    {
+        if (_init == false)
+        {
+            _filter = GetComponent<IFilterLogicDebug>();
+            _init = true;
+        }
     }
 }
