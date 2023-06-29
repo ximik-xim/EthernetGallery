@@ -81,9 +81,9 @@ public class LoaderPacketInfo:MonoBehaviour
     /// <summary>
     /// Включит UI загрузчика
     /// </summary>
-    public void ActiveUILoader(bool clear = false ,List<LoaderStatuse> statuses = null)
+    public void ActiveUILoader(bool clear = false)
     {
-        _UIload.ActiveUILoader(clear,statuses);
+        _UIload.ActiveUILoader(clear);
     }
     
     /// <summary>

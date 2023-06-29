@@ -9,7 +9,6 @@ public class TestStateMachine : MonoBehaviour
     private TListType _listType;
     [SerializeField] 
     private TGetLIstType _startState;
-    [SerializeField]
     private TGetLIstType CurrentState;
     [SerializeField]
     private List<TestElementStateMachine> _list;

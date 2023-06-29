@@ -6,27 +6,19 @@ using UnityEngine.UI;
 //нужно что бы всегда был включен
 public class UIScneteLoad : MonoBehaviour
 {
-    public event Action<LoaderStatuse> testStat;
-    
-    
-    [SerializeField]
-    private LoaderElemUI _prefab;
-    [SerializeField] 
-    private Transform _parentInfoElement;
     [SerializeField] 
     private Image _loaderImage;
     [SerializeField] 
     private Text _loaderText;
     [SerializeField] 
     private GameObject _panelUI;
-  
-  
-  
+
+
     [SerializeField] 
-    private NewLogicPanel _panelInfoStatuseUI;
-    
-    private Dictionary<int, LoaderElemUI> _infoElement = new Dictionary<int, LoaderElemUI>();
-    private List<LoaderElemUI> _buffer = new List<LoaderElemUI>();
+    private TestFabric _fabric;
+
+    private Dictionary<int, NewControllUITe> _infoElement = new Dictionary<int, NewControllUITe>();
+    private List<NewControllUITe> _buffer = new List<NewControllUITe>();
     private LoaderPacketInfo _infoLoad;
 
     /// <summary>
@@ -36,37 +28,43 @@ public class UIScneteLoad : MonoBehaviour
     {
         CheckCountElement(listHash.Count);
 
-        _infoElement = new Dictionary<int, LoaderElemUI>();
+        _infoElement = new Dictionary<int, NewControllUITe>();
         for (int i = 0; i < _infoLoad.CountElement; i++)
         {
             _infoElement.Add(listHash[i], _buffer[i]);
         }
+
+        foreach (var VARIABLE in _infoElement.Values)
+        {
+            VARIABLE.Open();
+        }
+        
         
         for (int i = _infoElement.Count; i < _infoLoad.CountElement; i++)
         {
          
-            _buffer[i].DisactiveElement(false);
-           // _buffer[i].gameObject.SetActive(false);
+            _buffer[i].Close();
         }
     }
     
     /// Выключит UI 
     public void DisactivateUILoader(bool clear)
     {
-        if (clear == false)
+        if (clear == true)
         {
-            _panelUI.gameObject.SetActive(false);
-            _panelInfoStatuseUI.ClosPanel();
-            return;
+            ClearUI();    
         }
 
-        ClearUI();
-
+        foreach (var VARIABLE in _buffer)
+        {
+            VARIABLE.Close();
+        }
+        
         _panelUI.gameObject.SetActive(false);
-        _panelInfoStatuseUI.ClosPanel();
     }
     /// Включит UI 
-    public void ActiveUILoader(bool clear,List<LoaderStatuse> statuses )
+   // public void ActiveUILoader(bool clear,List<LoaderStatuse> statuses )
+    public void ActiveUILoader(bool clear)
     {
         _panelUI.gameObject.SetActive(true);
         
@@ -74,40 +72,12 @@ public class UIScneteLoad : MonoBehaviour
         {
             ClearUI();
         }
-
-        if (statuses != null)
-        {
-            for (int i = 0; i < statuses.Count; i++)
-            {
-                if (_infoElement.ContainsKey(statuses[i].Hash) == false)
-                {
-                    continue;
-                }
-                
-                _infoElement[statuses[i].Hash].gameObject.SetActive(true);
-                _infoElement[statuses[i].Hash].UpdateUI(statuses[i]);
-                statuses.Remove(statuses[i]);
-            }
-
-            if (statuses.Count > 0)
-            {
-                CreateElement(statuses.Count);
-
-                for (int i = 0; i < statuses.Count; i++)
-                {
-                    _infoElement.Add(statuses[i].Hash, _buffer[_buffer.Count - statuses.Count + i]);
-                    _infoElement[statuses[i].Hash].gameObject.SetActive(true);
-                    _infoElement[statuses[i].Hash].UpdateUI(statuses[i]);
-                }
-                
-            }
-            
-        }
-
     }
     
     private void Start()
     {
+        _fabric.OnCreateObject += CreateElement;
+        
         _infoLoad = LoaderPacketInfo.PacketInfo;
         _infoLoad.OnUpdateElementStatuse += UpdateUiStatusElement;
         _infoLoad.OnUpdateGeneralStatuse += UpdateUiStatusGeneral;
@@ -116,7 +86,7 @@ public class UIScneteLoad : MonoBehaviour
     private void UpdateUiStatusElement(LoaderStatuse arg1)
     {
         _infoElement[arg1.Hash].gameObject.SetActive(true);
-        _infoElement[arg1.Hash].UpdateUI(arg1);
+        _infoElement[arg1.Hash].UpdateData(arg1);
     }
     
     private void UpdateUiStatusGeneral(LoaderStatuse arg1)
@@ -139,19 +109,19 @@ public class UIScneteLoad : MonoBehaviour
     
     private void CreateElement(int count)
     {
-        for (int i = 0; i < count; i++)
-        {
-            var UIelement=   Instantiate(_prefab,_parentInfoElement);
-            UIelement.SetPanelUI(_panelInfoStatuseUI);
-            _buffer.Add(UIelement);
-        }
+        _fabric.Create(count);
+    }
+
+    private void CreateElement(Transform element)
+    {
+        var obj = element.GetComponent<NewControllUITe>();
+        _buffer.Add(obj);
     }
     
     private void ClearUI()
     {
         foreach (var VARIABLE in _buffer)
         {
-            //VARIABLE.gameObject.SetActive(false);
             VARIABLE.ClearData();
         }
 

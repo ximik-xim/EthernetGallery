@@ -86,7 +86,7 @@ private GetImageURL _test;
 
     private void Test()
     {
-        Debug.Log("Comlite");
+        Debug.Log("Comlite");   
     }
 
     private void OnDestroy()

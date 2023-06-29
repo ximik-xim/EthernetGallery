@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NewLogicPanel : MonoBehaviour
+public class NewLogicPanel : NewIntrefaseControlUITE
 {
     
     public event Action ClosePanel;
@@ -30,10 +30,10 @@ public class NewLogicPanel : MonoBehaviour
     //Обязательно должен быть установлен хоть какой то фильтр.(первый фильтр должен быть устновлен при выключенной панели до ее открытия) 
     public void SetStatuseLogPanel(IFilterLogicDebug filter)
     {
+        
+        Debug.Log("SET FILTER = "+ filter);
         _filterLogicDebug = filter;
 
-       
-        
         if (_isOpen == true) 
         {
             LoadData(true);
@@ -46,11 +46,9 @@ public class NewLogicPanel : MonoBehaviour
     {
         if (clearLastText == true)
         {
-            ClearText();
+            ClearData();
         }
         
-        Debug.Log("Count element = "+_statuses.Count);
-        Debug.Log(_filterLogicDebug);
         foreach (var VARIABLE in _statuses)
         {
             string text = _filterLogicDebug.DataSuitable(VARIABLE);
@@ -63,35 +61,31 @@ public class NewLogicPanel : MonoBehaviour
         }
        
     }
+
+
+
+    public void SetData(IReadOnlyList<LoaderStatuse> list)
+    {
+        Debug.Log("SET LIST = "+ list.Count);
+        _statuses = list;
+    }
     
-    public void ClearText()
-    {
-        _text.text = "";
-    }
-
-    public void ClosPanel()
-    {
-        _panel.gameObject.SetActive(false);
-        _isOpen = false;
-        
-        ClosePanel?.Invoke();
-    }
-
     /// <summary>
     /// Открывает панель с логоми статусов
     /// </summary>
-    public void OpenPanel(IReadOnlyList<LoaderStatuse> list, bool clearLastData)
+
+    public override void Open(bool clearData = false)
     {
+        Debug.Log("OPEN LOGGER PANEL");
         _panel.gameObject.SetActive(true);
         _isOpen = true;
 
-        _statuses = list;
-        LoadData(clearLastData);
+        LoadData(clearData);
     }
 
-    public void AddInfo(LoaderStatuse data)
+    public override void UpdateData(LoaderStatuse statuse)
     {
-        string text = _filterLogicDebug.DataSuitable(data);
+        string text = _filterLogicDebug.DataSuitable(statuse);
           
         if ( text!=String.Empty)
         {
@@ -99,5 +93,17 @@ public class NewLogicPanel : MonoBehaviour
 
         }
     }
-    
+
+    public override void ClearData()
+    {
+        _text.text = "";
+    }
+
+    public override void Close()
+    {
+        _panel.gameObject.SetActive(false);
+        _isOpen = false;
+        
+        ClosePanel?.Invoke();
+    }
 }

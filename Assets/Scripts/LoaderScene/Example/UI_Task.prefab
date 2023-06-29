@@ -176,17 +176,17 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 6285851766658727447}
-          m_TargetAssemblyTypeName: LoaderElemUI, Assembly-CSharp
-          m_MethodName: OpenLogPanel
-          m_Mode: 1
+        - m_Target: {fileID: 3988373715454298204}
+          m_TargetAssemblyTypeName: NewLogicLoggerData, Assembly-CSharp
+          m_MethodName: Open
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
-            m_BoolArgument: 0
+            m_BoolArgument: 1
           m_CallState: 2
 --- !u!1 &5799353041245317501
 GameObject:
@@ -304,6 +304,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6285851766658727446}
   - component: {fileID: 6285851766658727447}
+  - component: {fileID: 3988373715454298204}
+  - component: {fileID: 1058640772955468577}
   m_Layer: 5
   m_Name: UI_Task
   m_TagString: Untagged
@@ -355,6 +357,31 @@ MonoBehaviour:
   _fatalErrorImageSet: {fileID: 21300000, guid: a3ced8f7044b9de4787602a9e9b20ea7,
     type: 3}
   _CompliteImageSet: {fileID: 21300000, guid: 4a231ba0e81e63849a8f985c228e8acd, type: 3}
+--- !u!114 &3988373715454298204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285851766658727465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea5e17844cb664b49b2e814fcc397f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1058640772955468577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285851766658727465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac25b44272062143bf8ae63537cf5ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _TuskUI: {fileID: 6285851766658727447}
 --- !u!1 &6665015929837917733
 GameObject:
   m_ObjectHideFlags: 0

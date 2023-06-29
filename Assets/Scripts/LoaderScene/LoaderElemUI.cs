@@ -6,10 +6,8 @@ using UnityEngine.UI;
 /// <summary>
 /// Отвечает за обновление UI у задачи
 /// </summary>
-public class LoaderElemUI : MonoBehaviour
+public class LoaderElemUI : NewIntrefaseControlUITE
 {
-    public IReadOnlyList<LoaderStatuse> Statuses => _listStatuse; 
-    
     [SerializeField] 
     private Transform _background;
     
@@ -34,9 +32,7 @@ public class LoaderElemUI : MonoBehaviour
     [SerializeField] 
     private Sprite _CompliteImageSet;
 
-    private NewLogicPanel _panelInfoStatuseUI;
-    private List<LoaderStatuse> _listStatuse = new List<LoaderStatuse>();
-    private bool _select;
+
     
     
     private void Start()
@@ -44,65 +40,45 @@ public class LoaderElemUI : MonoBehaviour
         _errorImage.sprite = _errorImageSet;
         _errorImage.gameObject.SetActive(false);
     }
-    /// <summary>
-    /// Указывает экземпляр панели, для передачи в нее всех статусов 
-    /// </summary>
-    public void SetPanelUI(NewLogicPanel panelInfoStatuseUI)
-    {
-        _panelInfoStatuseUI = panelInfoStatuseUI;
-    }
+
     
     /// <summary>
     /// Обновляет UI у задачи и записывает статусы
     /// </summary>
-    public void UpdateUI(LoaderStatuse arg1)
+    public override void UpdateData(LoaderStatuse arg1)
     {
         _nameTask.text = arg1.Name;
         _loaderComplite.text = (arg1.Comlite * 100).ToString() + "%";
         _SliserImage.fillAmount = arg1.Comlite;
 
         UIUpdateIsStatus(arg1);
-        
-        SetDataLogPanel(arg1);
     }
-    
-    /// <summary>
-    /// Включает панель с логами от статусов и передает все статусы задачи
-    /// </summary>
-    public void OpenLogPanel()
+
+
+    public override void Open(bool clearData = false)
     {
-        _select = true;
-        _panelInfoStatuseUI.OpenPanel(Statuses,true);
-        _panelInfoStatuseUI.ClosePanel += CloseLogPanel;
+        _background.gameObject.SetActive(true);
     }
-    
+
+
+
     /// <summary>
     /// Очищает список логов статусов
     /// </summary>
-    public void ClearData()
+    public override void ClearData()
     {
         _errorImage.gameObject.SetActive(false);
         _nameTask.text = "";
         _loaderComplite.text = "0%";
         _SliserImage.fillAmount = 0;
         _loaderImage.sprite = null;
-
-        _listStatuse = new List<LoaderStatuse>();
-        _panelInfoStatuseUI.ClearText();
     }
 
-    public void DisactiveElement(bool clearData)
+    public override void Close()
     {
-
-        if (clearData == true)
-        {
-            ClearData();
-        }
-        
         _background.gameObject.SetActive(false);
-        
-        
     }
+    
     private void UIUpdateIsStatus(LoaderStatuse arg1)
     {
 
@@ -143,24 +119,5 @@ public class LoaderElemUI : MonoBehaviour
             } break;
         }
     }
-
-    private void SetDataLogPanel(LoaderStatuse arg1)
-    {
-        _listStatuse.Add(arg1);
-        if (_select == true)
-        {
-            if (_panelInfoStatuseUI.IsOpen)
-            {
-                _panelInfoStatuseUI.AddInfo(arg1);
-            }    
-        }
-    }
-    
-    private void CloseLogPanel()
-    {
-        _select = false;
-        _panelInfoStatuseUI.ClosePanel -= CloseLogPanel;
-    }
-
 
 }
