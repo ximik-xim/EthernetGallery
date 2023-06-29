@@ -10,7 +10,7 @@ public class ExampleStartLoadData : MonoBehaviour
     private ExampleLoadData exampleLoadData;
     private void OnEnable()
     {
-        LoaderPacketInfo.PacketInfo.AddLoadData(exampleLoadData);
-        LoaderPacketInfo.PacketInfo.StartLoadResourse();
+        LoaderTask.Task.AddLoadData(exampleLoadData);
+        LoaderTask.Task.StartLoadResourse();
     }
 }

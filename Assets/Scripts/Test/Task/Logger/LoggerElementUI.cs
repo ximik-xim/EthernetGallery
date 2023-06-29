@@ -2,26 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(NewControllUITe))]
-public class NewLogicLoggerData : NewIntrefaseControlUITE
+[RequireComponent(typeof(TaskElementControllerUI))]
+public class LoggerElementUI : NewIntrefaseControlUITE
 {
 
-    private NewControllUITe _data;
+    private TaskElementControllerUI _data;
     
     public IReadOnlyList<LoaderStatuse> Statuses => _listStatuse; 
     
-    private NewLogicPanel _panelInfoStatuseUI;
+    private LoggerPanel _panelInfoStatuseUI;
     private List<LoaderStatuse> _listStatuse = new List<LoaderStatuse>();
     private bool _select;
     
-    public void SetPanelUI(NewLogicPanel panelInfoStatuseUI)
+    public void SetPanelUI(LoggerPanel panelInfoStatuseUI)
     {
         _panelInfoStatuseUI = panelInfoStatuseUI;
     }
 
     private void Awake()
     {
-        _data = GetComponent<NewControllUITe>();
+        _data = GetComponent<TaskElementControllerUI>();
         _data.OnUpdateStatuse += UpdateData;
         _data.OnClearData += ClearListStatuse;
         _data.OnClose += Close;

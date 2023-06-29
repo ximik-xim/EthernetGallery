@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class TestStatePanelSetData : TestAbsState
+//При выборе данного состояниея, установит филтр логов в панель отвеч. за логи
+public class StateInsertFilterInLogger : TestAbsState
 {
     [SerializeField] 
-    private NewLogicPanel _panel;
+    private LoggerPanel _panel;
     
     private IFilterLogicDebug _filter;
 

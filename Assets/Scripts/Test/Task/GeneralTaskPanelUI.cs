@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class TestPanelUI : NewIntrefaseControlUITE
+//Отвечает за UI отображение основной загрузки задач
+public class GeneralTaskPanelUI : NewIntrefaseControlUITE
 {
     [SerializeField] 
     private Image _loaderImage;

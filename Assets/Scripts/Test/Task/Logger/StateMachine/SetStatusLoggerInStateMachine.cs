@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestSetStatusStateMachine : MonoBehaviour
+    //Указываает состоние у машины состояния в логгере
+public class SetStatusLoggerInStateMachine : MonoBehaviour
 {
     [SerializeField] 
-    private TestStateMachine _stateMachine;
+    private LoggerStateMachine _stateMachine;
     [SerializeField] 
     private TListType _listType;
     [SerializeField]

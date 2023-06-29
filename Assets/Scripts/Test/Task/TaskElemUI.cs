@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Отвечает за обновление UI у задачи
 /// </summary>
-public class LoaderElemUI : NewIntrefaseControlUITE
+public class TaskElemUI : NewIntrefaseControlUITE
 {
     [SerializeField] 
     private Transform _background;

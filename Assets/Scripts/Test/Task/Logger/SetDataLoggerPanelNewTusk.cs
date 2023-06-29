@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestSetDataLogPane : MonoBehaviour
+//Отвечает за установку экземпляра панели с логами в новосозданую задачу
+public class SetDataLoggerPanelNewTusk : MonoBehaviour
 {
 
     [SerializeField] 
-    private NewLogicPanel _panelInfoStatuseUI;
+    private LoggerPanel _panelInfoStatuseUI;
     
     [SerializeField] 
-    private TestFabric _fabric;
+    private PrototypeFabric _fabric;
 
     private void Awake()
     {
@@ -19,7 +20,7 @@ public class TestSetDataLogPane : MonoBehaviour
 
     private void CreateElement(Transform element)
     {
-        var obj = element.GetComponent<NewLogicLoggerData>();
+        var obj = element.GetComponent<LoggerElementUI>();
 
         obj.SetPanelUI(_panelInfoStatuseUI);
     }

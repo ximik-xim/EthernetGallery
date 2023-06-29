@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 //Пример самой задачи
-public class ExampleLoadData : MonoBehaviour, ILoaderDataScene
+public class ExampleLoadData : MonoBehaviour, ILoaderTask
 {
     public int LoaderHash
     {

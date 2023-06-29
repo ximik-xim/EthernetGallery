@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public class NewControllUITe : NewIntrefaseControlUITE
+public class TaskElementControllerUI : NewIntrefaseControlUITE
 {
     public event Action<LoaderStatuse> OnUpdateStatuse;
     public event Action<bool> OnOpen;

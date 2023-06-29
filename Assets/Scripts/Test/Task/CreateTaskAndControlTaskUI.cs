@@ -2,20 +2,19 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//Отвечает за обновления UI у загрузчика данных
-//нужно что бы всегда был включен
-public class UIScneteLoad : MonoBehaviour
+//Отвечает за UI задач, их создание и обнолвение в них данных
+public class CreateTaskAndControlTaskUI : MonoBehaviour
 {
 
     [SerializeField] 
-    private NewIntrefaseControlUITE _test;
+    private NewIntrefaseControlUITE _generalTuskPanelUI;
 
     [SerializeField] 
-    private TestFabric _fabric;
+    private PrototypeFabric _fabric;
 
-    private Dictionary<int, NewControllUITe> _infoElement = new Dictionary<int, NewControllUITe>();
-    private List<NewControllUITe> _buffer = new List<NewControllUITe>();
-    private LoaderPacketInfo _infoLoad;
+    private Dictionary<int, TaskElementControllerUI> _infoElement = new Dictionary<int, TaskElementControllerUI>();
+    private List<TaskElementControllerUI> _buffer = new List<TaskElementControllerUI>();
+    private LoaderTask _infoLoad;
 
     /// <summary>
     /// Очистит UI и создаст нужное кол-во сообщений 
@@ -24,7 +23,7 @@ public class UIScneteLoad : MonoBehaviour
     {
         CheckCountElement(listHash.Count);
 
-        _infoElement = new Dictionary<int, NewControllUITe>();
+        _infoElement = new Dictionary<int, TaskElementControllerUI>();
         for (int i = 0; i < _infoLoad.CountElement; i++)
         {
             _infoElement.Add(listHash[i], _buffer[i]);
@@ -47,13 +46,13 @@ public class UIScneteLoad : MonoBehaviour
         }
         
         
-        _test.Close();
+        _generalTuskPanelUI.Close();
         
     }
     /// Включит UI 
     public  void Open(bool clearData = false)
     {
-        _test.Open();
+        _generalTuskPanelUI.Open();
         
         
         foreach (var VARIABLE in _infoElement.Values)
@@ -71,9 +70,9 @@ public class UIScneteLoad : MonoBehaviour
     {
         _fabric.OnCreateObject += CreateElement;
         
-        _infoLoad = LoaderPacketInfo.PacketInfo;
+        _infoLoad = LoaderTask.Task;
         _infoLoad.OnUpdateElementStatuse += UpdateUiStatusElement;
-        _infoLoad.OnUpdateGeneralStatuse += _test.UpdateData;
+        _infoLoad.OnUpdateGeneralStatuse += _generalTuskPanelUI.UpdateData;
     }
     
     private void UpdateUiStatusElement(LoaderStatuse arg1)
@@ -97,7 +96,7 @@ public class UIScneteLoad : MonoBehaviour
 
     private void CreateElement(Transform element)
     {
-        var obj = element.GetComponent<NewControllUITe>();
+        var obj = element.GetComponent<TaskElementControllerUI>();
         _buffer.Add(obj);
     }
     
@@ -108,7 +107,7 @@ public class UIScneteLoad : MonoBehaviour
             VARIABLE.ClearData();
         }
 
-        _test.ClearData();
+        _generalTuskPanelUI.ClearData();
     }
     
 }

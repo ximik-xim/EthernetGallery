@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(TestStatePanelSetData))]
-public class TestFilterLoad : MonoBehaviour,IFilterLogicDebug
+[RequireComponent(typeof(StateInsertFilterInLogger))]
+public class LoggerFilterLoad : MonoBehaviour,IFilterLogicDebug
 {
     public string DataSuitable(LoaderStatuse statuse)
     {

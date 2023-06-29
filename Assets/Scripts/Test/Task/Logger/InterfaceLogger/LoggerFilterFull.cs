@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(TestStatePanelSetData))]
-public class TestFilterFull : MonoBehaviour,IFilterLogicDebug
+[RequireComponent(typeof(StateInsertFilterInLogger))]
+public class LoggerFilterFull : MonoBehaviour,IFilterLogicDebug
 {
     public string DataSuitable(LoaderStatuse statuse)
     {

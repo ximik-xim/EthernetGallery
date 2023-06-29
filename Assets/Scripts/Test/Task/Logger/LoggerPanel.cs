@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class NewLogicPanel : NewIntrefaseControlUITE
+//Отвчечает за отображение логов 
+public class LoggerPanel : NewIntrefaseControlUITE
 {
     
     public event Action ClosePanel;

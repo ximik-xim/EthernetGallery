@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Интерфеис задачи для выполнения
-public interface ILoaderDataScene 
+public interface ILoaderTask 
 {
 
     //Вернет хэш экземпляра класса

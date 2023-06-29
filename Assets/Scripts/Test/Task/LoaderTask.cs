@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 
 //Отвечает за загрузку задач
 [System.Serializable]
-public class LoaderPacketInfo:MonoBehaviour
+public class LoaderTask:MonoBehaviour
 {
     //Сингалтон 
-    public static LoaderPacketInfo PacketInfo;
+    public static LoaderTask Task;
     //Вернет кол-во задач в списке
     public int CountElement => _loadData.Count;
     //Статус конкретной задачи
@@ -20,8 +20,8 @@ public class LoaderPacketInfo:MonoBehaviour
     [SerializeField]
     private bool _disactiveStartUI;
     [SerializeField]
-    private UIScneteLoad _UIload; 
-    private Dictionary<int, ILoaderDataScene> _loadData = new Dictionary<int, ILoaderDataScene>();
+    private CreateTaskAndControlTaskUI _UIload; 
+    private Dictionary<int, ILoaderTask> _loadData = new Dictionary<int, ILoaderTask>();
     
     private int _countTasks=default;
     private Dictionary<int, float> _percentageTaskCompletion = new Dictionary<int, float>();
@@ -61,21 +61,21 @@ public class LoaderPacketInfo:MonoBehaviour
     /// <summary>
     /// Добавит задачу в список
     /// </summary>
-    public void AddLoadData(ILoaderDataScene loaderDataScene)
+    public void AddLoadData(ILoaderTask loaderTask)
     {
-        _loadData.Add(loaderDataScene.LoaderHash,loaderDataScene);
+        _loadData.Add(loaderTask.LoaderHash,loaderTask);
 
-        SubscribeEventElement(loaderDataScene);
+        SubscribeEventElement(loaderTask);
     }
     
     /// <summary>
     /// Уберет задачу из список
     /// </summary>
-    public void RemoveLoadData(ILoaderDataScene loaderDataScene)
+    public void RemoveLoadData(ILoaderTask loaderTask)
     {
-        _loadData.Remove(loaderDataScene.LoaderHash);
+        _loadData.Remove(loaderTask.LoaderHash);
         
-        UnsubscribeEventElement(loaderDataScene);
+        UnsubscribeEventElement(loaderTask);
     }
     
     /// <summary>
@@ -96,9 +96,9 @@ public class LoaderPacketInfo:MonoBehaviour
 
     private void Awake()
     {
-        if (PacketInfo == null)
+        if (Task == null)
         {
-            PacketInfo = this;
+            Task = this;
         }
         DontDestroyOnLoad(gameObject);
 
@@ -132,22 +132,22 @@ public class LoaderPacketInfo:MonoBehaviour
         _UIload.UpdateInform(hashList);
     }
 
-    private void SubscribeEventElement(ILoaderDataScene loaderDataScene)
+    private void SubscribeEventElement(ILoaderTask loaderTask)
     {
-        loaderDataScene.OnStatus += OnRemoveLoadDataComlite;
-        loaderDataScene.OnStatus += OnRemoveLoadDataError;
+        loaderTask.OnStatus += OnRemoveLoadDataComlite;
+        loaderTask.OnStatus += OnRemoveLoadDataError;
             
-        loaderDataScene.OnStatus += OnElementUpdateStatus;
-        loaderDataScene.OnStatus += OnUpdateGeneralStatus;
+        loaderTask.OnStatus += OnElementUpdateStatus;
+        loaderTask.OnStatus += OnUpdateGeneralStatus;
     }
     
-    private void UnsubscribeEventElement(ILoaderDataScene loaderDataScene)
+    private void UnsubscribeEventElement(ILoaderTask loaderTask)
     {
-        loaderDataScene.OnStatus -= OnRemoveLoadDataComlite;
-        loaderDataScene.OnStatus -= OnRemoveLoadDataError;
+        loaderTask.OnStatus -= OnRemoveLoadDataComlite;
+        loaderTask.OnStatus -= OnRemoveLoadDataError;
             
-        loaderDataScene.OnStatus -= OnElementUpdateStatus;
-        loaderDataScene.OnStatus -= OnUpdateGeneralStatus;
+        loaderTask.OnStatus -= OnElementUpdateStatus;
+        loaderTask.OnStatus -= OnUpdateGeneralStatus;
         
     }
     

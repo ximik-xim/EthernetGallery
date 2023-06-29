@@ -1,17 +1,18 @@
 using System;
 using UnityEngine;
-[RequireComponent(typeof(TestStatePanelSetData))]
-public class TestFilterFatalError : MonoBehaviour,IFilterLogicDebug
+
+[RequireComponent(typeof(StateInsertFilterInLogger))]
+public class LoggerFilerError : MonoBehaviour,IFilterLogicDebug
 {
     public string DataSuitable(LoaderStatuse statuse)
     {
         if (statuse.Statuse == LoaderStatuse.StatusLoad.Error)
         {
-            if (statuse.ErrorInfo.Type == LoaderStatuse.Error.TypeError.FatalError)
+            if (statuse.ErrorInfo.Type == LoaderStatuse.Error.TypeError.Error)
             {
                 if (statuse.ErrorInfo.Text != String.Empty)
                 {
-                    string text = "<color=red>" + statuse.ErrorInfo.Text + "</color>";
+                    string text = "<color=yellow>" + statuse.ErrorInfo.Text + "</color>";
                     return text;    
                 }
                 
@@ -20,4 +21,5 @@ public class TestFilterFatalError : MonoBehaviour,IFilterLogicDebug
 
         return String.Empty;
     }
+    
 }

@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class TestStateMachine : MonoBehaviour
+//Отвечает за выбр текущего типа логов  
+public class LoggerStateMachine : MonoBehaviour
 {
 
     [SerializeField] 
     private TListType _listType;
     [SerializeField] 
     private TGetLIstType _startState;
-    private TGetLIstType CurrentState;
+    private TGetLIstType _currentState;
     [SerializeField]
     private List<TestElementStateMachine> _list;
     private Dictionary<TElelementType, TestAbsState> _states = new Dictionary<TElelementType, TestAbsState>();
@@ -38,9 +38,9 @@ public class TestStateMachine : MonoBehaviour
 
         if (_states.ContainsKey(_startState.GetElement()) == true)
         {
-            CurrentState = _startState;
-            Debug.Log(CurrentState.Name);
-            _states[CurrentState.GetElement()].SelectState();
+            _currentState = _startState;
+            Debug.Log(_currentState.Name);
+            _states[_currentState.GetElement()].SelectState();
         }
     }
 
@@ -48,9 +48,9 @@ public class TestStateMachine : MonoBehaviour
     {
         if (_states.ContainsKey(type.GetElement()) == true)
         {
-            _states[CurrentState.GetElement()].DiselectState();
-            CurrentState = type;
-            _states[CurrentState.GetElement()].SelectState();
+            _states[_currentState.GetElement()].DiselectState();
+            _currentState = type;
+            _states[_currentState.GetElement()].SelectState();
             return;
         }
 
