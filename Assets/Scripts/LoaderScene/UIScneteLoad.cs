@@ -6,13 +6,9 @@ using UnityEngine.UI;
 //нужно что бы всегда был включен
 public class UIScneteLoad : MonoBehaviour
 {
-    [SerializeField] 
-    private Image _loaderImage;
-    [SerializeField] 
-    private Text _loaderText;
-    [SerializeField] 
-    private GameObject _panelUI;
 
+    [SerializeField] 
+    private NewIntrefaseControlUITE _test;
 
     [SerializeField] 
     private TestFabric _fabric;
@@ -33,12 +29,6 @@ public class UIScneteLoad : MonoBehaviour
         {
             _infoElement.Add(listHash[i], _buffer[i]);
         }
-
-        foreach (var VARIABLE in _infoElement.Values)
-        {
-            VARIABLE.Open();
-        }
-        
         
         for (int i = _infoElement.Count; i < _infoLoad.CountElement; i++)
         {
@@ -48,29 +38,32 @@ public class UIScneteLoad : MonoBehaviour
     }
     
     /// Выключит UI 
-    public void DisactivateUILoader(bool clear)
+    public  void Close()
     {
-        if (clear == true)
-        {
-            ClearUI();    
-        }
 
         foreach (var VARIABLE in _buffer)
         {
             VARIABLE.Close();
         }
         
-        _panelUI.gameObject.SetActive(false);
+        
+        _test.Close();
+        
     }
     /// Включит UI 
-   // public void ActiveUILoader(bool clear,List<LoaderStatuse> statuses )
-    public void ActiveUILoader(bool clear)
+    public  void Open(bool clearData = false)
     {
-        _panelUI.gameObject.SetActive(true);
+        _test.Open();
         
-        if (clear == true) 
+        
+        foreach (var VARIABLE in _infoElement.Values)
         {
-            ClearUI();
+            VARIABLE.Open(clearData);
+        }
+        
+        if (clearData == true) 
+        {
+            ClearData();
         }
     }
     
@@ -80,23 +73,14 @@ public class UIScneteLoad : MonoBehaviour
         
         _infoLoad = LoaderPacketInfo.PacketInfo;
         _infoLoad.OnUpdateElementStatuse += UpdateUiStatusElement;
-        _infoLoad.OnUpdateGeneralStatuse += UpdateUiStatusGeneral;
+        _infoLoad.OnUpdateGeneralStatuse += _test.UpdateData;
     }
     
     private void UpdateUiStatusElement(LoaderStatuse arg1)
     {
-        _infoElement[arg1.Hash].gameObject.SetActive(true);
         _infoElement[arg1.Hash].UpdateData(arg1);
     }
-    
-    private void UpdateUiStatusGeneral(LoaderStatuse arg1)
-    {
-        _loaderImage.fillAmount = arg1.Comlite;
-        _loaderText.text = (arg1.Comlite * 100).ToString() + "%";
-    }
-    
 
-    
     private void CheckCountElement(int targetCount)
     {
         if (targetCount > _infoElement.Count)
@@ -105,8 +89,7 @@ public class UIScneteLoad : MonoBehaviour
             CreateElement(difference);
         }
     }
-    
-    
+
     private void CreateElement(int count)
     {
         _fabric.Create(count);
@@ -118,15 +101,14 @@ public class UIScneteLoad : MonoBehaviour
         _buffer.Add(obj);
     }
     
-    private void ClearUI()
+    private void ClearData()
     {
         foreach (var VARIABLE in _buffer)
         {
             VARIABLE.ClearData();
         }
 
-        _loaderImage.fillAmount = 0;
-
-        _loaderText.text = "0%";
+        _test.ClearData();
     }
+    
 }

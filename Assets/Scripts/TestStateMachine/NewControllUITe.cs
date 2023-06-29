@@ -16,7 +16,7 @@ public class NewControllUITe : NewIntrefaseControlUITE
     public override void Open(bool clearData = false)
     {
         OnOpen?.Invoke(clearData);
-        _TuskUI.Open();
+        _TuskUI.Open(clearData);
     }
 
     public override void UpdateData(LoaderStatuse statuse)

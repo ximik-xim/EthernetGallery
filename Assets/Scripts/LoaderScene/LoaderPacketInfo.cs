@@ -83,15 +83,15 @@ public class LoaderPacketInfo:MonoBehaviour
     /// </summary>
     public void ActiveUILoader(bool clear = false)
     {
-        _UIload.ActiveUILoader(clear);
+        _UIload.Open(clear);
     }
     
     /// <summary>
     /// Выключит UI загрузчика
     /// </summary>
-    public void DisactiveUiLoader(bool clear = false)
+    public void DisactiveUiLoader()
     {
-        _UIload.DisactivateUILoader(clear);
+        _UIload.Close();
     }
 
     private void Awake()
@@ -106,7 +106,7 @@ public class LoaderPacketInfo:MonoBehaviour
 
         if (_disactiveStartUI == true)
         {
-            DisactiveUiLoader(true);
+            DisactiveUiLoader();
         }
     }
     
@@ -122,6 +122,35 @@ public class LoaderPacketInfo:MonoBehaviour
         }
     }
 
+    private void UpdateInfoUI()
+    {
+        List<int> hashList = new List<int>();
+        foreach (var VARIABLE in _loadData.Values)
+        {
+            hashList.Add(VARIABLE.LoaderHash);
+        }
+        _UIload.UpdateInform(hashList);
+    }
+
+    private void SubscribeEventElement(ILoaderDataScene loaderDataScene)
+    {
+        loaderDataScene.OnStatus += OnRemoveLoadDataComlite;
+        loaderDataScene.OnStatus += OnRemoveLoadDataError;
+            
+        loaderDataScene.OnStatus += OnElementUpdateStatus;
+        loaderDataScene.OnStatus += OnUpdateGeneralStatus;
+    }
+    
+    private void UnsubscribeEventElement(ILoaderDataScene loaderDataScene)
+    {
+        loaderDataScene.OnStatus -= OnRemoveLoadDataComlite;
+        loaderDataScene.OnStatus -= OnRemoveLoadDataError;
+            
+        loaderDataScene.OnStatus -= OnElementUpdateStatus;
+        loaderDataScene.OnStatus -= OnUpdateGeneralStatus;
+        
+    }
+    
     private void OnRemoveLoadDataComlite(LoaderStatuse arg1)
     {
         if (arg1.Statuse == LoaderStatuse.StatusLoad.Complite)
@@ -180,34 +209,5 @@ public class LoaderPacketInfo:MonoBehaviour
         {
             DisactiveUiLoader();
         }
-    }
-    
-    private void UpdateInfoUI()
-    {
-        List<int> hashList = new List<int>();
-        foreach (var VARIABLE in _loadData.Values)
-        {
-            hashList.Add(VARIABLE.LoaderHash);
-        }
-        _UIload.UpdateInform(hashList);
-    }
-
-    private void SubscribeEventElement(ILoaderDataScene loaderDataScene)
-    {
-        loaderDataScene.OnStatus += OnRemoveLoadDataComlite;
-        loaderDataScene.OnStatus += OnRemoveLoadDataError;
-            
-        loaderDataScene.OnStatus += OnElementUpdateStatus;
-        loaderDataScene.OnStatus += OnUpdateGeneralStatus;
-    }
-    
-    private void UnsubscribeEventElement(ILoaderDataScene loaderDataScene)
-    {
-        loaderDataScene.OnStatus -= OnRemoveLoadDataComlite;
-        loaderDataScene.OnStatus -= OnRemoveLoadDataError;
-            
-        loaderDataScene.OnStatus -= OnElementUpdateStatus;
-        loaderDataScene.OnStatus -= OnUpdateGeneralStatus;
-        
     }
 }
