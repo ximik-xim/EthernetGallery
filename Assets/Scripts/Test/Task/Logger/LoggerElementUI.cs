@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(TaskElementControllerUI))]
-public class LoggerElementUI : NewIntrefaseControlUITE
+public class LoggerElementUI : NewIntrefaseControlUITE,ISetterData<LoggerPanel>
 {
 
     private TaskElementControllerUI _data;
@@ -13,11 +13,6 @@ public class LoggerElementUI : NewIntrefaseControlUITE
     private LoggerPanel _panelInfoStatuseUI;
     private List<LoaderStatuse> _listStatuse = new List<LoaderStatuse>();
     private bool _select;
-    
-    public void SetPanelUI(LoggerPanel panelInfoStatuseUI)
-    {
-        _panelInfoStatuseUI = panelInfoStatuseUI;
-    }
 
     private void Awake()
     {
@@ -77,4 +72,8 @@ public class LoggerElementUI : NewIntrefaseControlUITE
         _panelInfoStatuseUI.ClosePanel -= CloseLogPanel;
     }
 
+    public void SetData(LoggerPanel data)
+    {
+        _panelInfoStatuseUI = data;
+    }
 }

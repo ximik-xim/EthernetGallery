@@ -1,18 +1,14 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//Отвечает за установку экземпляра панели с логами в новосозданую задачу
-public class SetDataLoggerPanelNewTusk : MonoBehaviour
+public class InsertDataTuskInSetDataLogger : MonoBehaviour
 {
-
-    [SerializeField] 
-    private LoggerPanel _panelInfoStatuseUI;
-    
     [SerializeField] 
     private PrototypeFabric _fabric;
 
+    [SerializeField] 
+    private SetDataLoggerElement _loggerElement;
     private void Awake()
     {
         _fabric.OnCreateObject += CreateElement;
@@ -21,8 +17,7 @@ public class SetDataLoggerPanelNewTusk : MonoBehaviour
     private void CreateElement(Transform element)
     {
         var obj = element.GetComponent<LoggerElementUI>();
-
-        obj.SetPanelUI(_panelInfoStatuseUI);
+        _loggerElement.AddElementSetData(obj);
     }
 
     private void OnDestroy()
