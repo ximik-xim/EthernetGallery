@@ -16,6 +16,8 @@ public abstract class SetterData<InstObj, SetDataInObj> : MonoBehaviour where Se
 
     [Header("Insert")]
     [SerializeField] 
+    //нужно что бы было видно в инспекторе но было не активно, т.к логики в добавлении тут элементов через инсппектор нету
+    //А хотя есть(можно засунуть элемент и потом ему задаться значение
     protected List<SetDataInObj> _listSetDataInstObj;
     [SerializeField]
     protected Type _type;
