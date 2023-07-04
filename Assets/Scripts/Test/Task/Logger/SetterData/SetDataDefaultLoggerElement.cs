@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SetDataLoggerElement : SetterData<LoggerPanel, LoggerElementUI>
+public class SetDataDefaultLoggerElement : SetterDataDefault<LoggerPanel, LoggerElementUI>
 {
    private void Awake()
    {

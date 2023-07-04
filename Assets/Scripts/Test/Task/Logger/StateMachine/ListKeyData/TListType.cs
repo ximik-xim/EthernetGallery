@@ -57,9 +57,6 @@ public class TListType:ScriptableObject
         type.SetData(_types[type.Name]);
     }
 
-
-
-
 }
 
 [System.Serializable]

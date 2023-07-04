@@ -8,7 +8,7 @@ public class InsertDataTuskInSetDataLogger : MonoBehaviour
     private PrototypeFabric _fabric;
 
     [SerializeField] 
-    private SetDataLoggerElement _loggerElement;
+    private SetDataDefaultLoggerElement defaultLoggerElement;
     private void Awake()
     {
         _fabric.OnCreateObject += CreateElement;
@@ -17,7 +17,7 @@ public class InsertDataTuskInSetDataLogger : MonoBehaviour
     private void CreateElement(Transform element)
     {
         var obj = element.GetComponent<LoggerElementUI>();
-        _loggerElement.AddElementSetData(obj);
+        defaultLoggerElement.AddElementSetData(obj);
     }
 
     private void OnDestroy()

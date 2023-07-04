@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class TGetLIstType 
+public class TGetLIstType:IGetKey<TElelementType>
 {
     public string Name => _name;
     [SerializeField] 
@@ -21,4 +21,9 @@ public class TGetLIstType
         return _type;
     }
 
+
+    public TElelementType GetKey()
+    {
+        return _type;
+    }
 }

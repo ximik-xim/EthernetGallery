@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fabric: {fileID: 10408838822038194}
-  _loggerElement: {fileID: 10408838822038191}
+  defaultLoggerElement: {fileID: 10408838822038191}
 --- !u!114 &10408838822038191
 MonoBehaviour:
   m_ObjectHideFlags: 0
