@@ -3,6 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Key - ключ
+/// ListElement - класс эелементов списка
+/// Prefab - класс префаба
+/// 
+/// Создает экземпляры префаба
+/// Этот класс нужен в случае, если ключ будет доставаться каким либо образом из элементов списка
+/// В таком сулчае класс ListElement должен реализовывать интерфеис для получения ключа IGetKey
+/// </summary>
 public abstract class FabricTList<Key,ListElement, Prefab > : MonoBehaviour where ListElement : IGetKey<Key> where Prefab : MonoBehaviour
 {
 
@@ -13,6 +22,9 @@ public abstract class FabricTList<Key,ListElement, Prefab > : MonoBehaviour wher
     
     protected event Action<Key, Prefab> _OnLocalCreateObject;
     
+    /// <summary>
+    ///Очистит списки от пустых элементов и заполнит словарь 
+    /// </summary>
     protected void Init()
     {
      
@@ -38,8 +50,9 @@ public abstract class FabricTList<Key,ListElement, Prefab > : MonoBehaviour wher
 
 
 
-
-
+    /// <summary>
+    ///Создаст указанное кол-во экземпляров префаба по указ. типу, и оповещает с помощью CallBack об создании обьекта 
+    /// </summary>
     public void Create(Key type, int count, Action<Key, Prefab> onLocalCreateObject = null)
     {
         _OnLocalCreateObject += onLocalCreateObject;
@@ -60,6 +73,10 @@ public abstract class FabricTList<Key,ListElement, Prefab > : MonoBehaviour wher
         _OnLocalCreateObject -= onLocalCreateObject;
     }
     
+    
+    /// <summary>
+    /// Проверка элементов на Null, в случаае если Null будет считаться не знач ключ. а что то еще, то класс наследник должен будет переопределить метод 
+    /// </summary>
     protected virtual bool ChekElementNull(FabricInstantiateData<Prefab,ListElement> element)
     {
     

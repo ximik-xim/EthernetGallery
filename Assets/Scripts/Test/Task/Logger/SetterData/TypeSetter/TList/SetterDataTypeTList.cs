@@ -3,6 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
+
+/// <summary>
+/// Key - ключ
+/// TypeList - класс эелементов списков
+/// InstObj-префаб обьекта, который будет создоваться
+/// SetDataInObj - класс в который будут переданны данные об созданном префабе, класс должен реализовывать
+/// интерфеис ISetterData для передачи в этот класс данных  
+/// 
+/// Засовывает данные об созданном префабе в скрипт, которому нужны эти данные
+/// Этот класс нужен в случае, если ключ(Key) будет доставаться каким либо образом из элементов списка
+/// В таком сулчае класс TypeList должен реализовывать интерфеис для получения ключа IGetKey
+/// 
+/// В режиме One -  будет один экземпляр префаба, который и будет передан во все скрипты которым нужны данные
+/// В режиме Full - будет создан экземпляр префаба для каждого скрипта которому нужны данные
+///
+/// В списоке  _listInstObj храняться все созданные префабы, используемые для передачи их в один из элементов списка _listSetDataInstObj  
+/// В список  _listInstObj можно засунуть через инспектор уже создданные на сцене экземпляры префабов и они будут исп. для передачи
+/// их один из элементов списка _listSetDataInstObj при вызове моетода SetDataLenghtList
+/// 
+/// В списоке _listSetDataInstObj храняться все елементы куда были переданны данные об созданном префабе
+/// В список _listSetDataInstObj можно засунуть через инспектор элементы которым нужно передать информ. об созданных префабах 
+/// </summary>
 public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBehaviour where SetDataInObj : ISetterData<InstObj> where InstObj : MonoBehaviour where TypeList: IGetKey<Key> 
 {
     [Header("Spawn")]
@@ -20,16 +43,15 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
 
     
 
-
+    /// <summary>
+    /// Очистит списки от пустых элементов
+    /// И если выбран тип One и не указ. созданный на сцене экземпляр префаба, то создаст этот экземпляр префаба
+    /// </summary>
     protected virtual void Init()
     {
         CheckNull();
         
         InsertDataDictinary();
-
-       
-        
-///////////////////////////////// Создание экземпляра
 
         foreach (var VARIABLE in _listPrefab)
         {
@@ -46,7 +68,13 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
 
     }
     
-    //Засовывание данных всем элементом в списке для уст. данных
+    /// <summary>
+    /// Устанавливает всем элементам из списка _listSetDataInstObj информацию об префабах
+    /// Если выбран режим One то уст. 1 элемент в списке созданных экземпляров префаба(_listInstObj)
+    /// Если выбран режим FUll то проходит по всем имеющимся элементам в списке _listSetDataInstObj и
+    /// передает значения элементов из списка _listInstObj (если нехватает элементов в списке _listInstObj,
+    /// то создает новые экземпляры префабов)
+    /// </summary>
     public virtual void SetDataLenghtList()
     {
         foreach (var VARIABLE in _listPrefab)
@@ -78,8 +106,6 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
                     {
                         var data = _inst[VARIABLE._key.GetKey()][i];
                         _setData[VARIABLE._key.GetKey()][i].SetData(data);
-                        
-                        // тут с отобр. подумать
                     }
                     
                 }
@@ -87,9 +113,11 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         }
     }
 
+    /// <summary>
+    /// Заполняет словари данными из списков(ключами и экземплярами префабов)
+    /// </summary>
     protected virtual void InsertDataDictinary()
     {
-        ///////////////////////////////////
         _inst = new Dictionary<Key, List<InstObj>>();
         foreach (var VARIABLE in _listInstObj)
         {
@@ -103,6 +131,11 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         }
     }
     
+    /// <summary>
+    /// Добавит элемент в список для передачи данных об префабе
+    /// И передаст информацию об уже созданном префабе (если тип One)
+    /// Или создаст новый экземпляр префаба и передаст информацию об новосозданном префабе
+    /// </summary>
     public virtual void AddElementSetData(Key key, SetDataInObj SetDataInObj )
     {
         foreach (var VARIABLE in _listPrefab)
@@ -114,7 +147,6 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
                     _setData[key].Add(SetDataInObj);
                    
                     SetDataInObj.SetData(_inst[key][0]);
-                    // тут с отобр. подумать
                 }
 
 
@@ -126,7 +158,6 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
                     _setData[key].Add(SetDataInObj);
                     
                     SetDataInObj.SetData(obj);
-                    // тут с отобр. подумать
                 }
                 
             }
@@ -138,7 +169,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
     protected void CheckNull()
     {
         
-        //Очистка пустых элементов списка с префабами
+        //Очистка пустых элементов списка с префабами(_listPrefab)
         int target = _listPrefab.Count;
         for (int i = 0; i < target; i++)
         {
@@ -151,7 +182,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
             }
         }
 
-        //Очистка пустых элементов списка созданных экземпляров
+        //Очистка пустых элементов списка созданных экземпляров(_listInstObj)
         target = _listInstObj.Count;
         for (int i = 0; i < target; i++)
         {
@@ -165,7 +196,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         }
 
 
-        //Очистка пустых элементов внутреннего списка в списка созданных экземпляров
+        //Очистка пустых элементов внутреннего списка в списка созданных экземпляров(_listInstObj)
         for (int i = 0; i < _listInstObj.Count; i++)
         {
             target = _listInstObj[i]._prefabs.Count;
@@ -182,7 +213,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         }
         
 
-        //Очистка пустых элементов списка элементов для засовывания в них данных
+        //Очистка пустых элементов списка элементов для засовывания в них данных(_listSetDataInstObj)
         target = _listSetDataInstObj.Count;
         for (int i = 0; i < target; i++)
         {
@@ -196,7 +227,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         }
 
 
-        //Очистка пустых элементов внутреннего списка в списка элементов для засовывания в них данных
+        //Очистка пустых элементов внутреннего списка в списка элементов для засовывания в них данных(_listSetDataInstObj)
         for (int i = 0; i < _listSetDataInstObj.Count; i++)
         {
             target = _listSetDataInstObj[i]._prefabs.Count;
@@ -212,7 +243,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
             }
         }
         
-
+        //добавление всех типов ключей из списка _listPrefab в список _listInstObj
         for (int i = 0; i < _listPrefab.Count; i++)
         {
             bool isType = false;
@@ -233,6 +264,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         }
         
 
+        //добавление всех типов ключей из списка _listPrefab в список _listSetDataInstObj
         for (int i = 0; i < _listPrefab.Count; i++)
         {
             bool isType = false;
@@ -255,6 +287,11 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
     }
     
     
+    
+    /// <summary>
+    /// Проверка элементов списка _listPrefab на Null, в случаае если Null будет
+    /// считаться не пустой ключ. а что то еще, то класс наследник должен будет переопределить метод
+    /// </summary>
     protected virtual bool ChekNullElementListPref(SetterPrefabData<TypeList,InstObj> element)
     {
         if (element._key.GetKey() == null)
@@ -265,6 +302,10 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         return false;
     }
     
+    /// <summary>
+    /// Проверка элементов списка _listInstObj на Null, в случаае если Null будет
+    /// считаться не пустой ключ. а что то еще, то класс наследник должен будет переопределить метод
+    /// </summary>
     protected virtual bool ChekNullElementListInt(SetterKeyListData<TypeList,InstObj> element)
     {
         if (element._key.GetKey() == null)
@@ -275,6 +316,10 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         return false;
     }
     
+    /// <summary>
+    /// Проверка элементов списка хранящегося внутри списка _listInstObj на Null, в случаае если Null будет
+    /// считаться не пустой элемент списка. а что то еще, то класс наследник должен будет переопределить метод
+    /// </summary>
     protected virtual bool ChekNullElementListIntElement(InstObj element)
     {
         if (element == null)
@@ -285,6 +330,10 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         return false;
     }
     
+    /// <summary>
+    /// Проверка элементов списка _listSetDataInstObj на Null, в случаае если Null будет
+    /// считаться не пустой ключ. а что то еще, то класс наследник должен будет переопределить метод
+    /// </summary>
     protected virtual bool ChekNullElementListSetData(SetterKeyListData<TypeList,SetDataInObj> element)
     {
         if (element._key.GetKey() == null)
@@ -295,6 +344,10 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         return false;
     }
     
+    /// <summary>
+    /// Проверка элементов списка хранящегося внутри списка _listSetDataInstObj на Null, в случаае если Null будет
+    /// считаться не пустой элемент списка. а что то еще, то класс наследник должен будет переопределить метод
+    /// </summary>
     protected virtual bool ChekNullElementListSetDataElement(SetDataInObj element)
     {
         if (element == null)
@@ -306,7 +359,6 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
     }
 }
 
-//Временно вынес, т.к не могу нормально получить доступ из за обобщения
 public enum SetterTypeSet
 {
     One,

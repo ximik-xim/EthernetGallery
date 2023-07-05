@@ -380,11 +380,13 @@ MonoBehaviour:
   - _parent: {fileID: 722919998}
     prefab: {fileID: 4104814171274979799, guid: 9c76e3760d8af3548a86ea6e0f946c8a,
       type: 3}
-    key: 1
+    key:
+      _key: 0
   - _parent: {fileID: 722919998}
     prefab: {fileID: 4104814171274979799, guid: 9c76e3760d8af3548a86ea6e0f946c8a,
       type: 3}
-    key: 0
+    key:
+      _key: 1
 --- !u!1 &734471576
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,12 +451,14 @@ MonoBehaviour:
   - _parent: {fileID: 734471577}
     _prefab: {fileID: 2634422904675146236, guid: b6641fba78a298b47b3a20aa2da60485,
       type: 3}
-    _key: 0
+    _key:
+      _key: 0
     setterType: 0
   - _parent: {fileID: 734471577}
     _prefab: {fileID: 2634422904675146236, guid: b6641fba78a298b47b3a20aa2da60485,
       type: 3}
-    _key: 1
+    _key:
+      _key: 0
     setterType: 0
   _listInstObj: []
   _listSetDataInstObj: []
@@ -519,8 +523,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parent: {fileID: 872476200}
   _prefab: {fileID: 2634422904675146236, guid: b6641fba78a298b47b3a20aa2da60485, type: 3}
-  _listInstObj: []
-  _listSetDataInstObj: []
+  _listInstObj:
+  - {fileID: 0}
+  _listSetDataInstObj:
+  - {fileID: 0}
   _type: 0
 --- !u!1 &1228026519
 GameObject:
