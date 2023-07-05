@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a098d2e7a8f3b74fa9b260b4527847b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stateMachine: {fileID: 2634422904675146233}
+  stateMachineTList: {fileID: 2634422904675146233}
   _listType: {fileID: 11400000, guid: f4cf1661445677146b1b96eee4524123, type: 2}
   CurrentState:
     _name: Error
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a098d2e7a8f3b74fa9b260b4527847b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stateMachine: {fileID: 2634422904675146233}
+  stateMachineTList: {fileID: 2634422904675146233}
   _listType: {fileID: 11400000, guid: f4cf1661445677146b1b96eee4524123, type: 2}
   CurrentState:
     _name: FatalError
@@ -895,7 +895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a098d2e7a8f3b74fa9b260b4527847b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stateMachine: {fileID: 2634422904675146233}
+  stateMachineTList: {fileID: 2634422904675146233}
   _listType: {fileID: 11400000, guid: f4cf1661445677146b1b96eee4524123, type: 2}
   CurrentState:
     _name: Full
@@ -986,7 +986,7 @@ MonoBehaviour:
     _state: {fileID: 2634422904675146239}
   - _key:
       _name: Load
-    _state: {fileID: 7248185020985606719}
+    _state: {fileID: 7248185021911747361}
   - _key:
       _name: Full
     _state: {fileID: 7248185020985606719}
@@ -1793,7 +1793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a098d2e7a8f3b74fa9b260b4527847b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stateMachine: {fileID: 2634422904675146233}
+  stateMachineTList: {fileID: 2634422904675146233}
   _listType: {fileID: 11400000, guid: f4cf1661445677146b1b96eee4524123, type: 2}
   CurrentState:
     _name: Load
