@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //При выборе данного состояниея, установит филтр логов в панель отвеч. за логи
-public class StateInsertFilterInLogger : TestAbsState
+public class StateInsertFilterInLogger : AbstrackState
 {
     [SerializeField] 
     private LoggerPanel _panel;

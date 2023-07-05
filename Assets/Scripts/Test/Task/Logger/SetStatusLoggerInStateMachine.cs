@@ -7,7 +7,7 @@ using UnityEngine;
 public class SetStatusLoggerInStateMachine : MonoBehaviour
 {
     [SerializeField] 
-    private LoggerStateMachine _stateMachine;
+    private LoggerStateMachineTList stateMachineTList;
     [SerializeField] 
     private TListType _listType;
     [SerializeField]
@@ -18,7 +18,6 @@ public class SetStatusLoggerInStateMachine : MonoBehaviour
     private void Awake()
     {
         Init();
-
     }
 
 
@@ -33,6 +32,6 @@ public class SetStatusLoggerInStateMachine : MonoBehaviour
     public void SetStatuseStateMachine()
     {
         Init();
-        _stateMachine.SetState(CurrentState);
+        stateMachineTList.SetState(CurrentState.GetKey());
     }
 }
