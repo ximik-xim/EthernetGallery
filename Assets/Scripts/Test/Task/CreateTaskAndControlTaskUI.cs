@@ -10,7 +10,7 @@ public class CreateTaskAndControlTaskUI : MonoBehaviour
     private NewIntrefaseControlUITE _generalTuskPanelUI;
 
     [SerializeField] 
-    private PrototypeFabric _fabric;
+    private PrototypeFabric fabric;
 
     private Dictionary<int, TaskElementControllerUI> _infoElement = new Dictionary<int, TaskElementControllerUI>();
     private List<TaskElementControllerUI> _buffer = new List<TaskElementControllerUI>();
@@ -68,8 +68,6 @@ public class CreateTaskAndControlTaskUI : MonoBehaviour
     
     private void Start()
     {
-        _fabric.OnCreateObject += CreateElement;
-        
         _infoLoad = LoaderTask.Task;
         _infoLoad.OnUpdateElementStatuse += UpdateUiStatusElement;
         _infoLoad.OnUpdateGeneralStatuse += _generalTuskPanelUI.UpdateData;
@@ -91,13 +89,12 @@ public class CreateTaskAndControlTaskUI : MonoBehaviour
 
     private void CreateElement(int count)
     {
-        _fabric.Create(count);
+        fabric.Create(count,CreateElement);
     }
 
-    private void CreateElement(Transform element)
+    private void CreateElement(TaskElementControllerUI element)
     {
-        var obj = element.GetComponent<TaskElementControllerUI>();
-        _buffer.Add(obj);
+        _buffer.Add(element);
     }
     
     private void ClearData()

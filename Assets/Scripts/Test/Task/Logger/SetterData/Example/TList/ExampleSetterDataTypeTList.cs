@@ -14,12 +14,12 @@ public class ExampleSetterDataTypeTList : SetterDataTypeTList<TElelementType,TGe
             _listType.GetElementName( VARIABLE._key);  
         }
 
-        foreach (var VARIABLE in    _listInstObj)
+        foreach (var VARIABLE in _listInstObj) 
         {
             _listType.GetElementName( VARIABLE._key); 
         }
-        
-        foreach (var VARIABLE in             _listSetDataInstObj)
+
+        foreach (var VARIABLE in _listSetDataInstObj) 
         {
             _listType.GetElementName( VARIABLE._key);  
         }

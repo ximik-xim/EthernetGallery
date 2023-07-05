@@ -5,13 +5,13 @@ using UnityEngine;
 public class InsertDataTuskInSetDataLogger : MonoBehaviour
 {
     [SerializeField] 
-    private PrototypeFabric _fabric;
+    private PrototypeFabric fabric;
 
     [SerializeField] 
     private SetDataDefaultLoggerElement defaultLoggerElement;
     private void Awake()
     {
-        _fabric.OnCreateObject += CreateElement;
+        fabric.OnCreateObject += CreateElement;
     }
 
     private void CreateElement(Transform element)
@@ -22,6 +22,6 @@ public class InsertDataTuskInSetDataLogger : MonoBehaviour
 
     private void OnDestroy()
     {
-        _fabric.OnCreateObject -= CreateElement;
+        fabric.OnCreateObject -= CreateElement;
     }
 }

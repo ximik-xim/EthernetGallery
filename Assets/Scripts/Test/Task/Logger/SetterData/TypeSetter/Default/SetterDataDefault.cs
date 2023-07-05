@@ -103,7 +103,7 @@ public abstract class SetterDataDefault<InstObj, SetDataInObj> : MonoBehaviour w
         int target = _listInstObj.Count;
         for (int i = 0; i < target; i++)
         {
-            if (_listInstObj[i] == null)
+            if (ChekNullElementListInt(_listInstObj[i]) == true)
             {
                 _listInstObj.Remove(_listInstObj[i]);
                 
@@ -115,7 +115,7 @@ public abstract class SetterDataDefault<InstObj, SetDataInObj> : MonoBehaviour w
         target = _listSetDataInstObj.Count;
         for (int i = 0; i < target; i++)
         {
-            if (_listSetDataInstObj[i] == null)
+            if (ChekNullElementListSetData(_listSetDataInstObj[i]) == true)
             {
                 _listSetDataInstObj.Remove(_listSetDataInstObj[i]);
                 
@@ -123,5 +123,25 @@ public abstract class SetterDataDefault<InstObj, SetDataInObj> : MonoBehaviour w
                 target--;
             }
         }
+    }
+
+    protected virtual bool ChekNullElementListInt(InstObj element)
+    {
+        if (element == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    protected virtual bool ChekNullElementListSetData(SetDataInObj element)
+    {
+        if (element == null)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

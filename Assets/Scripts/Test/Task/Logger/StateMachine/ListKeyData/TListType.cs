@@ -54,7 +54,11 @@ public class TListType:ScriptableObject
     
     public void GetElementName(TGetLIstType type)
     {
-        type.SetData(_types[type.Name]);
+        if (_types.ContainsKey(type.Name))
+        {
+            type.SetData(_types[type.Name]);
+        }                
+        
     }
 
 }

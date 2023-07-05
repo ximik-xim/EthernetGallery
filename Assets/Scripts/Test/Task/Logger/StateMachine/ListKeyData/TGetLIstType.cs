@@ -9,8 +9,8 @@ public class TGetLIstType:IGetKey<TElelementType>
     [SerializeField] 
     private string _name = "none";
 
-    
-    private TElelementType _type;
+
+    private TElelementType _type = null;
     public void SetData(TElelementType type)
     {
         _type = type;

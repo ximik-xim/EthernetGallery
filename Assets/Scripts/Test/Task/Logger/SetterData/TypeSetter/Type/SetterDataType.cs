@@ -6,15 +6,15 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
 {
     [Header("Spawn")]
 [SerializeField]
-    protected List<TesterrrrrData<Key,InstObj>> _listPrefab;
+    protected List<SetterPrefabData<Key,InstObj>> _listPrefab;
 //Список нужен пока только для отображения
 [SerializeField]
-    protected List<TesterrrrrDataЕЕЕ<Key,InstObj>> _listInstObj;
+    protected List<SetterKeyListData<Key,InstObj>> _listInstObj;
     protected Dictionary<Key,List<InstObj> > _inst;
 
     [Header("Insert")]
     [SerializeField]
-    protected    List<TesterrrrrDataЕЕЕ<Key,SetDataInObj>> _listSetDataInstObj;
+    protected    List<SetterKeyListData<Key,SetDataInObj>> _listSetDataInstObj;
     protected Dictionary<Key, List<SetDataInObj>> _setData;
 
     
@@ -32,7 +32,7 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
 
         foreach (var VARIABLE in _listPrefab)
         {
-            if (VARIABLE._type == TypeFsfdfasdas.One)
+            if (VARIABLE.setterType == SetterTypeSet.One)
             {
                 if (_inst[VARIABLE._key].Count==0)
                 {
@@ -55,7 +55,7 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
     {
         foreach (var VARIABLE in _listPrefab)
         {
-            if (VARIABLE._type == TypeFsfdfasdas.One)
+            if (VARIABLE.setterType == SetterTypeSet.One)
             {
                 foreach (var VARIABLE2 in _setData[VARIABLE._key])
                 {
@@ -64,7 +64,7 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
             }
             
             
-            if (VARIABLE._type == TypeFsfdfasdas.Full)
+            if (VARIABLE.setterType == SetterTypeSet.Full)
             {
                 foreach (var VARIABLE2 in _setData[VARIABLE._key])
                 {
@@ -97,13 +97,13 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
         _inst = new Dictionary<Key, List<InstObj>>();
         foreach (var VARIABLE in _listInstObj)
         {
-            _inst.Add(VARIABLE._key,VARIABLE._prefab);
+            _inst.Add(VARIABLE._key,VARIABLE._prefabs);
         }
 
         _setData = new Dictionary<Key, List<SetDataInObj>>();
         foreach (var VARIABLE in _listSetDataInstObj)
         {
-            _setData.Add(VARIABLE._key,VARIABLE._prefab);
+            _setData.Add(VARIABLE._key,VARIABLE._prefabs);
         }
     }
     
@@ -113,7 +113,7 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
         {
             if (VARIABLE._key.Equals(key))
             {
-                if (VARIABLE._type == TypeFsfdfasdas.One)
+                if (VARIABLE.setterType == SetterTypeSet.One)
                 {
                     Debug.Log(SetDataInObj == null);
                     Debug.Log(_setData==null);
@@ -125,7 +125,7 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
                 }
 
 
-                if (VARIABLE._type == TypeFsfdfasdas.Full)
+                if (VARIABLE.setterType == SetterTypeSet.Full)
                 {
                     var obj = Instantiate(VARIABLE._prefab, VARIABLE._parent);
                    
@@ -149,7 +149,7 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
         int target = _listPrefab.Count;
         for (int i = 0; i < target; i++)
         {
-            if (_listPrefab[i]._key == null)
+            if (ChekNullElementListPref(_listPrefab[i]) ==true)
             {
                 _listPrefab.Remove(_listPrefab[i]);
 
@@ -162,7 +162,7 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
         target = _listInstObj.Count;
         for (int i = 0; i < target; i++)
         {
-            if (_listInstObj[i]._key == null)
+            if (ChekNullElementListInt(_listInstObj[i]) ==true)
             {
                 _listInstObj.Remove(_listInstObj[i]);
 
@@ -175,12 +175,12 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
         //Очистка пустых элементов внутреннего списка в списка созданных экземпляров
         for (int i = 0; i < _listInstObj.Count; i++)
         {
-            target = _listInstObj[i]._prefab.Count;
+            target = _listInstObj[i]._prefabs.Count;
             for (int j = 0; j < target; j++)
             {
-                if (_listInstObj[i]._prefab[j] == null)
+                if (ChekNullElementListIntElement(_listInstObj[i]._prefabs[j])  == true)
                 {
-                    _listInstObj[i]._prefab.Remove(_listInstObj[i]._prefab[j]);
+                    _listInstObj[i]._prefabs.Remove(_listInstObj[i]._prefabs[j]);
 
                     j--;
                     target--;
@@ -193,7 +193,7 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
         target = _listSetDataInstObj.Count;
         for (int i = 0; i < target; i++)
         {
-            if (_listSetDataInstObj[i]._key == null)
+            if (ChekNullElementListSetData(_listSetDataInstObj[i]) == true)
             {
                 _listSetDataInstObj.Remove(_listSetDataInstObj[i]);
 
@@ -206,12 +206,12 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
         //Очистка пустых элементов внутреннего списка в списка элементов для засовывания в них данных
         for (int i = 0; i < _listSetDataInstObj.Count; i++)
         {
-            target = _listSetDataInstObj[i]._prefab.Count;
+            target = _listSetDataInstObj[i]._prefabs.Count;
             for (int j = 0; j < target; j++)
             {
-                if (_listSetDataInstObj[i]._prefab[j] == null)
+                if (ChekNullElementListSetDataElement(_listSetDataInstObj[i]._prefabs[j])  == true)
                 {
-                    _listSetDataInstObj[i]._prefab.Remove(_listSetDataInstObj[i]._prefab[j]);
+                    _listSetDataInstObj[i]._prefabs.Remove(_listSetDataInstObj[i]._prefabs[j]);
 
                     j--;
                     target--;
@@ -235,7 +235,7 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
 
             if (isType == false)
             {
-                _listInstObj.Add(new TesterrrrrDataЕЕЕ<Key, InstObj>(_listPrefab[i]._key, new List<InstObj>()));
+                _listInstObj.Add(new SetterKeyListData<Key, InstObj>(_listPrefab[i]._key, new List<InstObj>()));
             }
         }
         
@@ -256,9 +256,59 @@ public class SetterDataType <Key,InstObj, SetDataInObj> : MonoBehaviour where Se
             if (isType == false)
             {
                 _listSetDataInstObj.Add(
-                    new TesterrrrrDataЕЕЕ<Key, SetDataInObj>(_listPrefab[i]._key, new List<SetDataInObj>()));
+                    new SetterKeyListData<Key, SetDataInObj>(_listPrefab[i]._key, new List<SetDataInObj>()));
             }
         }
+    }
+    
+    protected virtual bool ChekNullElementListPref(SetterPrefabData<Key,InstObj> element)
+    {
+        if (element._key == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    protected virtual bool ChekNullElementListInt(SetterKeyListData<Key,InstObj> element)
+    {
+        if (element._key == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    protected virtual bool ChekNullElementListIntElement(InstObj element)
+    {
+        if (element == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    protected virtual bool ChekNullElementListSetData(SetterKeyListData<Key,SetDataInObj> element)
+    {
+        if (element._key == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    protected virtual bool ChekNullElementListSetDataElement(SetDataInObj element)
+    {
+        if (element == null)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
 

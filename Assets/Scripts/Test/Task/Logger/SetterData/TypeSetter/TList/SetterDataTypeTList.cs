@@ -7,15 +7,14 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
 {
     [Header("Spawn")]
 [SerializeField]
-    protected List<TesterrrrrData<TypeList,InstObj>> _listPrefab;
+    protected List<SetterPrefabData<TypeList,InstObj>> _listPrefab;
 //Список нужен пока только для отображения
 [SerializeField]
-    protected List<TesterrrrrDataЕЕЕ<TypeList,InstObj>> _listInstObj;
+    protected List<SetterKeyListData<TypeList,InstObj>> _listInstObj;
     protected Dictionary<Key,List<InstObj> > _inst;
 
-    [Header("Insert")]
-    [SerializeField]
-    protected    List<TesterrrrrDataЕЕЕ<TypeList,SetDataInObj>> _listSetDataInstObj;
+    [Header("Insert")] [SerializeField] 
+    protected List<SetterKeyListData<TypeList, SetDataInObj>> _listSetDataInstObj;
     protected Dictionary<Key, List<SetDataInObj>> _setData;
 
     
@@ -33,7 +32,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
 
         foreach (var VARIABLE in _listPrefab)
         {
-            if (VARIABLE._type == TypeFsfdfasdas.One)
+            if (VARIABLE.setterType == SetterTypeSet.One)
             {
                 if (_inst[VARIABLE._key.GetKey()].Count==0)
                 {
@@ -44,11 +43,6 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
             
         }
 
-        
-       
-        
-        
-
     }
     
     //Засовывание данных всем элементом в списке для уст. данных
@@ -56,7 +50,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
     {
         foreach (var VARIABLE in _listPrefab)
         {
-            if (VARIABLE._type == TypeFsfdfasdas.One)
+            if (VARIABLE.setterType == SetterTypeSet.One)
             {
                 foreach (var VARIABLE2 in _setData[VARIABLE._key.GetKey()])
                 {
@@ -65,7 +59,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
             }
             
             
-            if (VARIABLE._type == TypeFsfdfasdas.Full)
+            if (VARIABLE.setterType == SetterTypeSet.Full)
             {
                 foreach (var VARIABLE2 in _setData[VARIABLE._key.GetKey()])
                 {
@@ -98,13 +92,13 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         _inst = new Dictionary<Key, List<InstObj>>();
         foreach (var VARIABLE in _listInstObj)
         {
-            _inst.Add(VARIABLE._key.GetKey(),VARIABLE._prefab);
+            _inst.Add(VARIABLE._key.GetKey(),VARIABLE._prefabs);
         }
 
         _setData = new Dictionary<Key, List<SetDataInObj>>();
         foreach (var VARIABLE in _listSetDataInstObj)
         {
-            _setData.Add(VARIABLE._key.GetKey(),VARIABLE._prefab);
+            _setData.Add(VARIABLE._key.GetKey(),VARIABLE._prefabs);
         }
     }
     
@@ -114,7 +108,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         {
             if (VARIABLE._key.GetKey().Equals(key))
             {
-                if (VARIABLE._type == TypeFsfdfasdas.One)
+                if (VARIABLE.setterType == SetterTypeSet.One)
                 {
                     _setData[key].Add(SetDataInObj);
                    
@@ -123,7 +117,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
                 }
 
 
-                if (VARIABLE._type == TypeFsfdfasdas.Full)
+                if (VARIABLE.setterType == SetterTypeSet.Full)
                 {
                     var obj = Instantiate(VARIABLE._prefab, VARIABLE._parent);
                    
@@ -147,7 +141,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         int target = _listPrefab.Count;
         for (int i = 0; i < target; i++)
         {
-            if (_listPrefab[i]._key == null)
+            if (ChekNullElementListPref(_listPrefab[i])  == true)
             {
                 _listPrefab.Remove(_listPrefab[i]);
 
@@ -160,7 +154,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         target = _listInstObj.Count;
         for (int i = 0; i < target; i++)
         {
-            if (_listInstObj[i]._key == null)
+            if (ChekNullElementListInt(_listInstObj[i]) == true)
             {
                 _listInstObj.Remove(_listInstObj[i]);
 
@@ -173,12 +167,12 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         //Очистка пустых элементов внутреннего списка в списка созданных экземпляров
         for (int i = 0; i < _listInstObj.Count; i++)
         {
-            target = _listInstObj[i]._prefab.Count;
+            target = _listInstObj[i]._prefabs.Count;
             for (int j = 0; j < target; j++)
             {
-                if (_listInstObj[i]._prefab[j] == null)
+                if (ChekNullElementListIntElement(_listInstObj[i]._prefabs[j]) == true) 
                 {
-                    _listInstObj[i]._prefab.Remove(_listInstObj[i]._prefab[j]);
+                    _listInstObj[i]._prefabs.Remove(_listInstObj[i]._prefabs[j]);
 
                     j--;
                     target--;
@@ -191,7 +185,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         target = _listSetDataInstObj.Count;
         for (int i = 0; i < target; i++)
         {
-            if (_listSetDataInstObj[i]._key == null)
+            if (ChekNullElementListSetData (_listSetDataInstObj[i]) == true)
             {
                 _listSetDataInstObj.Remove(_listSetDataInstObj[i]);
 
@@ -204,12 +198,12 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
         //Очистка пустых элементов внутреннего списка в списка элементов для засовывания в них данных
         for (int i = 0; i < _listSetDataInstObj.Count; i++)
         {
-            target = _listSetDataInstObj[i]._prefab.Count;
+            target = _listSetDataInstObj[i]._prefabs.Count;
             for (int j = 0; j < target; j++)
             {
-                if (_listSetDataInstObj[i]._prefab[j] == null)
+                if (ChekNullElementListSetDataElement(_listSetDataInstObj[i]._prefabs[j]) == true)
                 {
-                    _listSetDataInstObj[i]._prefab.Remove(_listSetDataInstObj[i]._prefab[j]);
+                    _listSetDataInstObj[i]._prefabs.Remove(_listSetDataInstObj[i]._prefabs[j]);
 
                     j--;
                     target--;
@@ -233,7 +227,7 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
 
             if (isType == false)
             {
-                _listInstObj.Add(new TesterrrrrDataЕЕЕ<TypeList, InstObj>(_listPrefab[i]._key, new List<InstObj>()));
+                _listInstObj.Add(new SetterKeyListData<TypeList, InstObj>(_listPrefab[i]._key, new List<InstObj>()));
             }
         }
         
@@ -254,14 +248,65 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
             if (isType == false)
             {
                 _listSetDataInstObj.Add(
-                    new TesterrrrrDataЕЕЕ<TypeList, SetDataInObj>(_listPrefab[i]._key, new List<SetDataInObj>()));
+                    new SetterKeyListData<TypeList, SetDataInObj>(_listPrefab[i]._key, new List<SetDataInObj>()));
             }
         }
+    }
+    
+    
+    protected virtual bool ChekNullElementListPref(SetterPrefabData<TypeList,InstObj> element)
+    {
+        if (element._key.GetKey() == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    protected virtual bool ChekNullElementListInt(SetterKeyListData<TypeList,InstObj> element)
+    {
+        if (element._key.GetKey() == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    protected virtual bool ChekNullElementListIntElement(InstObj element)
+    {
+        if (element == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    protected virtual bool ChekNullElementListSetData(SetterKeyListData<TypeList,SetDataInObj> element)
+    {
+        if (element._key.GetKey() == null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    protected virtual bool ChekNullElementListSetDataElement(SetDataInObj element)
+    {
+        if (element == null)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
 
 //Временно вынес, т.к не могу нормально получить доступ из за обобщения
-public enum TypeFsfdfasdas
+public enum SetterTypeSet
 {
     One,
     Full
@@ -269,10 +314,10 @@ public enum TypeFsfdfasdas
 
 
 [System.Serializable]
-public class TesterrrrrData<Key,InstObj>
+public class SetterPrefabData<Key,InstObj>
 {
     
-    [SerializeField] 
+    [SerializeField]  
     public Transform _parent;
     [SerializeField] 
     public InstObj _prefab;
@@ -280,26 +325,26 @@ public class TesterrrrrData<Key,InstObj>
     public Key _key;
     
     [SerializeField]
-    public TypeFsfdfasdas _type;
+    public SetterTypeSet setterType;
 }
 
 [System.Serializable]
-public class TesterrrrrDataЕЕЕ<Key,InstObj>
+public class SetterKeyListData<Key,InstObj>
 {
-    public TesterrrrrDataЕЕЕ()
+    public SetterKeyListData()
     {
         
     }
-    public TesterrrrrDataЕЕЕ(Key key, List<InstObj> instObj)
+    public SetterKeyListData(Key key, List<InstObj> instObj)
     {
         _key = key;
-        _prefab = instObj;
+        _prefabs = instObj;
     }
     
     [SerializeField] 
     public Key _key;
     
     [SerializeField] 
-    public List<InstObj>  _prefab;
+    public List<InstObj>  _prefabs;
 }
 
