@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExampleFabricTList : FabricTList<TElelementType,TaskElementControllerUI,TGetLIstType>
+public class ExampleFabricTList : FabricTList<TElelementType, TGetLIstType, TaskElementControllerUI>
 {
     [SerializeField] 
     private TListType _listType;

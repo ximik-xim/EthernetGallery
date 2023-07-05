@@ -13,7 +13,8 @@ public class SetterDataTypeTList <Key,TypeList,InstObj, SetDataInObj> : MonoBeha
     protected List<SetterKeyListData<TypeList,InstObj>> _listInstObj;
     protected Dictionary<Key,List<InstObj> > _inst;
 
-    [Header("Insert")] [SerializeField] 
+    [Header("Insert")] 
+    [SerializeField] 
     protected List<SetterKeyListData<TypeList, SetDataInObj>> _listSetDataInstObj;
     protected Dictionary<Key, List<SetDataInObj>> _setData;
 
@@ -347,4 +348,3 @@ public class SetterKeyListData<Key,InstObj>
     [SerializeField] 
     public List<InstObj>  _prefabs;
 }
-

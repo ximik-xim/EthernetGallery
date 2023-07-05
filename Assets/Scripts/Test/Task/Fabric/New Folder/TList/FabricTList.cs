@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class FabricTList<Key,Prefab,ListElement> : MonoBehaviour where ListElement:IGetKey<Key> where Prefab:MonoBehaviour
+public abstract class FabricTList<Key,ListElement, Prefab > : MonoBehaviour where ListElement : IGetKey<Key> where Prefab : MonoBehaviour
 {
 
     public event Action<Key, Transform> OnCreateObject;
