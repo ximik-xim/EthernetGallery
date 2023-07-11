@@ -12,6 +12,7 @@ public class Exam2Enum :  BankTaskDef<ExTask2,adflajf,FakT<adflajf>,ExStat2>
 {
     private void Awake()
     {
+        Debug.Log("INIT 2");
         Init();
     }
 

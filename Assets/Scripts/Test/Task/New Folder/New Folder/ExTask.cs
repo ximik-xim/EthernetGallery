@@ -25,6 +25,8 @@ public class ExTask : MonoBehaviour, ItesTaskType<TElelementType>
     }
 
     public int _HashTypeKey { get=>_listType.GetHashCode(); }
+    public Type _typeKeyTask { get=>typeof(TElelementType); }
+
 
     private void Start()
     {

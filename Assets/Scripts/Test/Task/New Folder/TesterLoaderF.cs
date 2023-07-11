@@ -44,7 +44,19 @@ public class TesterLoaderF : MonoBehaviour
     
     public void AddTaskType(Type typeKey,int hashKey, ILoaderTask task)
     {
+        if (_dictionaryBank.ContainsKey(typeKey) == false)
+        {
+            Debug.LogError("Ошибка ключ " + typeKey + " не был найден");
+            return;
+        }
+        
+        if (_dictionaryBank[typeKey].ContainsKey(hashKey) == false)
+        {
+            Debug.LogError("Ошибка хэш ключа " + hashKey + " не был найден");
+            return;
+        }
         _dictionaryBank[typeKey][hashKey].AddtTT(task);
+        Debug.Log("Task Добавлена");
     }
     
 }

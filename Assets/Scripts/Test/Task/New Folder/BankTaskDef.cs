@@ -69,13 +69,19 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
 
     protected void Init()
     {
+        if (TesterLoaderF.statikLoad == null)
+        {
+            TesterLoaderF.OnInit += asfa;
+        }
+        else
+        {
+            _loaderF = TesterLoaderF.statikLoad;
+            _loaderF.AddBank(typeof(GetType), GetHashKey(), this);
+        }
 
-        TesterLoaderF.OnInit += asfa;
- 
-        
-        
-        
-                
+
+
+
         DontDestroyOnLoad(gameObject);
 
         //OnUpdateGeneralStatuse += OnDisactiveLoaderComplite;
@@ -146,13 +152,12 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
         {
             SubscribeEventElement(obj);
 
-            
+            Debug.Log("Key Value = "+obj.GetKey());
             if (_dictionary.ContainsKey(obj.GetKey()) == false)
             {
                 _dictionary.Add(obj.GetKey(),new Dictionary<int, ItesTaskType>());
             }
-           
-            
+
             _dictionary[obj.GetKey()].Add(obj.LoaderHash,obj);
             return;
         }

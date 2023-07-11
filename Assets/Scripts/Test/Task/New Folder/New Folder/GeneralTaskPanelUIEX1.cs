@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class GeneralTaskPanelUIEX1 : NewIntrefaseControlUITEType<TElelementType,ExamStat> 
+public class GeneralTaskPanelUIEX1 : NewIntrefaseControlUITEType<TElelementType,TesStatType<TElelementType>> 
 {
 
     /// <summary>
@@ -10,28 +11,38 @@ public class GeneralTaskPanelUIEX1 : NewIntrefaseControlUITEType<TElelementType,
     /// </summary>
     /// <param name="clearData"></param>
     /// <exception cref="NotImplementedException"></exception>
+    [SerializeField] 
+    private Image _loaderImage;
+    [SerializeField] 
+    private Text _loaderText;
+    [SerializeField] 
+    private GameObject _panelUI;
+    
+
+    public override void UpdateData(TElelementType key, TesStatType<TElelementType> statuse)
+    {
+        
+    }
+
     public override void Open(bool clearData = false)
     {
-        throw new System.NotImplementedException();
+        _panelUI.gameObject.SetActive(true);
     }
 
     public override void UpdateData(LoaderStatuse statuse)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void UpdateData(TElelementType key, ExamStat statuse)
-    {
-        throw new System.NotImplementedException();
+        _loaderImage.fillAmount = statuse.Comlite;
+        _loaderText.text = (statuse.Comlite * 100).ToString() + "%";
     }
 
     public override void ClearData()
     {
-        throw new System.NotImplementedException();
+        _loaderImage.fillAmount = 0;
+        _loaderText.text = "0%";
     }
 
     public override void Close()
     {
-        throw new System.NotImplementedException();
+        _panelUI.gameObject.SetActive(false);
     }
 }

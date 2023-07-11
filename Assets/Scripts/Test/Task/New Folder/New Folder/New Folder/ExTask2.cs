@@ -34,4 +34,8 @@ public class ExTask2 : MonoBehaviour, ItesTaskType<adflajf>
     }
 
     public int _HashTypeKey { get=>typeof(adflajf).GetHashCode(); }
+    public Type _typeKeyTask
+    {
+        get => typeof(adflajf);
+    }
 }
