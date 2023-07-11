@@ -13,6 +13,8 @@ public class TesterLoaderF : MonoBehaviour
     {
         statikLoad = this;
         OnInit?.Invoke();
+        
+        DontDestroyOnLoad(gameObject);
     }
 
 
@@ -42,6 +44,11 @@ public class TesterLoaderF : MonoBehaviour
         
     }
     
+    public void RemoveBank(Type typeKey,int hashKey, Interfasda interfaceAdd)
+    {
+        
+    }
+    
     public void AddTaskType(Type typeKey,int hashKey, ILoaderTask task)
     {
         if (_dictionaryBank.ContainsKey(typeKey) == false)
@@ -57,6 +64,33 @@ public class TesterLoaderF : MonoBehaviour
         }
         _dictionaryBank[typeKey][hashKey].AddtTT(task);
         Debug.Log("Task Добавлена");
+    }
+
+    public void RemoveTaskType(Type typeKey,int hashKey, ILoaderTask task)
+    {
+        
+    }
+    
+    
+    
+    public void StartLoadBank(Type typeKey,int hashKey)
+    {
+        _dictionaryBank[typeKey][hashKey].StartLoad();
+    }
+
+    public void StartLoadBanKScene(Type typeKey,int hashKey,int idScene, bool executeAfterLoading)
+    {
+        
+    }
+
+    public void ActiveUILoaderBank(Type typeKey, int hashKey, bool clear = false)
+    {
+        
+    }
+
+    public void DisactiveUiLoaderBank(Type typeKey, int hashKey)
+    {
+        
     }
     
 }

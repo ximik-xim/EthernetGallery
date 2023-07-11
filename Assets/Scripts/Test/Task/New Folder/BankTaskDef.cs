@@ -82,7 +82,7 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
 
 
 
-        DontDestroyOnLoad(gameObject);
+//        DontDestroyOnLoad(gameObject);
 
         //OnUpdateGeneralStatuse += OnDisactiveLoaderComplite;
 
@@ -165,6 +165,33 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
         Debug.LogError("Task другого типа");
     }
 
+    public void RemoveTT(ILoaderTask taskType)
+    {
+        ItesTaskType obj =(ItesTaskType) taskType;
+        if (obj != null)
+        {
+            UnsubscribeEventElement(obj);
+            
+            if (_dictionary.ContainsKey(obj.GetKey()) == false)
+            {
+             Debug.LogError("Task с таким ключем не было");
+             return;
+            }
+
+
+            if (_dictionary[obj.GetKey()].ContainsKey(obj.LoaderHash) == false)
+            {
+                Debug.LogError("Task с таким хэшем ключа не было");
+                return;
+            }
+            
+            _dictionary[obj.GetKey()].Remove(obj.LoaderHash);
+            return;
+        }
+        
+        Debug.LogError("Task другого типа");
+    }
+
     public void RemoveLoadData(ILoaderTask taskType)
     {
 
@@ -192,7 +219,7 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
         if (executeAfterLoading == true)
         {
             UpdateInfoUI();
-            Startload();
+            StartLoadeeeee();
             SceneManager.LoadScene(idScene);
           
             return;
@@ -200,7 +227,7 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
 
         UpdateInfoUI();
         SceneManager.LoadScene(idScene);
-        Startload();
+        StartLoadeeeee();
       
     }
     
@@ -221,9 +248,17 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
     {
         _UIload.Close();
     }
-    
 
-    private void Startload()
+    public void StartLoad()
+    {
+        UpdateInfoUI();
+        StartLoadeeeee();
+    
+            
+        
+    }
+
+    private void StartLoadeeeee()
     {
         ActiveUILoader(true);
         //_countTasks = _loadData.Count;

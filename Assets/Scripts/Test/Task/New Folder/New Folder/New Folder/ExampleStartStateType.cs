@@ -36,7 +36,12 @@ public class ExampleStartStateType : MonoBehaviour, ItesTaskType<TElelementType>
         _listType.GetElementName(key);
         Debug.Log("Set Key = "+key.GetKey());
         
-        TesterLoaderF.statikLoad.AddTaskType(typeof(TElelementType),_HashTypeKey,this);
+        TesterLoaderF.statikLoad.AddTaskType(_typeKeyTask,_HashTypeKey,this);
+
+        
+        
+        
+        TesterLoaderF.statikLoad.StartLoadBank(_typeKeyTask, _HashTypeKey);
     }
     
     public void StartLoad()

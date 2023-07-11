@@ -11,8 +11,7 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
     //Вслуч Enum тут будет FabricType<GetType, TaskElementControllerUIType<GetType, Status>>
     [SerializeField] 
     private FabricTList<GetType, ListType, TaskElementControllerUIType<GetType, Status>> fabricTaskUI;
-
-    //private List<TaskElementControllerUIType<GetType,Status>> _buffer = new List<TaskElementControllerUIType<GetType,Status>>();
+    
     private Dictionary<GetType, List<TaskElementControllerUIType<GetType, Status>>> _buffer = new Dictionary<GetType, List<TaskElementControllerUIType<GetType, Status>>>();
 
     [SerializeField] 
@@ -26,14 +25,16 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
     public void UpdateInform(Dictionary<GetType,List<int>> listHash)
     {
 
+        Debug.Log("UpdateInfoElement");
+        Debug.Log("Count Key = " +listHash.Count);
+        
         foreach (var VARIABLE in listHash.Keys)
         {
+            Debug.Log("Count Task = " +listHash[VARIABLE].Count);
             CheckCountElement(VARIABLE,listHash[VARIABLE].Count);
         }
-     
+        
 
-        
-        
         _infoElement = new Dictionary<GetType, Dictionary<int, TaskElementControllerUIType<GetType,Status>>>();
 
         foreach (var VARIABLE in listHash.Keys)
@@ -42,8 +43,9 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
             int i = 0;
             foreach (var VARIABLE2 in listHash[VARIABLE])
             {
-                i++;
                 _infoElement[VARIABLE].Add(VARIABLE2,_buffer[VARIABLE][i]);
+                
+                i++;
             }
         }
 
@@ -60,6 +62,11 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
     private void UpdateUiStatusElement(GetType type, Status arg1)
     {
         _infoElement[type][arg1.Hash].UpdateData(arg1.GetKey(),arg1);
+    }
+
+    private void UpdateUIStatusElementDef(GetType type, Status arg1)
+    {
+        _infoElement[type][arg1.Hash].UpdateData(arg1);
     }
     
     
@@ -123,6 +130,7 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
         //_infoLoad.OnUpdateElementStatuse += UpdateUiStatusElement;
         //_infoLoad.OnUpdateGeneralStatuse += _generalTuskPanelUI.UpdateData;
 
+        _bank.OnUpdateElementStatuseType += UpdateUIStatusElementDef;
         _bank.OnUpdateElementStatuseType += UpdateUiStatusElement;
         _bank.OnUpdateGeneralStatuseType += _generalTuskPanelUI.UpdateData;
     }
@@ -130,9 +138,15 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
 
     private void CheckCountElement(GetType type, int targetCount)
     {
-        if (targetCount > _infoElement.Count)
+        if (_buffer.ContainsKey(type) == false)
         {
-            int difference = targetCount - _infoElement.Count;
+            _buffer.Add(type,new List<TaskElementControllerUIType<GetType, Status>>());
+        }
+        
+        
+        if (targetCount > _buffer[type].Count)
+        {
+            int difference = targetCount - _buffer[type].Count;
             CreateElement(type, difference);
         }
     }

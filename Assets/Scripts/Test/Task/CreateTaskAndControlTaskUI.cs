@@ -80,9 +80,9 @@ public class CreateTaskAndControlTaskUI : MonoBehaviour
 
     private void CheckCountElement(int targetCount)
     {
-        if (targetCount > _infoElement.Count)
+        if (targetCount > _buffer.Count)
         {
-            int difference = targetCount - _infoElement.Count;
+            int difference = targetCount - _buffer.Count;
             CreateElement(difference);
         }
     }
