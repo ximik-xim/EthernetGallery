@@ -12,10 +12,10 @@ using UnityEngine;
 /// Этот класс нужен в случае, если ключ будет доставаться каким либо образом из элементов списка
 /// В таком сулчае класс ListElement должен реализовывать интерфеис для получения ключа IGetKey
 /// </summary>
-public abstract class FabricTList<Key,ListElement, Prefab > : MonoBehaviour where ListElement : IGetKey<Key> where Prefab : MonoBehaviour
+public abstract class FabricTList<Key,ListElement, Prefab > : FabricInterActType<Key, Transform> where ListElement : IGetKey<Key> where Prefab : MonoBehaviour
 {
 
-    public event Action<Key, Transform> OnCreateObject;
+    public event Action<Key, Transform> OnCreateObjectType;
     [SerializeField]
     protected List<FabricInstantiateData<Prefab,ListElement>> _list;
     protected Dictionary<Key, Prefab> _loggerElementUis;
@@ -65,7 +65,8 @@ public abstract class FabricTList<Key,ListElement, Prefab > : MonoBehaviour wher
                 {
                     var obj = Instantiate(_loggerElementUis[type], VARIABLE._parent);
                     _OnLocalCreateObject?.Invoke(type,obj);
-                    OnCreateObject?.Invoke(type,obj.transform);
+                    InvokeOnCreateObject(obj.transform);
+                    InvokeOnCreateObjectType(type,obj.transform);
                 }
             }
             

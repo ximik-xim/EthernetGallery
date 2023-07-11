@@ -14,7 +14,8 @@ public class CreateTaskAndControlTaskUI : MonoBehaviour
 
     private Dictionary<int, TaskElementControllerUI> _infoElement = new Dictionary<int, TaskElementControllerUI>();
     private List<TaskElementControllerUI> _buffer = new List<TaskElementControllerUI>();
-    private LoaderTask _infoLoad;
+    [SerializeField]
+    private AbstractCalcalcal _infoLoad;
 
     /// <summary>
     /// Очистит UI и создаст нужное кол-во сообщений 
@@ -29,7 +30,7 @@ public class CreateTaskAndControlTaskUI : MonoBehaviour
             _infoElement.Add(listHash[i], _buffer[i]);
         }
         
-        for (int i = _infoElement.Count; i < _infoLoad.CountElement; i++)
+        for (int i = _infoElement.Count; i < _buffer.Count; i++)
         {
             _buffer[i].Close();
         }
@@ -67,9 +68,9 @@ public class CreateTaskAndControlTaskUI : MonoBehaviour
     
     private void Start()
     {
-        _infoLoad = LoaderTask.Task;
-        _infoLoad.OnUpdateElementStatuse += UpdateUiStatusElement;
-        _infoLoad.OnUpdateGeneralStatuse += _generalTuskPanelUI.UpdateData;
+      
+        _infoLoad.OnUpdateElementStatuseDef += UpdateUiStatusElement;
+        _infoLoad.OnUpdateGeneralStatuseDef += _generalTuskPanelUI.UpdateData;
     }
     
     private void UpdateUiStatusElement(LoaderStatuse arg1)

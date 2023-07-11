@@ -6,6 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Отвечает за обновление UI у задачи
 /// </summary>
+[RequireComponent(typeof(TaskElementControllerUIZero))]
 public class TaskElemUI : NewIntrefaseControlUITE
 {
     [SerializeField] 
@@ -32,11 +33,18 @@ public class TaskElemUI : NewIntrefaseControlUITE
     [SerializeField] 
     private Sprite _CompliteImageSet;
 
-
+    
+    private TaskElementControllerUIZero _taskElementControllerUIZero;
     
     
     private void Start()
     {
+        _taskElementControllerUIZero = GetComponent<TaskElementControllerUIZero>();
+        _taskElementControllerUIZero.OnOpen += Open;
+        _taskElementControllerUIZero.OnClose += Close;
+        _taskElementControllerUIZero.OnClearData += ClearData;
+        _taskElementControllerUIZero.OnUpdateStatuse += UpdateData;
+        
         _errorImage.sprite = _errorImageSet;
         _errorImage.gameObject.SetActive(false);
     }

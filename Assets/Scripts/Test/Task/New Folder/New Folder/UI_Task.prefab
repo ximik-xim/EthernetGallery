@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6009284877347365550}
   - component: {fileID: 4513022543271509253}
+  - component: {fileID: 6970809821432300391}
+  - component: {fileID: 6970809821432300392}
   m_Layer: 0
   m_Name: UI_Task
   m_TagString: Untagged
@@ -44,4 +46,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3be28908733dd7147bf284dbefabe0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _TuskUI: {fileID: 0}
+--- !u!114 &6970809821432300391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3242272740527776653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea5e17844cb664b49b2e814fcc397f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6970809821432300392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3242272740527776653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1e99a313c463634cbed375f28c10ff2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _background: {fileID: 0}
+  _nameTask: {fileID: 0}
+  _loaderComplite: {fileID: 0}
+  _loaderImage: {fileID: 0}
+  _SliserImage: {fileID: 0}
+  _errorImage: {fileID: 0}
+  _loadImageSet: {fileID: 21300000, guid: 5dbc069eb79bd4d43840847264d6d956, type: 3}
+  _errorImageSet: {fileID: 21300000, guid: f82dfc5fc3c5a8f4080a3550427019c8, type: 3}
+  _fatalErrorImageSet: {fileID: 21300000, guid: a3ced8f7044b9de4787602a9e9b20ea7,
+    type: 3}
+  _CompliteImageSet: {fileID: 21300000, guid: 4a231ba0e81e63849a8f985c228e8acd, type: 3}

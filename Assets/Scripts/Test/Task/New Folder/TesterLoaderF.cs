@@ -42,9 +42,6 @@ public class TesterLoaderF : MonoBehaviour
         
     }
     
-    
-
-
     public void AddTaskType(Type typeKey,int hashKey, ILoaderTask task)
     {
         _dictionaryBank[typeKey][hashKey].AddtTT(task);

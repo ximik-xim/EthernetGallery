@@ -7,12 +7,12 @@ using UnityEngine;
 /// T - класс префаба
 /// Создает экземпляры префаба
 /// </summary>
-public abstract class FabricDefault<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class FabricDefault<T> : FabricInterActDef where T : MonoBehaviour
 {
     /// <summary>
     ///Срабатывает при создании экземпляра префаба 
     /// </summary>
-    public event Action<Transform> OnCreateObject;
+
     [SerializeField] 
     protected Transform _parent;
     [SerializeField] 
@@ -32,7 +32,7 @@ public abstract class FabricDefault<T> : MonoBehaviour where T : MonoBehaviour
         {
             var obj = Instantiate(_prefab, _parent);
             _OnLocalCreateObject?.Invoke(obj);
-            OnCreateObject?.Invoke(obj.transform);
+            InvokeOnCreateObject(obj.transform);
         }
 
         _OnLocalCreateObject -= onLocalCreateObject;

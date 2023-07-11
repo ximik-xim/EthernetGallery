@@ -6,16 +6,29 @@ using UnityEngine.SceneManagement;
 
 //Отвечает за загрузку задач
 [System.Serializable]
-public class LoaderTask:MonoBehaviour
+public class LoaderTask:AbstractCalcalcal
 {
     //Сингалтон 
     public static LoaderTask Task;
     //Вернет кол-во задач в списке
     public int CountElement => _loadData.Count;
+    
+    
     //Статус конкретной задачи
-    public Action<LoaderStatuse> OnUpdateElementStatuse;
+    public override Action<LoaderStatuse> OnUpdateElementStatuseDef
+    {
+        get => OnUpdateElementStatuse; 
+        set=>OnUpdateElementStatuse=value; 
+    }
     //это общий статус загрузки задач
-    public Action<LoaderStatuse> OnUpdateGeneralStatuse;
+    public override Action<LoaderStatuse> OnUpdateGeneralStatuseDef
+    {
+        get => OnUpdateGeneralStatuse;
+        set => OnUpdateGeneralStatuse = value;
+    }
+    
+    private Action<LoaderStatuse> OnUpdateElementStatuse;
+    private Action<LoaderStatuse> OnUpdateGeneralStatuse;
 
     [SerializeField]
     private bool _disactiveStartUI;
@@ -211,4 +224,6 @@ public class LoaderTask:MonoBehaviour
             DisactiveUiLoader();
         }
     }
+
+
 }

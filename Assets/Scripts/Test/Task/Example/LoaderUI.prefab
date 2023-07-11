@@ -166,8 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeb5801678860d94b9045e25a0e6e210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 4104814171274979799, guid: 9c76e3760d8af3548a86ea6e0f946c8a, type: 3}
   _parent: {fileID: 10408838494516935}
+  _prefab: {fileID: 4104814171274979799, guid: 9c76e3760d8af3548a86ea6e0f946c8a, type: 3}
 --- !u!114 &10408838822038190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7101a83f3c44748468ad748e0c49637e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fabric: {fileID: 10408838822038194}
+  fabricTaskUI: {fileID: 10408838822038194}
   defaultLoggerElement: {fileID: 10408838822038191}
 --- !u!114 &10408838822038191
 MonoBehaviour:
@@ -787,7 +787,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _generalTuskPanelUI: {fileID: 10408839802043157}
-  _fabric: {fileID: 10408838822038194}
+  fabricTaskUI: {fileID: 10408838822038194}
+  _infoLoad: {fileID: 1182545221376978862}
 --- !u!1 &1182545221659816707
 GameObject:
   m_ObjectHideFlags: 0

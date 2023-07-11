@@ -15,6 +15,11 @@ public class GeneralTaskPanelUIEX1 : NewIntrefaseControlUITEType<TElelementType,
         throw new System.NotImplementedException();
     }
 
+    public override void UpdateData(LoaderStatuse statuse)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void UpdateData(TElelementType key, ExamStat statuse)
     {
         throw new System.NotImplementedException();

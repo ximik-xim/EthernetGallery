@@ -2,11 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(TaskElementControllerUI))]
+[RequireComponent(typeof(TaskElementControllerUIZero))]
 public class LoggerElementUI : NewIntrefaseControlUITE,ISetterData<LoggerPanel>
 {
 
-    private TaskElementControllerUI _data;
+    private TaskElementControllerUIZero _data;
     
     public IReadOnlyList<LoaderStatuse> Statuses => _listStatuse; 
     
@@ -16,7 +16,7 @@ public class LoggerElementUI : NewIntrefaseControlUITE,ISetterData<LoggerPanel>
 
     private void Awake()
     {
-        _data = GetComponent<TaskElementControllerUI>();
+        _data = GetComponent<TaskElementControllerUIZero>();
         _data.OnUpdateStatuse += UpdateData;
         _data.OnClearData += ClearListStatuse;
         _data.OnClose += Close;
