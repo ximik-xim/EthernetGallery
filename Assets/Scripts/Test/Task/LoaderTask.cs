@@ -24,6 +24,7 @@ public class LoaderTask:MonoBehaviour
     private Dictionary<int, ILoaderTask> _loadData = new Dictionary<int, ILoaderTask>();
     
     private int _countTasks=default;
+    //нужен только для подсчета итогового кол-во выполнения задач
     private Dictionary<int, float> _percentageTaskCompletion = new Dictionary<int, float>();
     
     /// <summary>

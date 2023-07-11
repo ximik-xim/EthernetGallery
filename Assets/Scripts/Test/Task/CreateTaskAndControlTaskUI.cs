@@ -10,7 +10,7 @@ public class CreateTaskAndControlTaskUI : MonoBehaviour
     private NewIntrefaseControlUITE _generalTuskPanelUI;
 
     [SerializeField] 
-    private PrototypeFabric fabric;
+    private FabricTaskUI fabricTaskUI;
 
     private Dictionary<int, TaskElementControllerUI> _infoElement = new Dictionary<int, TaskElementControllerUI>();
     private List<TaskElementControllerUI> _buffer = new List<TaskElementControllerUI>();
@@ -24,14 +24,13 @@ public class CreateTaskAndControlTaskUI : MonoBehaviour
         CheckCountElement(listHash.Count);
 
         _infoElement = new Dictionary<int, TaskElementControllerUI>();
-        for (int i = 0; i < _infoLoad.CountElement; i++)
+        for (int i = 0; i < listHash.Count; i++)
         {
             _infoElement.Add(listHash[i], _buffer[i]);
         }
         
         for (int i = _infoElement.Count; i < _infoLoad.CountElement; i++)
         {
-         
             _buffer[i].Close();
         }
     }
@@ -89,7 +88,7 @@ public class CreateTaskAndControlTaskUI : MonoBehaviour
 
     private void CreateElement(int count)
     {
-        fabric.Create(count,CreateElement);
+        fabricTaskUI.Create(count,CreateElement);
     }
 
     private void CreateElement(TaskElementControllerUI element)
