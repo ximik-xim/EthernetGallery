@@ -25,12 +25,8 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
     public void UpdateInform(Dictionary<GetType,List<int>> listHash)
     {
 
-        Debug.Log("UpdateInfoElement");
-        Debug.Log("Count Key = " +listHash.Count);
-        
         foreach (var VARIABLE in listHash.Keys)
         {
-            Debug.Log("Count Task = " +listHash[VARIABLE].Count);
             CheckCountElement(VARIABLE,listHash[VARIABLE].Count);
         }
         
@@ -61,12 +57,17 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
     
     private void UpdateUiStatusElement(GetType type, Status arg1)
     {
-        _infoElement[type][arg1.Hash].UpdateData(arg1.GetKey(),arg1);
-    }
-
-    private void UpdateUIStatusElementDef(GetType type, Status arg1)
-    {
+        _infoElement[type][arg1.Hash].UpdateStatuseElement(arg1.GetKey(),arg1);
         _infoElement[type][arg1.Hash].UpdateData(arg1);
+    }
+ 
+    private void UpdateUiStatusGeneralType(GetType type, Status arg1)
+    {
+
+        foreach (var VARIABLE in _infoElement[type].Values)
+        {
+            VARIABLE.UpdateStatusTypeGeneral(type,arg1);
+        }
     }
     
     
@@ -92,7 +93,7 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
     ///Тааааак а вот и проблемы, допустим я хочу сдлеать CloseType - Что бы закрывать TaskUI опр. типа
     /// Добавить этот функционал в Bank
 
-    public void CloseType(GetType type)
+    public void CloseType(GetType type) 
     {
         foreach (var VARIABLE in _buffer[type])
         {
@@ -126,13 +127,11 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
     private void Start()
     {
         
-        //_infoLoad = LoaderTask.Task;
-        //_infoLoad.OnUpdateElementStatuse += UpdateUiStatusElement;
-        //_infoLoad.OnUpdateGeneralStatuse += _generalTuskPanelUI.UpdateData;
+         _bank.OnUpdateGeneralTypeStatus += _generalTuskPanelUI.UpdateDataTypeGeneral;
+         _bank.OnUpdateGeneralStatuseDef += _generalTuskPanelUI.UpdateData;
 
-        _bank.OnUpdateElementStatuseType += UpdateUIStatusElementDef;
         _bank.OnUpdateElementStatuseType += UpdateUiStatusElement;
-        _bank.OnUpdateGeneralStatuseType += _generalTuskPanelUI.UpdateData;
+        _bank.OnUpdateGeneralTypeStatus += UpdateUiStatusGeneralType;
     }
     
 

@@ -19,10 +19,6 @@ public class GeneralTaskPanelUIEX1 : NewIntrefaseControlUITEType<TElelementType,
     private GameObject _panelUI;
     
 
-    public override void UpdateData(TElelementType key, TesStatType<TElelementType> statuse)
-    {
-        
-    }
 
     public override void Open(bool clearData = false)
     {
@@ -31,6 +27,7 @@ public class GeneralTaskPanelUIEX1 : NewIntrefaseControlUITEType<TElelementType,
 
     public override void UpdateData(LoaderStatuse statuse)
     {
+        Debug.Log("UpdateStatus");
         _loaderImage.fillAmount = statuse.Comlite;
         _loaderText.text = (statuse.Comlite * 100).ToString() + "%";
     }
@@ -44,5 +41,9 @@ public class GeneralTaskPanelUIEX1 : NewIntrefaseControlUITEType<TElelementType,
     public override void Close()
     {
         _panelUI.gameObject.SetActive(false);
+    }
+
+    public override void UpdateDataTypeGeneral(TElelementType key, TesStatType<TElelementType> statuse)
+    {
     }
 }

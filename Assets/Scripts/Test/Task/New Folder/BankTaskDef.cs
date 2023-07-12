@@ -22,32 +22,54 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
     [SerializeField]
     private TaskUIControleTe<GetType,ElementType,Status> _UIload;
 
+    private bool _isLoad = false;
+
+
+
+    private Dictionary<GetType, Dictionary<int, float>> _percentageTaskCompletion = new Dictionary<GetType, Dictionary<int, float>>(); 
     
-    //SetМожет сработать как приравнивание значение а не как добавление(Проверить это)
+    
+    
+    
+    /// <summary>
+    /// Обновление статуса у Task с типом
+    /// </summary>
     public override Action<GetType, Status> OnUpdateElementStatuseType 
     {   
         get => OnUpdateElementStatuse;
         set => OnUpdateElementStatuse = value;
     }
-    public override Action<GetType, Status> OnUpdateGeneralStatuseType 
-    { 
-        get => OnUpdateGeneralStatuse;
-        set => OnUpdateGeneralStatuse = value;
-    }
 
+    /// <summary>
+    /// Обновление статуса у Task 
+    /// </summary>
     public override Action<LoaderStatuse> OnUpdateElementStatuseDef 
     { 
         get => OnUpdateElementStatuseDefault;
         set => OnUpdateElementStatuseDefault = value;
     }
+    
+    /// <summary>
+    /// Обновление общего статуса у Task 
+    /// </summary>
     public override Action<LoaderStatuse> OnUpdateGeneralStatuseDef 
     { 
         get => OnUpdateGeneralStatuseDefault;
         set => OnUpdateGeneralStatuseDefault = value;
     }
 
+    /// <summary>
+    /// Обновление общего статуса типа у Task с типом 
+    /// </summary>
+    public override Action<GetType, Status> OnUpdateGeneralTypeStatus
+    {
+        get => OnUpdateGeneralTypeStatuse;
+        set => OnUpdateGeneralTypeStatuse = value;
+
+    }
+
     private Action<GetType, Status> OnUpdateElementStatuse;
-    private Action<GetType, Status> OnUpdateGeneralStatuse;
+    private Action<GetType, Status> OnUpdateGeneralTypeStatuse;
     
     private Action<LoaderStatuse> OnUpdateElementStatuseDefault;
     private Action<LoaderStatuse> OnUpdateGeneralStatuseDefault;
@@ -102,20 +124,21 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
     
     private void SubscribeEventElement(ItesTaskType loaderTask)
     {
-        // loaderTask.OnStatus += OnRemoveLoadDataComlite;
-        // loaderTask.OnStatus += OnRemoveLoadDataError;
-        //     
+         loaderTask.OnStatus += OnRemoveLoadDataComlite;
+         loaderTask.OnStatus += OnRemoveLoadDataError;
+             
          loaderTask.OnStatus += OnElementUpdateStatus;
-        // loaderTask.OnStatus += OnUpdateGeneralStatus;
+         loaderTask.OnStatus += OnUpdateGeneralStatus;
+         
     }
     
     private void UnsubscribeEventElement(ItesTaskType loaderTask)
     {
-        //loaderTask.OnStatus -= OnRemoveLoadDataComlite;
-        //loaderTask.OnStatus -= OnRemoveLoadDataError;
+        loaderTask.OnStatus -= OnRemoveLoadDataComlite;
+        loaderTask.OnStatus -= OnRemoveLoadDataError;
             
         loaderTask.OnStatus -= OnElementUpdateStatus;
-        //loaderTask.OnStatus -= OnUpdateGeneralStatus;
+        loaderTask.OnStatus -= OnUpdateGeneralStatus;
         
     }
 
@@ -126,6 +149,128 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
         OnUpdateElementStatuse?.Invoke(status.GetKey(),status);
         OnUpdateElementStatuseDefault?.Invoke(types);
     }
+    
+    
+    private void OnRemoveLoadDataComlite(LoaderStatuse arg1)
+    {
+        Status status = arg1 as Status;
+        
+        if (status.Statuse == LoaderStatuse.StatusLoad.Complite)
+        {
+            UnsubscribeEventElement(_dictionary[status.GetKey()][status.Hash]);
+
+            _dictionary[status.GetKey()].Remove(status.Hash);
+        }
+    }
+    
+    
+    private void OnRemoveLoadDataError(LoaderStatuse arg1)
+    {
+        Status status = arg1 as Status;
+        if (arg1.Statuse == LoaderStatuse.StatusLoad.Error)
+        {
+            UnsubscribeEventElement(_dictionary[status.GetKey()][status.Hash]);
+            
+            _dictionary[status.GetKey()].Remove(status.Hash);
+        }
+    }
+
+
+
+
+    /// <summary>
+    /// Добавить bool
+    /// Вынести логику для заполнения списка выполн задач в StartLoad
+    /// </summary>
+    /// <param name="arg1"></param>
+    ///
+    ///
+
+    private void InsetrtDataGeneral()
+    {
+        _percentageTaskCompletion = new Dictionary<GetType, Dictionary<int, float>>();
+        foreach (var VARIABLE in _dictionary.Keys)
+        {
+            if (_percentageTaskCompletion.ContainsKey(VARIABLE) == false)
+            {
+                _percentageTaskCompletion.Add(VARIABLE, new Dictionary<int, float>());
+            }
+            
+            foreach (var VARIABLE2 in _dictionary[VARIABLE])
+            {
+                if (_percentageTaskCompletion[VARIABLE].ContainsKey(VARIABLE2.Key) == false)
+                {
+                    _percentageTaskCompletion[VARIABLE].Add(VARIABLE2.Key, 0);
+                }
+            }
+        }
+        
+        
+        
+    }
+    private void OnUpdateGeneralStatus(LoaderStatuse arg1)
+    {
+        Status status = arg1 as Status;
+        
+        _percentageTaskCompletion[status.GetKey()][arg1.Hash] = arg1.Comlite;
+
+
+        float fullComlite = 0;
+        foreach (var VARIABLE11 in _percentageTaskCompletion.Keys)
+        {
+
+
+            float d = 1f / _percentageTaskCompletion[VARIABLE11].Count;
+
+            float comlite = 0;
+            
+            foreach (var VARIABLE in _percentageTaskCompletion[VARIABLE11].Values)
+            {
+                comlite += d * VARIABLE;
+            }
+
+            fullComlite += comlite;
+            
+            if (comlite != 1f)
+            {
+
+                //Хммм не могу создать экземпляр типа Status из за обобщения(странно, ведь доступ к конструктору класса имею)
+                //TesStatType<GetType> asdas = new TesStatType<GetType>(LoaderStatuse.StatusLoad.Complite,arg1.Hash,"",comlite);
+                var stat1 = LoadStatLoad(arg1.Hash, comlite);
+                stat1.SetKey(VARIABLE11);
+                OnUpdateGeneralTypeStatuse?.Invoke(VARIABLE11,stat1);
+                
+                continue;
+            }
+
+            var stat2 = LoadStatComlite(arg1.Hash, comlite);
+            stat2.SetKey(VARIABLE11);
+                
+            OnUpdateGeneralTypeStatuse?.Invoke(VARIABLE11,stat2);
+
+        }
+
+        fullComlite = fullComlite / _percentageTaskCompletion.Count;
+        
+        if (fullComlite != 1f)
+        {
+            Debug.Log("StatuseDefaulLoad");
+            OnUpdateGeneralStatuseDefault?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Load, arg1.Hash, "Общая загрузка", fullComlite));
+            return;
+        }
+        
+        Debug.Log("StatuseDefaulComplite");
+        OnUpdateGeneralStatuseDefault?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Complite, arg1.Hash, "Общая загрузка", fullComlite));
+
+        _isLoad = false;
+        
+        
+    }
+    
+    
+    
+    
+    
 
     public void Add(ItesTaskType Task)
     {
@@ -209,27 +354,32 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
        
     }
 
-    
-    //Так все подписки для удаленеия элементов и т.д потом напишу, пока гланое нужно написать
-    
-    //Подумать над этим
-    public void StartLoadScene(int idScene,bool executeAfterLoading)
+
+    public void StartLoadScene(int idScene, bool executeAfterLoading)
     {
 
-        if (executeAfterLoading == true)
+        if (_isLoad == false)
         {
+            _isLoad = true;
+
+            if (executeAfterLoading == true)
+            {
+                UpdateInfoUI();
+                StartLoadeeeee();
+                SceneManager.LoadScene(idScene);
+
+                return;
+            }
+
             UpdateInfoUI();
-            StartLoadeeeee();
             SceneManager.LoadScene(idScene);
-          
+            StartLoadeeeee();
+        
             return;
         }
-
-        UpdateInfoUI();
-        SceneManager.LoadScene(idScene);
-        StartLoadeeeee();
-      
-    }
+        
+        Debug.LogError("ОШИБКА, Загрузка Task уже запущена");
+}
     
     
     
@@ -251,19 +401,24 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
 
     public void StartLoad()
     {
-        UpdateInfoUI();
-        StartLoadeeeee();
-    
+        if (_isLoad == false)
+        {
+            _isLoad = true;
             
-        
+            UpdateInfoUI();
+            StartLoadeeeee();
+
+            return;
+        }
+        Debug.LogError("ОШИБКА, Загрузка Task уже запущена");
     }
 
     private void StartLoadeeeee()
     {
-        ActiveUILoader(true);
-        //_countTasks = _loadData.Count;
-        //_percentageTaskCompletion = new Dictionary<int, float>();
+        InsetrtDataGeneral();
         
+        ActiveUILoader(true);
+
         foreach (var VARIABLE in _dictionary.Keys)
         {
 
@@ -292,6 +447,8 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
     
     protected abstract int GetHashKey();
 
+    protected abstract Status LoadStatLoad(int hashTask,float comliteTask);
+    
+    protected abstract Status LoadStatComlite(int hashTask, float comliteTask);
 
-  
 }

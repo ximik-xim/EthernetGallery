@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class TesStatType<T> : LoaderStatuse,IGetKey<T>
+public  class TesStatType<T> : LoaderStatuse,IGetKey<T>
 {
     [SerializeField]
     private T _key;
-    protected TesStatType(StatusLoad statuse, int hash, string name, float comlite, Start startInfo = null, Load loadInfo = null, Error errorInfo = null, Complite compliteInfo = null) : base(statuse, hash, name, comlite, startInfo, loadInfo, errorInfo, compliteInfo)
+    public  TesStatType(StatusLoad statuse, int hash, string name, float comlite, Start startInfo = null, Load loadInfo = null, Error errorInfo = null, Complite compliteInfo = null) : base(statuse, hash, name, comlite, startInfo, loadInfo, errorInfo, compliteInfo)
     {
     }
 

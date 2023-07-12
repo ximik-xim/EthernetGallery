@@ -5,6 +5,7 @@ using UnityEngine;
 
 public abstract class NewIntrefaseControlUITEType<Key,Status> : NewIntrefaseControlUITE where Status : TesStatType<Key>
 {
-    public abstract void UpdateData(Key key,Status  statuse);
+    //Пока не вижу в нем смысла, но пуска будет
+    public abstract void UpdateDataTypeGeneral(Key key,Status  statuse);
     
 }

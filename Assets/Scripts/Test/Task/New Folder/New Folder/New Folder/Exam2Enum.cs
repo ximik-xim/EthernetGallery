@@ -12,7 +12,6 @@ public class Exam2Enum :  BankTaskDef<ExTask2,adflajf,FakT<adflajf>,ExStat2>
 {
     private void Awake()
     {
-        Debug.Log("INIT 2");
         Init();
     }
 
@@ -20,4 +19,15 @@ public class Exam2Enum :  BankTaskDef<ExTask2,adflajf,FakT<adflajf>,ExStat2>
     {
         return typeof(adflajf).GetHashCode();
     }
+
+    protected override ExStat2 LoadStatLoad(int hashTask, float comliteTask)
+    {
+        return new ExStat2(LoaderStatuse.StatusLoad.Load, hashTask, "Загрузка Task Type", comliteTask);
+    }
+
+    protected override ExStat2 LoadStatComlite(int hashTask, float comliteTask)
+    {
+        return new ExStat2(LoaderStatuse.StatusLoad.Complite, hashTask, "Загрузка Task Type", comliteTask);
+    }
+    
 }

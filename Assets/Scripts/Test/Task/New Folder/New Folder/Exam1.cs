@@ -12,9 +12,19 @@ public class Exam1 : BankTaskDef<ItesTaskType<TElelementType>,TElelementType,TGe
         return _listType.GetHashCode();
     }
 
+    protected override TesStatType<TElelementType> LoadStatLoad(int hashTask,float comliteTask)
+    {
+        return new TesStatType<TElelementType>(LoaderStatuse.StatusLoad.Load, hashTask, "Загрузка Task Type", comliteTask);
+    }
+
+    protected override TesStatType<TElelementType> LoadStatComlite(int hashTask,float comliteTask)
+    {
+        return new TesStatType<TElelementType>(LoaderStatuse.StatusLoad.Complite, hashTask, "Загрузка Task Type", comliteTask);
+    }
+    
+
     private void Awake()
     {
-        Debug.Log("INIT 1");
-Init();
+        Init();
     }
 }

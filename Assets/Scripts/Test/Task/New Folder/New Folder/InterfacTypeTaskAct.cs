@@ -7,6 +7,8 @@ public interface InterfacTypeTaskAct<GetKey,Status>
 {
     public Action<GetKey, Status> OnUpdateElementStatuseType { get;set; }
     
-    public Action<GetKey, Status> OnUpdateGeneralStatuseType { get;set; } 
+
+
+    public abstract Action<GetKey,Status> OnUpdateGeneralTypeStatus { get; set; }
 }
 

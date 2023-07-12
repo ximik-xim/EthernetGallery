@@ -6,10 +6,8 @@ using UnityEngine;
 public abstract class AbstrCal<GetKey,Status> : AbstractCalcalcal,InterfacTypeTaskAct<GetKey,Status>
 {
     public abstract Action<GetKey, Status> OnUpdateElementStatuseType { get; set; }
-    public abstract Action<GetKey, Status> OnUpdateGeneralStatuseType { get; set;}
-    
 
-
+    public abstract Action<GetKey,Status> OnUpdateGeneralTypeStatus { get; set; }
 
 
 

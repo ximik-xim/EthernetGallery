@@ -10,6 +10,8 @@ public class ExampleStartStateType : MonoBehaviour, ItesTaskType<TElelementType>
     [SerializeField] 
     private TGetLIstType key;
 
+    [SerializeField] 
+    private int _millisecTime = 300;
     private int _hash => this.GetHashCode();
     private string _name = "Искуственная задержка";
     
@@ -41,7 +43,7 @@ public class ExampleStartStateType : MonoBehaviour, ItesTaskType<TElelementType>
         
         
         
-        TesterLoaderF.statikLoad.StartLoadBank(_typeKeyTask, _HashTypeKey);
+        //TesterLoaderF.statikLoad.StartLoadBank(_typeKeyTask, _HashTypeKey);
     }
     
     public void StartLoad()
@@ -53,7 +55,7 @@ public class ExampleStartStateType : MonoBehaviour, ItesTaskType<TElelementType>
     //аппасно тут делать асинхроность, т.к если будет какая либо ошибка она не выведеться в консоль
     public async Task StartTimer()
     {
-        int time = 300;
+        int time = _millisecTime;
         
         await Task.Delay(time);
         var status = new ExamStat(LoaderStatuse.StatusLoad.Start, _hash, _name, 1f / 10, new LoaderStatuse.Start("Старт задержки"));
@@ -81,13 +83,13 @@ public class ExampleStartStateType : MonoBehaviour, ItesTaskType<TElelementType>
         OnStatus?.Invoke(status);
         for (int i = 0; i < 8; i++)
         {
-            yield return new WaitForSeconds(1000 / 300);
+            yield return new WaitForSeconds(1000 / _millisecTime);
             status = new ExamStat(LoaderStatuse.StatusLoad.Load, _hash, _name, 1f / 10 * (i + 2), null, new LoaderStatuse.Load("Ожидание задержки"));
             status.SetKey(key.GetKey());
             OnStatus?.Invoke(status);
         }
         
-        yield return new WaitForSeconds(1000 / 300);
+        yield return new WaitForSeconds(1000 / _millisecTime);
         status = new ExamStat(LoaderStatuse.StatusLoad.Complite, _hash, _name, 1f, null, null, null, new LoaderStatuse.Complite("Ожидание задержки завершено"));
         status.SetKey(key.GetKey());
         OnStatus?.Invoke(status);

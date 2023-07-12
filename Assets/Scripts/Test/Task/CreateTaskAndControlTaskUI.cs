@@ -75,6 +75,7 @@ public class CreateTaskAndControlTaskUI : MonoBehaviour
     
     private void UpdateUiStatusElement(LoaderStatuse arg1)
     {
+  
         _infoElement[arg1.Hash].UpdateData(arg1);
     }
 

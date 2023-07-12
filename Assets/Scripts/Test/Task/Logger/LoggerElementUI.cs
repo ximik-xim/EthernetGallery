@@ -37,7 +37,6 @@ public class LoggerElementUI : NewIntrefaseControlUITE,ISetterData<LoggerPanel>
     
     public override void UpdateData(LoaderStatuse statuse)
     {
-        Debug.Log("LIST ADD = "+ statuse.Statuse);
         _listStatuse.Add(statuse);
         if (_select == true)
         {

@@ -10,10 +10,7 @@ public class LoaderTask:AbstractCalcalcal
 {
     //Сингалтон 
     public static LoaderTask Task;
-    //Вернет кол-во задач в списке
-    public int CountElement => _loadData.Count;
-    
-    
+
     //Статус конкретной задачи
     public override Action<LoaderStatuse> OnUpdateElementStatuseDef
     {
@@ -26,6 +23,7 @@ public class LoaderTask:AbstractCalcalcal
         get => OnUpdateGeneralStatuse;
         set => OnUpdateGeneralStatuse = value;
     }
+    
     
     private Action<LoaderStatuse> OnUpdateElementStatuse;
     private Action<LoaderStatuse> OnUpdateGeneralStatuse;
@@ -40,14 +38,23 @@ public class LoaderTask:AbstractCalcalcal
     //нужен только для подсчета итогового кол-во выполнения задач
     private Dictionary<int, float> _percentageTaskCompletion = new Dictionary<int, float>();
     
+    private bool _isLoad = false;
+    
     /// <summary>
     /// Запустит загрузку у всех задач из списка
     ///  и включит UI очистив его
     /// </summary>
     public void StartLoadResourse()
     {
-        UpdateInfoUI();
-        Startload();
+        if (_isLoad == false)
+        {
+            _isLoad = true;
+            UpdateInfoUI();
+            Startload();
+            
+            return;
+        }
+        Debug.LogError("ОШИБКА, Загрузка Task уже запущена");
     }
 
     /// <summary>
@@ -57,20 +64,26 @@ public class LoaderTask:AbstractCalcalcal
     /// </summary>
     public void StartLoadScene(int idScene,bool executeAfterLoading)
     {
-
-        if (executeAfterLoading == true)
+        if (_isLoad == false)
         {
+            _isLoad = true;
+
+            if (executeAfterLoading == true)
+            {
+                UpdateInfoUI();
+                Startload();
+                SceneManager.LoadScene(idScene);
+
+                return;
+            }
+
             UpdateInfoUI();
-            Startload();
             SceneManager.LoadScene(idScene);
-          
+            Startload();
             return;
         }
-
-        UpdateInfoUI();
-        SceneManager.LoadScene(idScene);
-        Startload();
-      
+        
+        Debug.LogError("ОШИБКА, Загрузка Task уже запущена");
     }
     /// <summary>
     /// Добавит задачу в список
@@ -126,6 +139,8 @@ public class LoaderTask:AbstractCalcalcal
     
     private void Startload()
     {
+        InsetrtDataGeneral();
+            
         ActiveUILoader(true);
         _countTasks = _loadData.Count;
         _percentageTaskCompletion = new Dictionary<int, float>();
@@ -191,12 +206,22 @@ public class LoaderTask:AbstractCalcalcal
         OnUpdateElementStatuse.Invoke(arg1);
     }
 
+    private void InsetrtDataGeneral()
+    {
+        _percentageTaskCompletion = new Dictionary<int, float>();
+
+        foreach (var VARIABLE in _loadData.Keys)
+        {
+            if (_percentageTaskCompletion.ContainsKey(VARIABLE) == false)
+            {
+                _percentageTaskCompletion.Add(VARIABLE, 0);
+            }
+            
+        }
+
+    }
     private void OnUpdateGeneralStatus(LoaderStatuse arg1)
     {
-        if (_percentageTaskCompletion.ContainsKey(arg1.Hash) == false)
-        {
-            _percentageTaskCompletion.Add(arg1.Hash,arg1.Comlite);
-        }
         _percentageTaskCompletion[arg1.Hash] = arg1.Comlite;
         
         float d = 1f / _countTasks;
@@ -214,7 +239,7 @@ public class LoaderTask:AbstractCalcalcal
         }
         
         OnUpdateGeneralStatuse?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Complite, arg1.Hash, "Общая загрузка", comlite));
-        
+        _isLoad = false;
     }
 
     private void OnDisactiveLoaderComplite(LoaderStatuse arg1)
