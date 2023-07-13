@@ -25,7 +25,11 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
     private bool _isLoad = false;
 
 
-
+    public float GeneralStatusComlite
+    {
+        get => _generalStatusComlite;
+    }
+    private float _generalStatusComlite   = 0f;
     private Dictionary<GetType, Dictionary<int, float>> _percentageTaskCompletion = new Dictionary<GetType, Dictionary<int, float>>();
 
     private List<ParentDataSet> _parentDataSet =new List<ParentDataSet>();
@@ -256,17 +260,20 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
         if (fullComlite != 1f)
         {
             Debug.Log("StatuseDefaulLoad");
+            _generalStatusComlite = fullComlite;
             OnUpdateGeneralStatuseDefault?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Load, arg1.Hash, "Общая загрузка", fullComlite));
             return;
         }
         
+        _generalStatusComlite = fullComlite;
         Debug.Log("StatuseDefaulComplite");
         OnUpdateGeneralStatuseDefault?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Complite, arg1.Hash, "Общая загрузка", fullComlite));
 
+     
         _isLoad = false;
         _parentDataSet = new List<ParentDataSet>();
         _parentDataSetType = new List<ParentDataSetType<GetType>>();
-
+        
     }
     
     
@@ -417,6 +424,7 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
 
     private void StartLoadeeeee()
     {
+        _generalStatusComlite = 0;
         InsetrtDataGeneral();
         
         ActiveUILoader(true);

@@ -9,8 +9,54 @@ public class TesterLoaderF : MonoBehaviour
     public static TesterLoaderF statikLoad;
     public static Action OnInit;
 
+[SerializeField]
+    private bool _useExternalTaskPanel = false;
+    [SerializeField] 
+    private NewIntrefaseControlUITE _intrefaseControlUite;
+    [SerializeField] 
+    private Transform _parentTask;
+    private Dictionary<Interfasda, float> _dictionary;
+    public Action<LoaderStatuse> GeneralTask; 
+
+
+
+
+
+
+
+    public void OpenExternalPanel()
+    {
+        if (_useExternalTaskPanel == false)
+        {
+            Debug.LogError("Ошибка, общая панель для разных типов Task не была включена");
+            return;
+        }
+        
+        _intrefaseControlUite.Open();
+    }
+    
+    
+    public void CloseExternalPanel()
+    {
+        if (_useExternalTaskPanel == false)
+        {
+            Debug.LogError("Ошибка, общая панель для разных типов Task не была включена");
+            return;
+        }
+        
+        _intrefaseControlUite.Close();
+    }
+    
+    
     private void Awake()
     {
+        if (_useExternalTaskPanel == true)
+        {
+            GeneralTask += _intrefaseControlUite.UpdateData;
+
+        }
+        
+        
         statikLoad = this;
         OnInit?.Invoke();
         
@@ -74,9 +120,58 @@ public class TesterLoaderF : MonoBehaviour
     {
         
     }
-    
-    
-    
+
+
+
+
+    public void StartLoadBankGeneral()
+    {
+
+
+        
+            
+       
+        
+        foreach (var VARIABLE in _dictionaryBank.Keys)
+        {
+            foreach (var VARIABLE2 in _dictionaryBank[VARIABLE].Keys)
+            {
+                if (_useExternalTaskPanel == true)
+                {
+                    _dictionaryBank[VARIABLE][VARIABLE2].OnUpdateGeneralStatuseDef += dfadfadfas;
+                    _dictionaryBank[VARIABLE][VARIABLE2].AddParentUITask(new ParentDataSet(_parentTask)); 
+                }
+                
+                _dictionaryBank[VARIABLE][VARIABLE2].StartLoad();
+            }
+        }
+    }
+
+    private void dfadfadfas(LoaderStatuse obj)
+    {
+       
+            float comlite = 0;
+            int value = 0;
+            foreach (var VARIABLE in _dictionaryBank.Keys)
+            {
+                foreach (var VARIABLE2 in _dictionaryBank[VARIABLE].Keys)
+                {
+                    value++;
+                    comlite+= _dictionaryBank[VARIABLE][VARIABLE2].GeneralStatusComlite;
+                }
+            }
+
+            comlite /= value;
+
+            if (comlite != 1f)
+            {
+                GeneralTask?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Load, this.GetHashCode(), "Общая загрузка", comlite));
+                return;
+            }
+            
+            GeneralTask?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Complite, this.GetHashCode(), "Общая загрузка", comlite));
+    }
+
     public void StartLoadBank(Type typeKey,int hashKey)
     {
         _dictionaryBank[typeKey][hashKey].StartLoad();

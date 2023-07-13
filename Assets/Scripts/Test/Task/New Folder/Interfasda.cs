@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface Interfasda
+public interface Interfasda:InterfaceDefTaskAct
 {
+    public float GeneralStatusComlite { get; }
     public void AddtTT(ILoaderTask taskType);
     public void RemoveTT(ILoaderTask taskType);
 

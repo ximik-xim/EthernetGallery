@@ -11,6 +11,7 @@ public class EXStartStateType : MonoBehaviour
     private void Start()
     {
         
-        TesterLoaderF.statikLoad.StartLoadBank(typeof(TElelementType) , _listType.GetHashCode());
+        //TesterLoaderF.statikLoad.StartLoadBank(typeof(TElelementType) , _listType.GetHashCode());
+        TesterLoaderF.statikLoad.StartLoadBankGeneral();
     }
 }
