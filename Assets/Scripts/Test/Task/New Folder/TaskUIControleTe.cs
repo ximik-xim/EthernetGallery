@@ -14,32 +14,106 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
     
     private Dictionary<GetType, List<TaskElementControllerUIType<GetType, Status>>> _buffer = new Dictionary<GetType, List<TaskElementControllerUIType<GetType, Status>>>();
 
+    private Dictionary<GetType, Dictionary<int, List<TaskElementControllerUIType<GetType, Status>>>> _bufferExternalTask = new Dictionary<GetType, Dictionary<int, List<TaskElementControllerUIType<GetType, Status>>>>();
+    
     [SerializeField] 
     private AbstrCal<GetType, Status> _bank;
 
-    private Dictionary<GetType, Dictionary<int, TaskElementControllerUIType<GetType,Status>>> _infoElement;
-    
-   
-    
-    
-    public void UpdateInform(Dictionary<GetType,List<int>> listHash)
-    {
+    //GetType - тип ключа
+    //int - хэш код Task
+    //List - список UI Task по хэш ключу
+    private Dictionary<GetType, Dictionary<int,List<TaskElementControllerUIType<GetType,Status>>> > _infoElement;
+    //private Dictionary<GetType, Dictionary<int,Dictionary <Transform, TaskElementControllerUIType<GetType,Status>>>> _infoElement;
 
+    
+    public void UpdateInform(Dictionary<GetType, List<int>> listHash, List<ParentDataSet> listParentDataSet = null, List<ParentDataSetType<GetType>> listParentDataSetType = null)
+    {
+        _bufferExternalTask = new Dictionary<GetType, Dictionary<int, List<TaskElementControllerUIType<GetType, Status>>>>();
+        if ((listParentDataSet != null || listParentDataSetType != null) && (listParentDataSet.Count > 0 || listParentDataSetType.Count > 0)) 
+        {
+            foreach (var VARIABLE in listHash.Keys)
+            {
+                _bufferExternalTask.Add(VARIABLE, new Dictionary<int, List<TaskElementControllerUIType<GetType, Status>>>());
+                
+                foreach (var VARIABLE2 in listHash[VARIABLE])
+                {
+                    _bufferExternalTask[VARIABLE].Add(VARIABLE2, new List<TaskElementControllerUIType<GetType, Status>>());
+                    
+                    foreach (var VARIABLE3 in listParentDataSet)
+                    {
+                        Debug.Log("Создание префаба у родителя");
+                        var obj = fabricTaskUI.Create(VARIABLE, VARIABLE3.Parent);
+                        _bufferExternalTask[VARIABLE][VARIABLE2].Add(obj);
+                    }
+                  
+                    
+                }
+            }
+
+
+       
+            
+            foreach (var VARIABLE in listParentDataSetType)
+            {
+
+                foreach (var VARIABLE2 in listHash[VARIABLE.GetKey()])
+                {
+                    var obj = fabricTaskUI.Create(VARIABLE.GetKey(), VARIABLE.Parent);
+                    _bufferExternalTask[VARIABLE.GetKey()][VARIABLE2].Add(obj);
+                }
+
+            }
+            
+        }
+        
+        
+        /////////////////////////////
+        
         foreach (var VARIABLE in listHash.Keys)
         {
             CheckCountElement(VARIABLE,listHash[VARIABLE].Count);
         }
-        
 
-        _infoElement = new Dictionary<GetType, Dictionary<int, TaskElementControllerUIType<GetType,Status>>>();
+
+        _infoElement = new Dictionary<GetType, Dictionary<int, List<TaskElementControllerUIType<GetType, Status>>>>();
 
         foreach (var VARIABLE in listHash.Keys)
         {
-            _infoElement.Add(VARIABLE,new Dictionary<int, TaskElementControllerUIType<GetType, Status>>());
+            _infoElement.Add(VARIABLE, new Dictionary<int, List<TaskElementControllerUIType<GetType, Status>>>());
             int i = 0;
             foreach (var VARIABLE2 in listHash[VARIABLE])
             {
-                _infoElement[VARIABLE].Add(VARIABLE2,_buffer[VARIABLE][i]);
+
+                _infoElement[VARIABLE].Add(VARIABLE2,new List<TaskElementControllerUIType<GetType, Status>>());
+                
+                
+                //хммммм вот тут вопрос а что делать с буффером, тип тут логика идет для заполнения _infoElement что бы потом обращаться и заполнять его
+                //если оставить как есть будет добавлять лишь 1 элемент, но затем прийдеться добавлять в буффер еще элементы для каждого Parent и снова дозаполнять
+                // и в этом случае в буффере будут обьекты как для Transfor которые были указаны в фабрике(те Transform которые заплонированы) и те Transform которые были указаны для внеш. Task
+                
+                //- Можно сделать отдеьно буффер для внешний Transform - Dictionary<GetType, Dictionary<Transform <TaskElementControllerUIType<GetType, Status>>>> _buffer
+                //- Но тогда 
+                
+                //- Можно сделать Dictionary<GetType, Dictionary<int,Dictionary <Transform, TaskElementControllerUIType<GetType,Status>>>> _infoElement 
+                //- Но тогда откуда брать Transform и какая будет в нем логика
+                
+                _infoElement[VARIABLE][VARIABLE2].Add(_buffer[VARIABLE][i]);
+
+                
+                //Избавиться ппотом от If
+                if ((listParentDataSet != null || listParentDataSetType != null) && (listParentDataSet.Count > 0 || listParentDataSetType.Count > 0)) 
+                {
+         
+  
+               
+                    foreach (var VARIABLE33 in _bufferExternalTask[VARIABLE][VARIABLE2])
+                    {
+                        _infoElement[VARIABLE][VARIABLE2].Add(VARIABLE33);
+                    }
+                }
+                
+                
+                
                 
                 i++;
             }
@@ -54,11 +128,17 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
             }
         }
     }
-    
+
+
+
     private void UpdateUiStatusElement(GetType type, Status arg1)
     {
-        _infoElement[type][arg1.Hash].UpdateStatuseElement(arg1.GetKey(),arg1);
-        _infoElement[type][arg1.Hash].UpdateData(arg1);
+
+        foreach (var VARIABLE in _infoElement[type][arg1.Hash])
+        {
+            VARIABLE.UpdateStatuseElement(arg1.GetKey(),arg1);
+            VARIABLE.UpdateData(arg1);
+        }
     }
  
     private void UpdateUiStatusGeneralType(GetType type, Status arg1)
@@ -66,7 +146,11 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
 
         foreach (var VARIABLE in _infoElement[type].Values)
         {
-            VARIABLE.UpdateStatusTypeGeneral(type,arg1);
+            foreach (var VARIABLE2 in VARIABLE)
+            {
+                VARIABLE2.UpdateStatusTypeGeneral(type,arg1);
+            }
+       
         }
     }
     
@@ -112,7 +196,11 @@ public class TaskUIControleTe<GetType, ListType,Status> : MonoBehaviour where St
         {
             foreach (var VARIABLE2 in _infoElement[VARIABLE].Values)
             {
-                VARIABLE2.Open(clearData);
+                foreach (var VARIABLE3 in VARIABLE2)
+                {
+                    VARIABLE3.Open(clearData);
+                }
+               
             }
       
         }

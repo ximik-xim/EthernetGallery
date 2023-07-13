@@ -26,11 +26,12 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
 
 
 
-    private Dictionary<GetType, Dictionary<int, float>> _percentageTaskCompletion = new Dictionary<GetType, Dictionary<int, float>>(); 
-    
-    
-    
-    
+    private Dictionary<GetType, Dictionary<int, float>> _percentageTaskCompletion = new Dictionary<GetType, Dictionary<int, float>>();
+
+    private List<ParentDataSet> _parentDataSet =new List<ParentDataSet>();
+    private List<ParentDataSetType<GetType>> _parentDataSetType = new List<ParentDataSetType<GetType>>();
+
+
     /// <summary>
     /// Обновление статуса у Task с типом
     /// </summary>
@@ -263,8 +264,9 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
         OnUpdateGeneralStatuseDefault?.Invoke(new LoaderStatuse(LoaderStatuse.StatusLoad.Complite, arg1.Hash, "Общая загрузка", fullComlite));
 
         _isLoad = false;
-        
-        
+        _parentDataSet = new List<ParentDataSet>();
+        _parentDataSetType = new List<ParentDataSetType<GetType>>();
+
     }
     
     
@@ -442,7 +444,7 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
             }
         }
         
-        _UIload.UpdateInform(hashList);
+        _UIload.UpdateInform(hashList,_parentDataSet,_parentDataSetType);
     }
     
     protected abstract int GetHashKey();
@@ -450,5 +452,29 @@ public abstract class BankTaskDef<ItesTaskType,GetType,ElementType,Status> : Abs
     protected abstract Status LoadStatLoad(int hashTask,float comliteTask);
     
     protected abstract Status LoadStatComlite(int hashTask, float comliteTask);
+
+
+
+    public void AddParentUITask(ParentDataSet parentDataSet)
+    {
+        _parentDataSet.Add(parentDataSet);
+    }
+    
+    
+    public void AddParentUITaskType(ParentDataSetType<GetType> parentDataSetType)
+    {
+        _parentDataSetType.Add(parentDataSetType);
+    }
+    
+    
+    public void AddParentUITaskTypeTT(ParentDataSet parentDataSet)
+    {
+        ParentDataSetType<GetType> obj = (ParentDataSetType<GetType>) parentDataSet;
+        _parentDataSetType.Add(obj);
+
+        
+
+        
+    }
 
 }

@@ -73,6 +73,69 @@ public abstract class FabricTList<Key,ListElement, Prefab > : FabricInterActType
         }
         _OnLocalCreateObject -= onLocalCreateObject;
     }
+
+
+    public void Create(Key type, int count, Transform parent, Action<Key, Prefab> onLocalCreateObject = null)
+    {
+        _OnLocalCreateObject += onLocalCreateObject;
+        for (int i = 0; i < count; i++)
+        {
+
+            foreach (var VARIABLE in _list)
+            {
+                if (VARIABLE.key.GetKey().Equals(type))
+                {
+                    var obj = Instantiate(_loggerElementUis[type], parent);
+                    _OnLocalCreateObject?.Invoke(type,obj);
+                    InvokeOnCreateObject(obj.transform);
+                    InvokeOnCreateObjectType(type,obj.transform);
+                }
+            }
+            
+        }
+        _OnLocalCreateObject -= onLocalCreateObject;
+    }
+    
+    
+    public Prefab Create(Key type, Transform parent)
+    {
+
+            foreach (var VARIABLE in _list)
+            {
+                if (VARIABLE.key.GetKey().Equals(type))
+                {
+                    var obj = Instantiate(_loggerElementUis[type], parent);
+                    _OnLocalCreateObject?.Invoke(type,obj);
+                    InvokeOnCreateObject(obj.transform);
+                    InvokeOnCreateObjectType(type,obj.transform);
+
+                    return obj;
+                }
+            }
+
+            Debug.LogError("Не был найден тип " + type + " в списке с типами");
+            return null;
+    }
+    
+    public Prefab Create(Key type)
+    {
+
+        foreach (var VARIABLE in _list)
+        {
+            if (VARIABLE.key.GetKey().Equals(type))
+            {
+                var obj = Instantiate(_loggerElementUis[type], VARIABLE._parent);
+                _OnLocalCreateObject?.Invoke(type,obj);
+                InvokeOnCreateObject(obj.transform);
+                InvokeOnCreateObjectType(type,obj.transform);
+
+                return obj;
+            }
+        }
+
+        Debug.LogError("Не был найден тип " + type + " в списке с типами");
+        return null;
+    }
     
     
     /// <summary>

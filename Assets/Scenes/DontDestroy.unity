@@ -1882,6 +1882,7 @@ GameObject:
   - component: {fileID: 23201423992682843}
   - component: {fileID: 23201423992682844}
   - component: {fileID: 23201423992682846}
+  - component: {fileID: 23201423992682847}
   m_Layer: 5
   m_Name: LoaderUI Type
   m_TagString: Untagged
@@ -1901,6 +1902,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16138f42a9eb62e4e969ab24cea619c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &23201423992682847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23201423992682845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ded0d7c64ef30b4da119abce14da09b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentUI: {fileID: 1161833904619674694}
+  _listType: {fileID: 11400000, guid: 26b7ea7ea0c690c438634a75f1fb9045, type: 2}
+  _parentTypeUI: {fileID: 1161833903979490786}
+  _getLIstType:
+    _name: One
 --- !u!224 &1161833903343040976
 RectTransform:
   m_ObjectHideFlags: 0

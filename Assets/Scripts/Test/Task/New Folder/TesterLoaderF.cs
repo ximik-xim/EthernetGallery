@@ -29,6 +29,7 @@ public class TesterLoaderF : MonoBehaviour
 
     public void AddBank(Type typeKey,int hashKey,Interfasda interfaceAdd)
     {
+        Debug.Log("ADD Bank");
         if (_dictionaryBank.ContainsKey(typeKey) == false)
         {
             _dictionaryBank.Add(typeKey,new Dictionary<int, Interfasda>());
@@ -37,6 +38,7 @@ public class TesterLoaderF : MonoBehaviour
         if (_dictionaryBank[typeKey].ContainsKey(hashKey) == false)
         {
             _dictionaryBank[typeKey].Add(hashKey,interfaceAdd);
+            
             return;
         }
         
@@ -51,6 +53,8 @@ public class TesterLoaderF : MonoBehaviour
     
     public void AddTaskType(Type typeKey,int hashKey, ILoaderTask task)
     {
+       
+        
         if (_dictionaryBank.ContainsKey(typeKey) == false)
         {
             Debug.LogError("Ошибка ключ " + typeKey + " не был найден");
@@ -92,5 +96,18 @@ public class TesterLoaderF : MonoBehaviour
     {
         
     }
+
+    public void AddParentUITask(Type typeKey, int hashKey, ParentDataSet parentDataSet)
+    {
+        _dictionaryBank[typeKey][hashKey].AddParentUITask(parentDataSet);
+    }
+
+    public void AddParentUITaskTypeTT(Type typeKey, int hashKey, ParentDataSet parentDataSet)
+    {
+        _dictionaryBank[typeKey][hashKey].AddParentUITaskTypeTT(parentDataSet);
+    }
+    
+    
+    
     
 }

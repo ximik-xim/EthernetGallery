@@ -9,6 +9,9 @@ public interface Interfasda
 
     public void StartLoad();
     public void StartLoadScene(int idScene, bool executeAfterLoading);
+
+    public void AddParentUITask(ParentDataSet parentDataSet);
+    public void AddParentUITaskTypeTT(ParentDataSet parentDataSet);
     
     public void ActiveUILoader(bool clear = false);
     public void DisactiveUiLoader();

@@ -7,6 +7,7 @@ public class EXStartStateType : MonoBehaviour
 {
     [SerializeField] 
     private TListType _listType;
+    
     private void Start()
     {
         
