@@ -10,7 +10,7 @@ public class PositionDisplayedImage : MonoBehaviour
 
  public static PositionDisplayedImage PositionDisplayedImageStat;
  
- public event Action OnInit;
+ public static event Action OnInit;
 
  public ScreenOrientation CurrentPositionDisplayedImage => _currentPositionDisplayedImage;
  private ScreenOrientation _currentPositionDisplayedImage;
@@ -48,6 +48,7 @@ public class PositionDisplayedImage : MonoBehaviour
 
   if (CurrentPositionDisplayedImage != Screen.orientation)
   {
+   Debug.Log("INVOKE ");
    OnRotateDisplayedImage?.Invoke(Screen.orientation);
 
    _currentPositionDisplayedImage = Screen.orientation;
@@ -55,8 +56,7 @@ public class PositionDisplayedImage : MonoBehaviour
   }
   
   
-  
-  
+
   
   
   
