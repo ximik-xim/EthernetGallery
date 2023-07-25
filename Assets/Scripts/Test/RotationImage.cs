@@ -43,6 +43,9 @@ public class RotationImage : MonoBehaviour
     //Значение отступа для расчета верхней и нижней точки
     private float PortraitRotTopX;
     private float PortraitRotBottomX;
+
+    private float PortraitRotLeftX;
+    private float PortraitRotRightX;
     
     //отступы родителя
     private float ParentPortraitTop;
@@ -138,17 +141,20 @@ private void Awake()
     PortraitRotTop = PortraitTop - Tes2;
     PortraitRotBottom = PortraitBottom + Tes2;
 
-
-    PortraitRotTopX = (_transformParent.rect.width - PortraitRotLeft) - _transformParent.rect.height * _transform.anchorMax.y;
-    //PortraitRotBottomX = (0 - PortraitRotRight) - _transformParent.rect.height * _transform.anchorMin.y;
-
-
+    //Не уверен что тут 0, но пока будет так
     PortraitRotBottomX = (0 - PortraitRotRight) - _transformParent.rect.height * _transform.anchorMin.y + (1 - _transform.anchorMax.x) * _transformParent.rect.width;
     PortraitRotTopX = (_transformParent.rect.width - PortraitRotLeft) - _transformParent.rect.height * _transform.anchorMax.y - _transform.anchorMin.x * _transformParent.rect.width;
+
+    PortraitRotRightX = PortraitRotTop - _transformParent.rect.width * _transform.anchorMax.x + _transformParent.rect.height * _transform.anchorMax.y;
+    PortraitRotLeftX = PortraitRotBottom - _transformParent.rect.width * _transform.anchorMin.x + _transformParent.rect.height * _transform.anchorMin.y;
     
+    Debug.Log("PortraitRotBottomX = " + PortraitRotBottomX);
     Debug.Log("PortraitRotTopX = " + PortraitRotTopX);
     Debug.Log("PortraitRotBottomX = " + " (0 "+ " - "+ PortraitRotRight+") - " +_transformParent.rect.height+" * " +_transform.anchorMin.y+" + " + " (1"+ " - " +_transform.anchorMax.x+") * "+ _transformParent.rect.width + " = " +PortraitRotBottomX) ;
-
+    
+    Debug.Log("PortraitRotRightX = " + PortraitRotRightX);
+    Debug.Log("PortraitRotRightX = " + PortraitRotTop + " - " + _transformParent.rect.width + " * " + _transform.anchorMax.x + " + " + _transformParent.rect.height + " * " + _transform.anchorMax.y + " = "+ PortraitRotRightX);
+    Debug.Log("PortraitRotLeftX = " + PortraitRotLeftX);
     
     //_transform.offsetMax = new Vector2(PortraitRotRight, PortraitRotTop);
     //_transform.offsetMin = new Vector2(PortraitRotLeft, PortraitRotBottom);
@@ -257,22 +263,38 @@ private void UpdateDis(ScreenOrientation orientation)
 
                 var Top = _transformParent.offsetMax.y;
                 var Bot = _transformParent.offsetMin.y;
+                
+                var Rig = _transformParent.offsetMax.x;
+                var Lef= _transformParent.offsetMin.x;
+                Debug.Log("Top = " + Top);
                 Debug.Log("Bot = " + Bot);
 
-                var b = (_transformParent.rect.width + Top - Bot) * _transform.anchorMin.x + PortraitRotBottomX + Top / 2 + Bot / 2;
-                testBottonAnc.position = new Vector3(testBottonAnc.position.x, b, testBottonAnc.position.z);
+                Debug.Log("Lef = " + Lef);
+                Debug.Log("Rig = " + Rig);
 
-                var h = (_transformParent.rect.width + Top - Bot) * _transform.anchorMax.x + PortraitRotTopX + Top / 2 + Bot / 2;
+
+                var b = (_transformParent.rect.width + Top - Bot + Lef - Rig) * _transform.anchorMin.x + PortraitRotBottomX - Rig;
+                testBottonAnc.position = new Vector3(testBottonAnc.position.x,b , testBottonAnc.position.z);
+//-638.5f
+                var h = (_transformParent.rect.width + Top - Bot + Lef - Rig) * _transform.anchorMax.x + PortraitRotTopX - Rig; 
                 testHeigAnc.position = new Vector3(testHeigAnc.position.x, h, testHeigAnc.position.z);
 
                 Debug.Log("b = " + _transformParent.rect.width + " * " + _transform.anchorMin.x + " + " + PortraitRotBottomX + " = " + b);
                 Debug.Log("h = " + _transformParent.rect.width + " * " + _transform.anchorMax.x + " + " + PortraitRotTopX + " = " + h);
+                
                 Debug.Log("_transformParent.rect.width = "+ _transformParent.rect.width);
+
+
+
+                var rightX = (_transformParent.rect.height - Top + Bot - Lef + Rig) * _transform.anchorMax.y + PortraitRotRightX + Bot; 
+                var leftX = (_transformParent.rect.height -Top+Bot-Lef+Rig ) * _transform.anchorMin.y + PortraitRotLeftX + Bot; 
                 
                 
-                //testBottonAnc.position = new Vector3(testBottonAnc.position.x, -806.5f, testBottonAnc.position.z);
-                
-               // _transform.rotation = Quaternion.Euler(PortraitRotation + _data[ScreenOrientation.LandscapeRight]._rotation);
+                testBotton.position = new Vector3( rightX, testBottonAnc.position.y, testBottonAnc.position.z);
+                testHeig.position = new Vector3( leftX, testBottonAnc.position.y, testBottonAnc.position.z);
+                Debug.Log("rightX = "  + _transformParent.rect.height  +  " * "+ _transform.anchorMax.y + " + " + PortraitRotRightX + " + " + Lef / 2 + " + " + Rig / 2 + " = " + rightX);
+
+                //_transform.rotation = Quaternion.Euler(PortraitRotation + _data[ScreenOrientation.LandscapeRight]._rotation);
 
             }
                 break;
