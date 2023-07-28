@@ -245,6 +245,9 @@ private void UpdateDis(ScreenOrientation orientation)
                // _transformParent.offsetMax = new Vector2(ParentPortraitTop, 0 - ParentPortraitLeft);
                // _transformParent.offsetMin = new Vector2(ParentPortraitBottom, 0 - ParentPortraitRight);
                 
+               
+               
+       
                 
                 _transform.anchorMax = new Vector2(PortraitMaxAnchXY.y,1-PortraitMinAnchXY.x) ;
                 _transform.anchorMin = new Vector2(PortraitMinAnchXY.y,1-PortraitMaxAnchXY.x) ;
@@ -278,7 +281,61 @@ private void UpdateDis(ScreenOrientation orientation)
                 Debug.Log("Lef = " + Lef);
                 Debug.Log("Rig = " + Rig);
 
-
+                var ancBot = (_transformParent.rect.height - Top) / _transformParent.rect.height - (PortraitMaxAnchXY.x * (_transformParent.rect.height - Top + Bot)) / _transformParent.rect.height;
+                var  ancTop= (_transformParent.rect.height - Top + Bot - Bot) / _transformParent.rect.height - (PortraitMinAnchXY.x * (_transformParent.rect.height - Top + Bot)) / _transformParent.rect.height;
+                
+               var ancTop2 = (-Lef + Rig) / _transformParent.rect.height + ((Lef - Rig) * PortraitMinAnchXY.x - Rig) / _transformParent.rect.height;
+               var  ancBot2=(-Lef+ Rig) / _transformParent.rect.height + ((Lef - Rig) * PortraitMaxAnchXY.x - Rig) / _transformParent.rect.height;
+               
+               
+               ancTop += ancTop2;
+               ancBot += ancBot2;
+               
+               
+               
+               var ancLef = (_transformParent.rect.width - (_transformParent.rect.width - Rig + Lef) - Rig) / _transformParent.rect.width + PortraitMinAnchXY.y * ((_transformParent.rect.width - Rig + Lef) / _transformParent.rect.width);
+               var ancRig = ( _transformParent.rect.width - (_transformParent.rect.width  + Lef) ) / _transformParent.rect.width + PortraitMaxAnchXY.y * ((_transformParent.rect.width - Rig + Lef) / _transformParent.rect.width);
+               
+                
+                 var ancLef2 = ((+ Top - Bot) * PortraitMinAnchXY .y + Bot) / _transformParent.rect.width;
+                 var ancRig2 = (( + Top - Bot) * PortraitMaxAnchXY.y + Bot) / _transformParent.rect.width;
+                 
+                
+                ancRig += ancRig2;
+                ancLef += ancLef2;
+                
+                
+                
+                _transform.anchorMax = new Vector2(ancRig, ancTop ) ;
+                _transform.anchorMin = new Vector2( ancLef  ,ancBot) ;
+                
+                
+                
+                _transform.offsetMax = new Vector2(PortraitRotTop,0-PortraitRotLeft);
+                _transform.offsetMin = new Vector2(PortraitRotBottom,0-PortraitRotRight);
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 var b = (_transformParent.rect.width + Top - Bot + Lef - Rig) * _transform.anchorMin.x + PortraitRotBottomX - Rig;
                 testBottonAnc.position = new Vector3(testBottonAnc.position.x,b , testBottonAnc.position.z);
                 
@@ -343,6 +400,34 @@ private void UpdateDis(ScreenOrientation orientation)
 
 private void Update()
 {
+
+    if (Screen.orientation== ScreenOrientation.LandscapeRight)
+    {
+        var Top = _transformParent.offsetMax.y;
+        var Bot = _transformParent.offsetMin.y;
+                
+        var Rig = _transformParent.offsetMax.x;
+        var Lef= _transformParent.offsetMin.x;
+        
+        var b = (_transformParent.rect.width + Top - Bot + Lef - Rig) * _transform.anchorMin.x + PortraitRotBottomX - Rig;
+        testBottonAnc.position = new Vector3(testBottonAnc.position.x,b , testBottonAnc.position.z);
+                
+        var h = (_transformParent.rect.width + Top - Bot + Lef - Rig) * _transform.anchorMax.x + PortraitRotTopX - Rig; 
+        testHeigAnc.position = new Vector3(testHeigAnc.position.x, h, testHeigAnc.position.z);
+
+        Debug.Log("b = " + _transformParent.rect.width + " * " + _transform.anchorMin.x + " + " + PortraitRotBottomX + " = " + b);
+        Debug.Log("h = " + _transformParent.rect.width + " * " + _transform.anchorMax.x + " + " + PortraitRotTopX + " = " + h);
+                
+        Debug.Log("_transformParent.rect.width = "+ _transformParent.rect.width);
+
+
+
+        var rightX = (_transformParent.rect.height - Top + Bot - Lef + Rig) * _transform.anchorMax.y + PortraitRotRightX + Bot;
+        var leftX = (_transformParent.rect.height - Top + Bot - Lef + Rig) * _transform.anchorMin.y + PortraitRotLeftX + Bot; 
+                
+        testBotton.position = new Vector3( rightX, testBottonAnc.position.y, testBottonAnc.position.z);
+        testHeig.position = new Vector3( leftX, testBottonAnc.position.y, testBottonAnc.position.z);
+    }
     // Debug.Log("1Max "+_transform.rect.center);
     // Debug.Log("2Max "+_transform.rect.height);
     // Debug.Log("3Max "+_transform.rect.max);
