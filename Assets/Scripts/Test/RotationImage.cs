@@ -503,38 +503,7 @@ private void Update()
 
     if (Screen.orientation== ScreenOrientation.LandscapeRight)
     {
-        // var Top = _transformParent.offsetMax.y;
-        // var Bot = _transformParent.offsetMin.y;
-        //         
-        // var Rig = _transformParent.offsetMax.x;
-        // var Lef= _transformParent.offsetMin.x;
-        //
-        // var b = (_transformParent.rect.width + Top - Bot + Lef - Rig) * _transform.anchorMin.x + PortraitRotBottomX - Rig;
-        // testBottonAnc.position = new Vector3(testBottonAnc.position.x,b , testBottonAnc.position.z);
-        //         
-        // var h = (_transformParent.rect.width + Top - Bot + Lef - Rig) * _transform.anchorMax.x + PortraitRotTopX - Rig; 
-        // testHeigAnc.position = new Vector3(testHeigAnc.position.x, h, testHeigAnc.position.z);
-        //
-        // Debug.Log("b = " + _transformParent.rect.width + " * " + _transform.anchorMin.x + " + " + PortraitRotBottomX + " = " + b);
-        // Debug.Log("h = " + _transformParent.rect.width + " * " + _transform.anchorMax.x + " + " + PortraitRotTopX + " = " + h);
-        //         
-        // Debug.Log("_transformParent.rect.width = "+ _transformParent.rect.width);
-        //
-        //
-        //
-        // var rightX = (_transformParent.rect.height - Top + Bot - Lef + Rig) * _transform.anchorMax.y + PortraitRotRightX + Bot;
-        // var leftX = (_transformParent.rect.height - Top + Bot - Lef + Rig) * _transform.anchorMin.y + PortraitRotLeftX + Bot; 
-        //         
-        // testBotton.position = new Vector3( rightX, testBottonAnc.position.y, testBottonAnc.position.z);
-        // testHeig.position = new Vector3( leftX, testBottonAnc.position.y, testBottonAnc.position.z);
-        
-        
-        
-        
-        
-        //testBotton.position = new Vector3( testBotton.position.x, _transformParent.rect.width*_transform.anchorMin.x, testBotton.position.z);
-        //testHeig.position = new Vector3( testHeig.position.x, -630f, testHeig.position.z);
-        //testBottonAnc.position = new Vector3(testBottonAnc.position.x,1650,testBottonAnc.position.z);
+
 
 
         Debug.Log("PortraitTop = "+ PortraitTop);
@@ -547,210 +516,143 @@ private void Update()
 
 
         
-        // var widh = _transformParent.rect.height * _transform.anchorMax.y + PortraitRight -(_transformParent.rect.height * _transform.anchorMin.y+PortraitLeft);
-        // Debug.Log("Widht = " + widh);
-        // //Нужен ли тут множитель или нет вопрос,т.к если не нужен то может можно было бы дальше по формуле заменить отступы родителя?!!!!!!!!!!!!!
-        // var distance = (_transformParent.rect.height * _transform.anchorMax.y - widh) / 2;
-        // Debug.Log("distance = " + widh);
-        // var kof = PortraitLeft - distance;
-        // Debug.Log("kof = " + kof);
-        //
-        //
-        // var bot = _transformParent.rect.width * _transform.anchorMin.x - PortraitTop / 2 + PortraitBottom / 2;
-        //
-        // Debug.Log("bot = " + bot);
-        // bot += -1140 - 30;
-        // //bot += -(_transformParent.rect.width/2) - kof;
-        // Debug.Log("bot = " + bot);
-        // bot += 540;
-        // //bot += (_transformParent.rect.height/2);
-        // Debug.Log("bot = " + bot);
-        // bot -= _transformParent.offsetMax.y / 2 + _transformParent.offsetMin.y / 2;
-        // Debug.Log("bot = " + bot);
-        // testBotton.position = new Vector3( testBotton.position.x, bot, testBotton.position.z);
-        //
-        //
-        //
-        // var top = 0f;
-        // top = 1140 + 540 + PortraitTop / 2 - PortraitBottom / 2;
-        // //top = _transformParent.rect.width/2  + _transformParent.rect.height/2  + PortraitTop / 2 - PortraitBottom / 2;
-        // Debug.Log("top = " + top);
-        // top -= 30;
-        // Debug.Log("top = " + top);
-        // top += _transformParent.offsetMax.y / 2 - _transformParent.offsetMin.y / 2;
-        // Debug.Log("top = " + top);
-        // testHeig.position = new Vector3( testHeig.position.x, top, testHeig.position.z);
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        /*
-        
-        
-        //var widh = _transformParent.rect.height * _transform.anchorMax.y + PortraitRight -(_transformParent.rect.height * _transform.anchorMin.y+PortraitLeft);
-        var widh = 930f;
-        Debug.Log("Widht = " + widh);
-
-        //var distance = (_transformParent.rect.height  - widh) / 2;
-        var distance = (_transformParent.rect.height  - widh) / 2;
-        Debug.Log("distance = " + distance);
-        var kofTop = distance - PortraitLeft;
-        var kofBot =  distance + PortraitRight;
-        Debug.Log("kofBot = " + kofBot);
-        Debug.Log("kofTop = " + kofTop);
-        
-        //
-        // var bot = _transformParent.rect.width * _transform.anchorMin.x - PortraitTop / 2 + PortraitBottom / 2;
-        //
-        // Debug.Log("bot = " + bot);
-        // bot += -1140 - 30;
-        // Debug.Log("bot = " + bot);
-        // bot += 540;
-        // Debug.Log("bot = " + bot);
-        // bot -= _transformParent.offsetMax.y / 2 + _transformParent.offsetMin.y / 2;
-        // Debug.Log("bot = " + bot);
-        
-        
-        //var bot = -1140 + 540 - kofBot +PortraitBottom/2 - PortraitTop/2;
-        var bot = -(_transformParent.rect.width/2) + 540 - kofBot +PortraitBottom/2 - PortraitTop/2;
-        Debug.Log("bot = " + bot);
-        bot += (_transformParent.rect.width - _transformParent.rect.width * _transform.anchorMax.x)/2;
-        Debug.Log("bot = " + bot);
-        bot += ( _transformParent.rect.width * _transform.anchorMin.x)/2;
-        Debug.Log("bot = " + bot);
-        bot += (_transformParent.offsetMax.y / 2) -(_transformParent.offsetMin.y / 2);
-        Debug.Log("bot = " + bot);
-        testBotton.position = new Vector3( testBotton.position.x, bot, testBotton.position.z);
-        //testBottonAnc.position = new Vector3( testBottonAnc.position.x, -1125, testBottonAnc.position.z);
-        
-        
-        // var top = 0f;
-        // top = 1140 + 540 + PortraitTop / 2 - PortraitBottom / 2;
-        // //top = _transformParent.rect.width/2  + _transformParent.rect.height/2  + PortraitTop / 2 - PortraitBottom / 2;
-        // Debug.Log("top = " + top);
-        // top -= 30;
-        // Debug.Log("top = " + top);
-        // top += _transformParent.offsetMax.y / 2 - _transformParent.offsetMin.y / 2;
-        // Debug.Log("top = " + top);
-
-        
-        
-        //Скореее всего прийдеться избавиться от знач 1140(может тогда и делить не надо будет при кофицентах?)
-        //var top = 1140 + 540 + kofTop-PortraitBottom/2 + PortraitTop/2;
-        var top = (_transformParent.rect.width/2) + 540 + kofTop-PortraitBottom/2 + PortraitTop/2;
-        Debug.Log("top = " + top);
-        top -= (_transformParent.rect.width - _transformParent.rect.width * _transform.anchorMax.x )/2;
-        Debug.Log("top = " + top);
-        top -= ( _transformParent.rect.width * _transform.anchorMin.x)/2;
-        Debug.Log("top = " + top);
-        top -= (_transformParent.offsetMax.y / 2) +(_transformParent.offsetMin.y / 2);
-        Debug.Log("top = " + top);
-        testHeig.position = new Vector3( testHeig.position.x, top, testHeig.position.z);
-
-
-        _transform.offsetMax = new Vector2(PortraitRotTop, top - 1080);
-        _transform.offsetMin = new Vector2(PortraitRotBottom,bot);
-        
-        //testHeigAnc.position = new Vector3( testHeigAnc.position.x, 2155f, testHeigAnc.position.z);
-        
-        */
-
-/*
-        var height=_transformParent.rect.width*_transform.anchorMax.x-_transformParent.rect.width*_transform.anchorMin.x;
-        var posBot = (-PortraitRight) - _difference / 2;
-        var posHeig=posBot+height;
-        posHeig += PortraitTop - PortraitBottom;
-        
-        testBotton.position = new Vector3( testBotton.position.x, posBot, testBotton.position.z);
-        testHeig.position = new Vector3( testHeig.position.x, posHeig, testHeig.position.z);
-        
-        _transform.offsetMax = new Vector2(PortraitRotTop-1080, posHeig);
-        _transform.offsetMin = new Vector2(PortraitRotBottom,posBot);
-        */
-        
+   
 
 
 
 
 
 
-
+        //Точка сверху после переворота на -90 после смены оринтации( а так это лево)
         var posHeig = _difference / 2 - PortraitLeft;
         var posBot = (-PortraitRight) - _difference / 2;
 
+        //Точка справа после переворота на -90 после смены оринтации( а так это верх)
         var posRig = PortraitTop - _difference / 2;
         var posLeft = _difference / 2  + PortraitBottom ;
         
         
+        var ParentOffsetMaxX = _transformParent.offsetMax.x;
+        var ParentOffsetMaxY = _transformParent.offsetMax.y;
+
+        var ParentOffsetMinX = _transformParent.offsetMin.x;
+        var ParentOffsetMinY = _transformParent.offsetMin.y;
+
+
+        var ancMaxX = _transform.anchorMax.x; 
+        var ancMaxY = _transform.anchorMax.y;
+        
+        var ancMinX = _transform.anchorMin.x;
+        var ancMinY = _transform.anchorMin.y;
+        
+        
+        
+        Debug.Log("-----------------------------------------------------");
+        Debug.Log("ParentOffsetMaxX = " + ParentOffsetMaxX);
+        Debug.Log("ParentOffsetMaxY = " + ParentOffsetMaxY);
+        Debug.Log("ParentOffsetMinX = " + ParentOffsetMinX);
+        Debug.Log("ParentOffsetMinY = " + ParentOffsetMinY);
+        
+        Debug.Log("----------------------------------------------------");
+        Debug.Log("ancMaxX = " + ancMaxX);
+        Debug.Log("ancMaxY = " + ancMaxY);
+        Debug.Log("ancMinX = " + ancMinX);
+        Debug.Log("ancMinY = " + ancMinY);
+        
+        Debug.Log("---------------------------------------------------");
+        Debug.Log("ParentPortraitTop = " + ParentPortraitTop);
+        Debug.Log("ParentPortraitBottom = " + ParentPortraitBottom);
+        Debug.Log("ParentPortraitLeft = " + ParentPortraitLeft);
+        Debug.Log("ParentPortraitRight = " + ParentPortraitRight);
+        
+        Debug.Log("--------------------------------------------------");
+        Debug.Log("kofAncParentPortraitTop = " + kofAncParentPortraitTop);
+        Debug.Log("kofAncParentPortraitBot = " + kofAncParentPortraitBot);
+        Debug.Log("kofAncParentPortraitLef = " + kofAncParentPortraitLef);
+        Debug.Log("kofAncParentPortraitRig = " + kofAncParentPortraitRig);
+
+        
+        
+        //test
+         ParentOffsetMaxY -= ParentPortraitTop;
+  
+        ancMaxX = 1;
+        ancMaxY = 1;
+        
+        ancMinX = 0;
+        ancMinY = 0;
+        
+        
+        ///Заментка, после переворота по идеи не должны меняться ParentPortraitTop(и т.д), они должны браться до переворота и нужны для учета измен. размера т.к после переврорта у родителя в этой реализации не измен. отступы
+        ///То же касаеться значений отступа kofAncParentPortraitTop( и т.д), они должны так же рачит. до переворота и не измент (по идеи)
+        
+        
+        
+        
         // растяжение по горизонтали
-        posHeig += (_transformParent.offsetMax.x * (_transform.anchorMax.x ) / 2);//- (_transformParent.offsetMin.x * _transform.anchorMin.x / 2);
-        posBot -= (_transformParent.offsetMax.x * (_transform.anchorMax.x ) / 2); //+ (_transformParent.offsetMin.x * _transform.anchorMin.x / 2);
+        posHeig += (ParentOffsetMaxX * (ancMaxX+kofAncParentPortraitRig) / 2);
+        posBot -= (ParentOffsetMaxX * (ancMaxX+kofAncParentPortraitRig) / 2);
         
         //Убирает увел по горизонтале при растяж в вверх
-        posHeig -= (_transformParent.offsetMax.y * _transform.anchorMax.y / 2);
-        posBot += (_transformParent.offsetMax.y * _transform.anchorMax.y / 2);
+        posHeig -= (ParentOffsetMaxY * ancMaxY / 2);
+        posBot += (ParentOffsetMaxY * ancMaxY / 2);
         
         
         // растяжение по вертикале
-        posRig += (_transformParent.offsetMax.y * _transform.anchorMax.y / 2);//- (_transformParent.offsetMin.y * _transform.anchorMin.y / 2);
-        posLeft -= (_transformParent.offsetMax.y * _transform.anchorMax.y / 2);// + (_transformParent.offsetMin.y * _transform.anchorMin.y / 2);
+        posRig += (ParentOffsetMaxY * ancMaxY / 2);
+        posLeft -= (ParentOffsetMaxY * ancMaxY / 2);
 
         //Убирает увел по вертикали при растяж в право
-        posRig -=(_transformParent.offsetMax.x * (_transform.anchorMax.x) / 2);
-        posLeft += (_transformParent.offsetMax.x * (_transform.anchorMax.x) / 2);
+        posRig -= (ParentOffsetMaxX * (ancMaxX+kofAncParentPortraitRig) / 2);
+        posLeft += (ParentOffsetMaxX * (ancMaxX+kofAncParentPortraitRig) / 2);
 
         
         //Для возможности растягивания вниз
-        posHeig += _transformParent.offsetMin.y * _transform.anchorMax.y  / 2;
-        posBot -= _transformParent.offsetMin.y * _transform.anchorMax.y/ 2;
-        
-        posRig -= _transformParent.offsetMin.y * _transform.anchorMax.y/ 2;
-        posLeft += _transformParent.offsetMin.y * _transform.anchorMax.y/ 2;
+        posHeig += ParentOffsetMinY * ancMaxY / 2;
+        posBot -= ParentOffsetMinY * ancMaxY / 2;
+
+        posRig -= ParentOffsetMinY * ancMaxY / 2;
+        posLeft += ParentOffsetMinY * ancMaxY / 2;
         
         
         //Учет нминимального якоря по Y(этот якорь именно после переворота) при раст. вниз
-        posHeig -= _transformParent.offsetMin.y * _transform.anchorMin.y / 2;
-        posBot += _transformParent.offsetMin.y * _transform.anchorMin.y/ 2;
-        
-        posRig += _transformParent.offsetMin.y * _transform.anchorMin.y/ 2;
-        posLeft -= _transformParent.offsetMin.y * _transform.anchorMin.y/ 2;
+        posHeig -= ParentOffsetMinY * ancMinY / 2;
+        posBot += ParentOffsetMinY * ancMinY / 2;
+
+        posRig += ParentOffsetMinY * ancMinY / 2;
+        posLeft -= ParentOffsetMinY * ancMinY / 2;
         
         
         //Для возможности растягивания влево (test)
-        posRig += _transformParent.offsetMin.x * _transform.anchorMax.x/2;
-        posLeft -= _transformParent.offsetMin.x *_transform.anchorMax.x/ 2;
+        posRig += ParentOffsetMinX * ancMaxX / 2;
+        posLeft -= ParentOffsetMinX * ancMaxX / 2;
 
-        posHeig -= _transformParent.offsetMin.x * _transform.anchorMax.x/2;
-        posBot += _transformParent.offsetMin.x  * _transform.anchorMax.x/ 2;
+        posHeig -= ParentOffsetMinX * ancMaxX / 2;
+        posBot += ParentOffsetMinX * ancMaxX / 2;
 
         
         //Учет нминимального якоря по X(этот якорь именно после переворота) при раст. влево
-        posRig -= _transformParent.offsetMin.x * _transform.anchorMin.x/2;
-        posLeft += _transformParent.offsetMin.x *_transform.anchorMin.x/ 2;
+        posRig -= ParentOffsetMinX * ancMinX / 2;
+        posLeft += ParentOffsetMinX * ancMinX / 2;
 
-        posHeig += _transformParent.offsetMin.x * _transform.anchorMin.x/2;
-        posBot -= _transformParent.offsetMin.x  * _transform.anchorMin.x/ 2;
+        posHeig += ParentOffsetMinX * ancMinX / 2;
+        posBot -= ParentOffsetMinX * ancMinX / 2;
         
         
         //Учет нминимального якоря по X(этот якорь именно после переворота)
-        posRig +=(_transformParent.offsetMax.x * (_transform.anchorMin.x ) / 2);
-        posLeft -= (_transformParent.offsetMax.x * (_transform.anchorMin.x ) / 2);
-        
-        posHeig -= (_transformParent.offsetMax.x * (_transform.anchorMin.x ) / 2);
-        posBot += (_transformParent.offsetMax.x * (_transform.anchorMin.x ) / 2);
+        posRig += (ParentOffsetMaxX * ancMinX / 2);
+        posLeft -= (ParentOffsetMaxX * ancMinX / 2);
+
+        posHeig -= (ParentOffsetMaxX * ancMinX / 2);
+        posBot += (ParentOffsetMaxX * ancMinX / 2);
         
         
         //Учет нминимального якоря по Y(этот якорь именно после переворота) 
-        posHeig += (_transformParent.offsetMax.y * (_transform.anchorMin.y ) / 2);
-        posBot -= (_transformParent.offsetMax.y * (_transform.anchorMin.y ) / 2);
-        
-        posRig -= (_transformParent.offsetMax.y * (_transform.anchorMin.y ) / 2);
-        posLeft += (_transformParent.offsetMax.y * (_transform.anchorMin.y ) / 2);
+        posHeig += (ParentOffsetMaxY * ancMinY / 2);
+        posBot -= (ParentOffsetMaxY * ancMinY / 2);
+
+        posRig -= (ParentOffsetMaxY * ancMinY / 2);
+        posLeft += (ParentOffsetMaxY * ancMinY / 2);
         
         
         testBotton.position = new Vector3( testBotton.position.x, posBot, testBotton.position.z);
@@ -758,17 +660,24 @@ private void Update()
         
         testBottonAnc.position = new Vector3(posRig+2280,testBottonAnc.position.y,testBottonAnc.position.z);
         testHeigAnc.position = new Vector3(posLeft,testHeigAnc.position.y ,testHeigAnc.position.z);
-        
-        _transform.offsetMax = new Vector2(posRig, posHeig);
-        _transform.offsetMin = new Vector2(posLeft,posBot);
+
+
+        _transform.offsetMax = new Vector2(posRig , posHeig);
+        _transform.offsetMin = new Vector2(posLeft  ,posBot);
+
+        Debug.Log("posHeig = " + posHeig);
+        Debug.Log("posBot = " + posBot);
+        Debug.Log("posRig = " + posRig);
+        Debug.Log("posLeft = " + posLeft);
+  
         
         //_transform.rotation = Quaternion.Euler(PortraitRotation + _data[ScreenOrientation.LandscapeRight]._rotation);
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
         //testHeig.position = new Vector3( testHeig.position.x, _transformParent.rect.height*_transform.anchorMax.y+_transform.offsetMax.y +_transformParent.offsetMin.y, testHeig.position.z);
         //testBotton.position = new Vector3( testBotton.position.x, _transformParent.rect.height*_transform.anchorMin.y+_transform.offsetMin.y+_transformParent.offsetMin.y, testBotton.position.z);        
         //testBottonAnc.position = new Vector3(_transformParent.rect.width*_transform.anchorMin.x+_transform.offsetMin.x + _transformParent.offsetMin.x,testBottonAnc.position.y,testBottonAnc.position.z);
@@ -812,10 +721,15 @@ private void FixedUpdate()
     {
         case ScreenOrientation.Portrait:
         {
+         
             var difference = _transform.rect.height - _transform.rect.width;
+
+            Debug.Log("difference = " + difference);
+            //var difference = (_transform.rect.height - ParentPortraitTop*_transform.anchorMax.y) - _transform.rect.width;
+            
             var coefficient = difference / 2;
 
-_difference=difference;
+            _difference = difference;
 
             PortraitRotLeft = _transform.offsetMin.x - coefficient;
             PortraitRotRight = _transform.offsetMax.x + coefficient;
