@@ -61,6 +61,11 @@ public class RotationImage : MonoBehaviour
     private float kofAncParentPortraitLef;
     private float kofAncParentPortraitRig;
     
+    private float antiKofAncParentPortraitTop;
+    private float antiKofAncParentPortraitBot;
+    private float antiKofAncParentPortraitLef;
+    private float antiKofAncParentPortraitRig;
+    
     private float _difference;
 
     [SerializeField][Range(-2f,2f)]
@@ -402,12 +407,22 @@ private void UpdateDis(ScreenOrientation orientation)
 
                kofAncParentPortraitTop = ancTop2;
                kofAncParentPortraitBot = ancBot2;
-               
+
+               //Не уверен пока в правельности формулы
+               antiKofAncParentPortraitTop = ( -Top) / _transformParent.rect.height - (_transform.anchorMin.x * (- Top + Bot)) / _transformParent.rect.height;
+               antiKofAncParentPortraitBot = (- Top) / _transformParent.rect.height - (_transform.anchorMax.x * (- Top + Bot)) / _transformParent.rect.height;
+                   
                Debug.Log("ancTop = " +ancTop);
                Debug.Log("ancTop = " + "("+_transformParent.rect.height+ " - "+Top+" + "+Bot+" - "+Bot+") / "+_transformParent.rect.height+" - ("+_transform.anchorMin.x +" * ("+_transformParent.rect.height+" - "+Top +" + "+ Bot+")) / "+_transformParent.rect.height );
                Debug.Log("ancTop2 = " +ancTop2);
                Debug.Log("ancTop2 = " + "(" +(-Lef) +" + "+Rig+") / "+_transformParent.rect.height + " + (("+Lef +" - "+Rig+") * "+_transform.anchorMin.x+" - "+Rig+") / "+_transformParent.rect.height);
                Debug.Log("ancTop += " + (ancTop + ancTop2));
+               
+               Debug.Log("ancBot = " +ancBot);
+               Debug.Log("ancBot = " + "("+_transformParent.rect.height+ " - "+Top+" + "+Bot+" - "+Bot+") / "+_transformParent.rect.height+" - ("+_transform.anchorMax.x +" * ("+_transformParent.rect.height+" - "+Top +" + "+ Bot+")) / "+_transformParent.rect.height );
+               Debug.Log("ancBot2 = " +ancBot2);
+               Debug.Log("ancBot2 = " + "(" +(-Lef) +" + "+Rig+") / "+_transformParent.rect.height + " + (("+Lef +" - "+Rig+") * "+_transform.anchorMax.x+" - "+Rig+") / "+_transformParent.rect.height);
+               Debug.Log("ancBot += " + (ancBot+ancBot2));
                
                ancTop += ancTop2;
                ancBot += ancBot2;
@@ -579,17 +594,18 @@ private void Update()
         Debug.Log("kofAncParentPortraitBot = " + kofAncParentPortraitBot);
         Debug.Log("kofAncParentPortraitLef = " + kofAncParentPortraitLef);
         Debug.Log("kofAncParentPortraitRig = " + kofAncParentPortraitRig);
+        
+        Debug.Log("-------------------------------------------------");
+        Debug.Log("anitKofAncParentPortraitTop = " + antiKofAncParentPortraitTop);
+        Debug.Log("anitKkofAncParentPortraitBot = " + antiKofAncParentPortraitBot);
+        Debug.Log("anitKkofAncParentPortraitLef = " + antiKofAncParentPortraitLef);
+        Debug.Log("anitKkofAncParentPortraitRig = " + antiKofAncParentPortraitRig);
 
         
-        
-        //test
          ParentOffsetMaxY -= ParentPortraitTop;
-
-
+         
          ///Заментка, после переворота по идеи не должны меняться ParentPortraitTop(и т.д), они должны браться до переворота и нужны для учета измен. размера т.к после переврорта у родителя в этой реализации не измен. отступы
         ///То же касаеться значений отступа kofAncParentPortraitTop( и т.д), они должны так же рачит. до переворота и не измент (по идеи)
-        
-        
         
         
         // растяжение по горизонтали
@@ -602,60 +618,62 @@ private void Update()
         
         
         //Для возможности растягивания влево 
-        posRig += ParentOffsetMinX * (ancMaxX+kofAncParentPortraitRig) / 2;
-        posLeft -= ParentOffsetMinX * (ancMaxX-kofAncParentPortraitRig) / 2;
-
         posHeig -= ParentOffsetMinX * (ancMaxX-kofAncParentPortraitRig) / 2;
         posBot += ParentOffsetMinX * (ancMaxX-kofAncParentPortraitRig) / 2;
         
-        
-        //Убирает увел по горизонтале при растяж в вверх
-        posHeig -= (ParentOffsetMaxY * ancMaxY / 2);
-        posBot += (ParentOffsetMaxY * ancMaxY / 2);
+        posRig += ParentOffsetMinX * (ancMaxX+kofAncParentPortraitRig) / 2;
+        posLeft -= ParentOffsetMinX * (ancMaxX-kofAncParentPortraitRig) / 2;
         
         
-        // растяжение по вертикале
-        posRig += (ParentOffsetMaxY * ancMaxY / 2);
-        posLeft -= (ParentOffsetMaxY * ancMaxY / 2);
-        
+        // //Убирает увел по горизонтале при растяж в вверх
+         posHeig -= (ParentOffsetMaxY * (ancMaxY+antiKofAncParentPortraitTop) / 2);
+         posBot += (ParentOffsetMaxY * (ancMaxY-antiKofAncParentPortraitTop) / 2);
 
+        // // растяжение по вертикале
+         posRig += (ParentOffsetMaxY * (ancMaxY-antiKofAncParentPortraitTop) / 2);
+         posLeft -= (ParentOffsetMaxY * (ancMaxY-antiKofAncParentPortraitTop) / 2);
+
+         
         //Для возможности растягивания вниз
-        posHeig += ParentOffsetMinY * ancMaxY / 2;
-        posBot -= ParentOffsetMinY * ancMaxY / 2;
+        posHeig += ParentOffsetMinY * (ancMaxY+antiKofAncParentPortraitTop) / 2;
+        posBot -= ParentOffsetMinY * (ancMaxY-antiKofAncParentPortraitTop) / 2;
 
-        posRig -= ParentOffsetMinY * ancMaxY / 2;
-        posLeft += ParentOffsetMinY * ancMaxY / 2;
+        posRig -= ParentOffsetMinY * (ancMaxY-antiKofAncParentPortraitTop) / 2;
+        posLeft += ParentOffsetMinY * (ancMaxY-antiKofAncParentPortraitTop) / 2;
 
+        
         //Учет нминимального якоря по Y(этот якорь именно после переворота) при раст. вниз
-        posHeig -= ParentOffsetMinY * ancMinY / 2;
-        posBot += ParentOffsetMinY * ancMinY / 2;
+        posHeig -= ParentOffsetMinY * (ancMinY-antiKofAncParentPortraitBot) / 2;
+        posBot += ParentOffsetMinY * (ancMinY+antiKofAncParentPortraitBot) / 2;
+        
+        posRig += ParentOffsetMinY * (ancMinY-antiKofAncParentPortraitBot) / 2;
+        posLeft -= ParentOffsetMinY * (ancMinY-antiKofAncParentPortraitBot) / 2;
 
-        posRig += ParentOffsetMinY * ancMinY / 2;
-        posLeft -= ParentOffsetMinY * ancMinY / 2;
 
+        //Учет нминимального якоря по Y(этот якорь именно после переворота)  и растяг в вверх
+        posHeig += (ParentOffsetMaxY * (ancMinY-antiKofAncParentPortraitBot) / 2);
+        posBot -= (ParentOffsetMaxY * (ancMinY+antiKofAncParentPortraitBot) / 2);
+        
+        posRig -= (ParentOffsetMaxY * (ancMinY-antiKofAncParentPortraitBot) / 2);
+        posLeft += (ParentOffsetMaxY * (ancMinY-antiKofAncParentPortraitBot) / 2);
+        
+        
         //Учет нминимального якоря по X(этот якорь именно после переворота) при раст. влево
-        posRig -= ParentOffsetMinX * ancMinX / 2;
-        posLeft += ParentOffsetMinX * ancMinX / 2;
+        posHeig += ParentOffsetMinX * (ancMinX-kofAncParentPortraitLef) / 2;
+        posBot -= ParentOffsetMinX * (ancMinX-kofAncParentPortraitLef) / 2;
+        
+        posRig -= ParentOffsetMinX * (ancMinX-kofAncParentPortraitLef) / 2;
+        posLeft += ParentOffsetMinX * (ancMinX+kofAncParentPortraitLef) / 2;
+        
+        
+        //Учет нминимального якоря по X(этот якорь именно после переворота) и растяг в право
+        posHeig -= (ParentOffsetMaxX * (ancMinX-kofAncParentPortraitLef) / 2);
+        posBot += (ParentOffsetMaxX * (ancMinX-kofAncParentPortraitLef) / 2);
+        
+        posRig += (ParentOffsetMaxX * (ancMinX-kofAncParentPortraitLef) / 2);
+        posLeft -= (ParentOffsetMaxX * (ancMinX+kofAncParentPortraitLef) / 2);
 
-        posHeig += ParentOffsetMinX * ancMinX / 2;
-        posBot -= ParentOffsetMinX * ancMinX / 2;
-        
-        
-        //Учет нминимального якоря по X(этот якорь именно после переворота)
-        posRig += (ParentOffsetMaxX * (ancMinX) / 2);
-        posLeft -= (ParentOffsetMaxX * (ancMinX) / 2);
 
-        posHeig -= (ParentOffsetMaxX * (ancMinX) / 2);
-        posBot += (ParentOffsetMaxX * (ancMinX) / 2);
-        
-        
-        //Учет нминимального якоря по Y(этот якорь именно после переворота) 
-        posHeig += (ParentOffsetMaxY * ancMinY / 2);
-        posBot -= (ParentOffsetMaxY * ancMinY / 2);
-
-        posRig -= (ParentOffsetMaxY * ancMinY / 2);
-        posLeft += (ParentOffsetMaxY * ancMinY / 2);
-        
         
         testBotton.position = new Vector3( testBotton.position.x, posBot, testBotton.position.z);
         testHeig.position = new Vector3(testHeig.position.x, posHeig + 1080, testHeig.position.z);

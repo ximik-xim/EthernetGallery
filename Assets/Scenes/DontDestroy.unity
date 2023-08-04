@@ -4399,6 +4399,10 @@ MonoBehaviour:
     _rotation: {x: 0, y: 0, z: 180}
     TypeSetWidth: 0
     TypeSetHeight: 0
+  testCofTop: 0
+  testCofBot: 0
+  testCofLef: 0
+  testCofRig: 0
   _currentOrint: 0
   testHeig: {fileID: 801913864}
   testBotton: {fileID: 831672217}
@@ -8858,9 +8862,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 25, y: -50.5}
-  m_SizeDelta: {x: -150, y: -101}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 295, y: -300}
+  m_SizeDelta: {x: 390, y: -600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1877179322
 MonoBehaviour:
@@ -8931,6 +8935,10 @@ MonoBehaviour:
     _rotation: {x: 0, y: 0, z: 180}
     TypeSetWidth: 0
     TypeSetHeight: 0
+  testCofTop: 0
+  testCofBot: 0
+  testCofLef: 0
+  testCofRig: 0
   _currentOrint: 0
   testHeig: {fileID: 1675586784}
   testBotton: {fileID: 998673911}
@@ -10119,6 +10127,10 @@ MonoBehaviour:
     _rotation: {x: 0, y: 0, z: 0}
     TypeSetWidth: 0
     TypeSetHeight: 0
+  testCofTop: 0
+  testCofBot: 0
+  testCofLef: 0
+  testCofRig: 0
   _currentOrint: 0
   testHeig: {fileID: 1792379521}
   testBotton: {fileID: 663407910}
